@@ -1,0 +1,243 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E29249F8-08EF-4F34-BE8E-E66EC3112E7D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>vBudgetForm</RootNamespace>
+    <AssemblyName>vBudgetForm</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddProductForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddProductForm.Designer.cs">
+      <DependentUpon>AddProductForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DiscountCardsListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DiscountCardsListForm.Designer.cs">
+      <DependentUpon>DiscountCardsListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditCategoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditCategoryForm.Designer.cs">
+      <DependentUpon>EditCategoryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditDiscountCardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditDiscountCardForm.Designer.cs">
+      <DependentUpon>EditDiscountCardForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditMakerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditMakerForm.Designer.cs">
+      <DependentUpon>EditMakerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MakersListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MakersListForm.Designer.cs">
+      <DependentUpon>MakersListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PositionDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PositionDetailsForm.Designer.cs">
+      <DependentUpon>PositionDetailsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductsListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProductsListForm.Designer.cs">
+      <DependentUpon>ProductsListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProductTypeForm.Designer.cs">
+      <DependentUpon>ProductTypeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddProductForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddProductForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DiscountCardsListForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DiscountCardsListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditCategoryForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditCategoryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditDiscountCardForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditDiscountCardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditMakerForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditMakerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MakersListForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MakersListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PositionDetailsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PositionDetailsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductsListForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProductsListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductTypeForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProductTypeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReceiptForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ReceiptForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StatisticsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StatisticsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="vBudgetForm.resx">
+      <DependentUpon>vBudgetForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VendorForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VendorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VendorsListForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VendorsListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ReceiptForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReceiptForm.Designer.cs">
+      <DependentUpon>ReceiptForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StatisticsForm.Designer.cs">
+      <DependentUpon>StatisticsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="vBudgetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="vBudgetForm.Designer.cs">
+      <DependentUpon>vBudgetForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VendorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VendorForm.Designer.cs">
+      <DependentUpon>VendorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VendorsListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VendorsListForm.Designer.cs">
+      <DependentUpon>VendorsListForm.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Effects\Effects.csproj">
+      <Project>{393FA83C-343D-487E-90B2-5CA86A9F9BF3}</Project>
+      <Name>Effects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Producer\Producer.csproj">
+      <Project>{7FA09EDF-3F91-4B51-8985-46B715A9364F}</Project>
+      <Name>Producer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Purchases\Purchases.csproj">
+      <Project>{BFF3779A-A508-4F69-8E76-B6C32D82130E}</Project>
+      <Name>Purchases</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Settings\Settings.csproj">
+      <Project>{87FC31CF-4E8E-4C8B-B6D3-08EEEA9DD7D9}</Project>
+      <Name>Settings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Statistics\Statistics.csproj">
+      <Project>{D5738000-B439-43AE-AAEF-0229DDA876AF}</Project>
+      <Name>Statistics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vault\Vault.csproj">
+      <Project>{04E0FEF0-66D1-4A35-BD70-6DBACADC78C1}</Project>
+      <Name>Vault</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VisualControls\VisualControls.csproj">
+      <Project>{32761C55-F6D6-44C4-98B4-BB04E8E1331C}</Project>
+      <Name>VisualControls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\no_user_96x96.bmp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
