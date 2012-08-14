@@ -43,6 +43,9 @@ namespace Effects{
                 case 12:
                     MonthName = "декабрь";
                     break;
+                default:
+                    MonthName = "неизвестный";
+                    break;
             }
             return MonthName;
         }
