@@ -10,6 +10,8 @@ namespace vBudgetForm
 {
     public partial class PositionDetailsForm : Form
     {
+        private object buyer_id;
+        private object receiver_id;
         private bool block_refresh;
         private int product_id;
         private System.Data.DataTable p_prices = null;
@@ -47,7 +49,7 @@ namespace vBudgetForm
         // ID покупателя
         public object BuyerId{
             get { return this.cbxBuyer.SelectedValue; }
-            set { this.cbxBuyer.SelectedValue = value; }
+            set { this.buyer_id = value; } /*this.cbxBuyer.SelectedValue = value;*/
         }
         // ФИО Покупателя
         public object BuyerFullName{
@@ -57,7 +59,7 @@ namespace vBudgetForm
         public object ReceiverId
         {
             get { return this.cbxReceiver.SelectedValue; }
-            set { this.cbxReceiver.SelectedValue = value; }
+            set { /*this.cbxReceiver.SelectedValue = value;*/ this.receiver_id = value; }
         }
         // ФИО получателя
         public object ReceiverFullName{
@@ -68,7 +70,8 @@ namespace vBudgetForm
             this.InitializeComponent();
             this.cConnection = connection;
             this.product = inRow;
-
+            this.buyer_id = -1;
+            this.receiver_id = -1;
         }
 
         private void btnOk_Click(object sender, EventArgs e){
@@ -104,6 +107,8 @@ namespace vBudgetForm
                 this.cbxReceiver.DataSource = recvrs;
                 this.cbxReceiver.DisplayMember = "UserFullName";
                 this.cbxReceiver.ValueMember = "UserID";
+                //if ((int)this.receiver_id != -1)
+                //    this.cbxReceiver.SelectedValue = this.receiver_id;
 
                 if (this.product != null)
                 {
@@ -117,6 +122,11 @@ namespace vBudgetForm
                     this.nudDiscount.Value = ((decimal)this.product["Discount"] * 100);
                     if (!System.Convert.IsDBNull(this.product["Units"]))
                         this.cbxUnits.Text = (string)this.product["Units"];
+                }else{
+                    if( (int)this.buyer_id != -1 )
+                        this.cbxBuyer.SelectedValue = this.buyer_id;
+                    if ((int)this.receiver_id != -1)
+                        this.cbxReceiver.SelectedValue = this.receiver_id;
                 }
 
                 if (this.product_id == -1) this.product_id = (int)this.product["ProductID"];
