@@ -32,7 +32,6 @@ namespace vBudgetForm
         private bool TryConnect(){
             bool done = false;
             string server = Properties.Settings.Default.DataServers[0];
-//            string server = "YORKJOUGH";
             System.Data.SqlClient.SqlConnectionStringBuilder sqlConnBuilder =
                     new System.Data.SqlClient.SqlConnectionStringBuilder();
 
@@ -237,6 +236,7 @@ namespace vBudgetForm
                 Properties.Settings.Default.UserLogin = this.settings.UserLogin;
                 Properties.Settings.Default.UserPassword = this.settings.UserPassword;
                 Properties.Settings.Default.DefaultDataBase = this.settings.DefaultDataBase;
+                this.vBudgetForm_Load(sender, e);
             }
             return;
         }
@@ -598,7 +598,7 @@ namespace vBudgetForm
 
                 dst_ds.Merge(rec_ds, true);
 //                dst_ds.
-                System.Data.DataSet cng_ds = dst_ds.GetChanges(DataRowState.Modified);
+                System.Data.DataSet cng_ds = dst_ds.GetChanges(DataRowState.Added);
                 if (cng_ds != null){
 
                 }

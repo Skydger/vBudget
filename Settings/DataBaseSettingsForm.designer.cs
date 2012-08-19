@@ -121,7 +121,7 @@ namespace Settings
             // cbServer
             // 
             this.cbServer.FormattingEnabled = true;
-            this.cbServer.Location = new System.Drawing.Point(88, 57);
+            this.cbServer.Location = new System.Drawing.Point(88, 29);
             this.cbServer.Name = "cbServer";
             this.cbServer.Size = new System.Drawing.Size(256, 21);
             this.cbServer.TabIndex = 10;
@@ -130,7 +130,7 @@ namespace Settings
             // lblServer
             // 
             this.lblServer.AutoSize = true;
-            this.lblServer.Location = new System.Drawing.Point(16, 60);
+            this.lblServer.Location = new System.Drawing.Point(16, 32);
             this.lblServer.Name = "lblServer";
             this.lblServer.Size = new System.Drawing.Size(66, 13);
             this.lblServer.TabIndex = 9;
@@ -139,7 +139,7 @@ namespace Settings
             // cbIntegratedSecurity
             // 
             this.cbIntegratedSecurity.AutoSize = true;
-            this.cbIntegratedSecurity.Location = new System.Drawing.Point(19, 34);
+            this.cbIntegratedSecurity.Location = new System.Drawing.Point(19, 61);
             this.cbIntegratedSecurity.Name = "cbIntegratedSecurity";
             this.cbIntegratedSecurity.Size = new System.Drawing.Size(305, 17);
             this.cbIntegratedSecurity.TabIndex = 17;

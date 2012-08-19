@@ -55,6 +55,7 @@ namespace Settings
             // TODO: загрузка списка баз
             this.cbDataBases.Text = Properties.Settings.Default.DefaultDataBase;
 */
+            this.cbServer.Items.Clear();
             if ((this.asDataServers != null) && this.asDataServers.Count > 0)
             {
                 foreach (string server_name in this.asDataServers){
@@ -107,8 +108,8 @@ namespace Settings
         }
 
         private void cbIntegratedSecurity_CheckedChanged(object sender, EventArgs e){
-            this.lblServer.Enabled = !this.cbIntegratedSecurity.Checked;
-            this.cbServer.Enabled = !this.cbIntegratedSecurity.Checked;
+            //this.lblServer.Enabled = !this.cbIntegratedSecurity.Checked;
+            //this.cbServer.Enabled = !this.cbIntegratedSecurity.Checked;
             this.lblLogin.Enabled = !this.cbIntegratedSecurity.Checked;
             this.tbUser.Enabled = !this.cbIntegratedSecurity.Checked;
             this.lblPassword.Enabled = !this.cbIntegratedSecurity.Checked;
@@ -117,19 +118,20 @@ namespace Settings
             this.cbDataBases.Enabled = !this.cbIntegratedSecurity.Checked;
         }
 
-        private void cbServer_Validated(object sender, EventArgs e)
-        {
-            if (!this.cbServer.Items.Contains(this.cbServer.Text)){
-                this.cbServer.Items.Insert(0, this.cbServer.Text);
+        private void cbServer_Validated(object sender, EventArgs e){
+            string server = this.cbServer.Text;
+            if (this.cbServer.Items.Contains(server)){
+                this.cbServer.Items.Remove(server);
             }
+            this.cbServer.Items.Insert(0, server);
+            return;
         }
 
         protected void ChangeAuthType( bool isSqlServer ){
-//            this.rbABBYYAuthorizer.Checked = !isSqlServer;
 //            this.rbNativeAuthorization.Checked = isSqlServer;
             this.cbIntegratedSecurity.Enabled = isSqlServer;
-            this.lblServer.Enabled = isSqlServer;
-            this.cbServer.Enabled = isSqlServer;
+            //this.lblServer.Enabled = isSqlServer;
+            //this.cbServer.Enabled = isSqlServer;
             this.lblLogin.Enabled = isSqlServer;
             this.tbUser.Enabled = isSqlServer;
             this.lblPassword.Enabled = isSqlServer;
@@ -138,7 +140,7 @@ namespace Settings
             this.cbDataBases.Enabled = isSqlServer;
         }
         private void rbABBYYAuthorizer_CheckedChanged(object sender, EventArgs e){
-//            this.ChangeAuthType(!this.rbABBYYAuthorizer.Checked);
+
             this.ChangeAuthType(true);
         }
 

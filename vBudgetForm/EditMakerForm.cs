@@ -10,11 +10,13 @@ namespace vBudgetForm
 {
     public partial class EditMakerForm : Form
     {
+        private bool is_new;
         public EditMakerForm(System.Data.SqlClient.SqlConnection inConnection, object category, ref DataRow inMaker){
             this.InitializeComponent();
             this.cConnection = inConnection;
             this.maker = inMaker;
             this.current_category = category;
+            this.is_new = true;
         }
 
 
@@ -44,10 +46,27 @@ namespace vBudgetForm
         }
 
         private void btnAccept_Click(object sender, EventArgs e){
+            
+            bool noerrors = true;
+            string error = "";
             this.maker["Name"] = this.tbxMakerName.Text;
             this.maker["MakerCategory"] = this.cbxCategories.SelectedValue;
             this.maker["Vendor"] = this.cbxVendors.SelectedValue;
-            this.DialogResult = DialogResult.OK;
+            if (this.is_new){
+                noerrors = Producer.Maker.Insert(this.cConnection, this.maker, out error);
+            }else
+                noerrors = Producer.Maker.Update(this.cConnection, this.maker, out error);
+            if (!noerrors){
+                MessageBox.Show(error);
+            }else{
+                if (this.is_new) this.maker["MakerId"] = Producer.Maker.LastId(this.cConnection, out error);
+                if (error.Length > 0)
+                    MessageBox.Show(error);
+                else
+                    this.DialogResult = DialogResult.OK;
+            }
+
+
         }
     }
 }
