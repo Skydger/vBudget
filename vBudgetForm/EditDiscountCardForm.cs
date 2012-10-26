@@ -70,36 +70,49 @@ namespace vBudgetForm
         }
 
         private void btnAccept_Click(object sender, EventArgs e){
-            this.card["CardOwner"] = this.cbxUsers.SelectedValue;
-            this.card["VendorID"] = this.cbxVendors.SelectedValue;
-            this.card["CardName"] = this.tbxName.Text;
-            this.card["CardNumber"] = this.tbxNumber.Text;
-            this.card["DiscountPercent"] = this.nudPercents.Value;
-            this.card["DiscountType"] = this.cbxDiscountType.SelectedIndex + 1;
-            this.card["Since"] = this.dtpSince.Value;
-            if( this.is_new ) this.card["Added"] = System.DateTime.Now;
-            this.card["Expired"] = this.cbxExpired.Checked;
+            DateTime dt = new DateTime(2012, 10, 4, 0, 0, 0);
+            TimeSpan sp = new TimeSpan(500);
+            //dt += sp;
+            string tm = (dt + sp).ToShortTimeString();
+            try
+            {
+                this.card["CardOwner"] = this.cbxUsers.SelectedValue;
+                if (!System.Convert.IsDBNull(this.cbxVendors.SelectedValue))
+                    this.card["VendorID"] = this.cbxVendors.SelectedValue;
+                this.card["CardName"] = this.tbxName.Text;
+                this.card["CardNumber"] = this.tbxNumber.Text;
+                this.card["DiscountPercent"] = this.nudPercents.Value;
+                this.card["DiscountType"] = this.cbxDiscountType.SelectedIndex + 1;
+                this.card["Since"] = this.dtpSince.Value;
+                if (this.is_new) this.card["Added"] = System.DateTime.Now;
+                this.card["Expired"] = this.cbxExpired.Checked;
 
-            this.card["VendorName"] = this.cbxVendors.Text;
-            System.Data.DataRow user = this.users.Rows[this.cbxUsers.SelectedIndex];
-            this.card["Surname"] = user["Surname"];
-            this.card["Name"] = user["Name"];
-            this.card["SecondName"] = user["SecondName"];
+                this.card["VendorName"] = this.cbxVendors.Text;
+                System.Data.DataRow user = this.users.Rows[this.cbxUsers.SelectedIndex];
+                this.card["Surname"] = user["Surname"];
+                this.card["Name"] = user["Name"];
+                this.card["SecondName"] = user["SecondName"];
 
-            bool noerrors = true;
-            string error = "";
-            if (this.is_new)
-                noerrors = Purchases.DiscountCard.Insert(this.cConnection, this.card, out error);
-            else
-                noerrors = Purchases.DiscountCard.Update(this.cConnection, this.card, out error);
-            if (!noerrors){
-                MessageBox.Show(error);
-            }else{
-                if (this.is_new) this.card["CardID"] = Purchases.DiscountCard.LastId(this.cConnection, out error);
-                if (error.Length > 0)
-                    MessageBox.Show(error);
+                bool noerrors = true;
+                string error = "";
+                if (this.is_new)
+                    noerrors = Purchases.DiscountCard.Insert(this.cConnection, this.card, out error);
                 else
-                    this.DialogResult = DialogResult.OK;
+                    noerrors = Purchases.DiscountCard.Update(this.cConnection, this.card, out error);
+                if (!noerrors)
+                {
+                    MessageBox.Show(error);
+                }
+                else
+                {
+                    if (this.is_new) this.card["CardID"] = Purchases.DiscountCard.LastId(this.cConnection, out error);
+                    if (error.Length > 0)
+                        MessageBox.Show(error);
+                    else
+                        this.DialogResult = DialogResult.OK;
+                }
+            }catch(System.Exception ex){
+                MessageBox.Show(ex.Message, "Ошибка!");
             }
             return;
         }
