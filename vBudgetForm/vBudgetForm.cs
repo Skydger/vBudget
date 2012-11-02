@@ -19,6 +19,7 @@ namespace vBudgetForm
             this.lvReceipts.Columns.Add("Оплачено", 100);
             this.lvReceipts.Columns.Add("Продавец", 200);
             this.lvReceipts.Columns.Add("Цена", 100);
+            this.lvReceipts.Columns.Add("Комментарий", 150);
 
             this.receipts = new DataTable("Receipts");
             this.lvColumnSorter = new Effects.ListViewColumnSorter();
@@ -118,10 +119,20 @@ namespace vBudgetForm
             lvi.SubItems.Add("");
             lvi.SubItems.Add("");
             lvi.SubItems.Add(summ.ToString());
+            lvi.SubItems.Add("");
             lvi.Group = group;
             this.lvReceipts.Items.Add(lvi);
         }
-
+        protected void CalculateTotal(){
+            decimal total = 0;
+            int i = 0;
+            foreach (System.Data.DataRow drw in this.receipts.Rows){
+                //this.AddNewRow(i++, drw);
+                total += (decimal)drw["Price"];
+            }
+            this.tsslQueryResult.Text = "Всего записей: " + i.ToString() + " на сумму " + total.ToString();
+            return;
+        }
         protected void LoadReceipts( Purchases.Criteria criteries ){
             try{
 
@@ -140,13 +151,7 @@ namespace vBudgetForm
                 this.receipts.Columns[colname].AutoIncrementSeed = -1;
                 this.receipts.Columns[colname].AutoIncrementStep = -1;
 
-                decimal total = 0;
-                int i = 0;
-                foreach (System.Data.DataRow drw in this.receipts.Rows){
-                    this.AddNewRow(i++, drw);
-                    total += (decimal)drw["Price"];
-                }
-                this.tsslQueryResult.Text = "Всего записей: " + i.ToString() + " на сумму " + total.ToString();
+                this.CalculateTotal();
 //                this.receipts.Columns[colname].AutoIncrement = true;
 //                this.receipts.Columns[colname].AutoIncrementSeed = (int)this.receipts.Rows[i - 1][colname] + 1;
             }catch (System.Data.SqlClient.SqlException ex){
@@ -180,6 +185,7 @@ namespace vBudgetForm
             if (rptf.ShowDialog() == DialogResult.OK){
                 this.receipts.Rows.Add(new_row);
                 this.AddNewRow(this.receipts.Rows.Count - 1, new_row);
+                this.CalculateTotal();
             }
         }
 
@@ -202,6 +208,7 @@ namespace vBudgetForm
                         this.lvReceipts.SelectedIndices.Add(row_num);
     //                    this.receipts.Rows.Add(new_row);
     //                    this.AddNewRow(this.receipts.Rows.Count, new_row);
+                        this.CalculateTotal();
                     }
                 }else{
                     MessageBox.Show("Ошибка получения чека!");
@@ -236,6 +243,7 @@ namespace vBudgetForm
                 Properties.Settings.Default.UserLogin = this.settings.UserLogin;
                 Properties.Settings.Default.UserPassword = this.settings.UserPassword;
                 Properties.Settings.Default.DefaultDataBase = this.settings.DefaultDataBase;
+                Properties.Settings.Default.Save();
                 this.vBudgetForm_Load(sender, e);
             }
             return;
@@ -443,6 +451,16 @@ namespace vBudgetForm
             this.tsmiByLastMonth.Checked = false;
             this.tsmiByLastThreeMonths.Checked = false;
             this.tsmiOnPeriod.Checked = true;
+            VisualControls.PeriodPicker period = new VisualControls.PeriodPicker();
+            if (period.ShowDialog() == DialogResult.OK){
+                Purchases.Criteria crt = new Purchases.Criteria();
+                crt.DateFilter = Purchases.DateFilterType.Between;
+                DateTime[] dates = new DateTime[2];
+                dates[0] = period.StartDate;
+                dates[1] = period.EndtDate;
+                crt.Dates = dates;
+                this.ByDateFilter(crt);
+            }
             return;
         }
 
@@ -619,6 +637,11 @@ namespace vBudgetForm
                 }
             }
             return;
+        }
+
+        private void tsmiOftenlyBought_Click(object sender, EventArgs e){
+            StatisticsForm form = new StatisticsForm(this.cConnection);
+            form.Show();
         }
 
 

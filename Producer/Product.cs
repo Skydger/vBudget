@@ -52,6 +52,36 @@ namespace Producer
             return cmd;
         }
 
+        public static System.Data.SqlClient.SqlCommand Select( string name ){
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sWhere = "";
+            if ( name.Length > 0){
+                sWhere += (sWhere.Length > 0 ? "      AND " : "    WHERE ");
+                sWhere += "p.ProductName like @ProductName\n";
+                cmd.Parameters.AddWithValue("@ProductName", "%" + name + "%" );
+            }
+            string sQuery = "   SELECT p.ProductID, p.ProductName, p.Category, p.Type, p.Maker, p.Barcode,\n" +
+                            "          p.Comment, p.Created, p.Updated, p.Deleted,\n" +
+                            "          m.Name AS MakerName, m.MakerCategory, m.Vendor,\n" +
+                            "          c.CategoryName,\n" +
+                            "          pt.Name AS TypeName, pt.Comment\n" +
+                            "     FROM " + sTable + " AS p\n" +
+                            "LEFT JOIN Producer.Makers AS m\n" +
+                            "       ON m.MakerId = p.Maker\n" +
+                            "LEFT JOIN Producer.Categories AS c\n" +
+                            "       ON c.CategoryID = p.Category\n" +
+                            "LEFT JOIN Producer.ProductTypes AS pt\n" +
+                            "       ON pt.TypeId = p.Type AND\n" +
+                            "          pt.Category = p.Category\n" +
+                            sWhere +
+                            "ORDER BY p.ProductName";
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
+
+
         // подготовка параметров для SqlCommand таблицы продуктов
         static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command){
             command.Parameters.Add("@ProductName", System.Data.SqlDbType.NVarChar, 0, "ProductName");

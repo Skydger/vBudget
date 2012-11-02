@@ -66,6 +66,7 @@ namespace vBudgetForm
             this.lblPositions = new System.Windows.Forms.Label();
             this.lblReceiptSum = new System.Windows.Forms.Label();
             this.btnAddDiscountCard = new System.Windows.Forms.Button();
+            this.tbxSearchProduct = new System.Windows.Forms.TextBox();
             this.scContent.Panel1.SuspendLayout();
             this.scContent.Panel2.SuspendLayout();
             this.scContent.SuspendLayout();
@@ -162,6 +163,7 @@ namespace vBudgetForm
             // 
             // scContent.Panel1
             // 
+            this.scContent.Panel1.Controls.Add(this.tbxSearchProduct);
             this.scContent.Panel1.Controls.Add(this.btnNewCategory);
             this.scContent.Panel1.Controls.Add(this.btnAddProduct);
             this.scContent.Panel1.Controls.Add(this.lbxProducts);
@@ -199,9 +201,9 @@ namespace vBudgetForm
             // 
             this.lbxProducts.ContextMenuStrip = this.cmsProductsMenu;
             this.lbxProducts.FormattingEnabled = true;
-            this.lbxProducts.Location = new System.Drawing.Point(0, 30);
+            this.lbxProducts.Location = new System.Drawing.Point(0, 56);
             this.lbxProducts.Name = "lbxProducts";
-            this.lbxProducts.Size = new System.Drawing.Size(247, 251);
+            this.lbxProducts.Size = new System.Drawing.Size(247, 225);
             this.lbxProducts.TabIndex = 2;
             this.lbxProducts.DoubleClick += new System.EventHandler(this.lbxProducts_DoubleClick);
             // 
@@ -346,6 +348,14 @@ namespace vBudgetForm
             this.btnAddDiscountCard.UseVisualStyleBackColor = true;
             this.btnAddDiscountCard.Click += new System.EventHandler(this.btnAddDiscountCard_Click);
             // 
+            // tbxSearchProduct
+            // 
+            this.tbxSearchProduct.Location = new System.Drawing.Point(29, 30);
+            this.tbxSearchProduct.Name = "tbxSearchProduct";
+            this.tbxSearchProduct.Size = new System.Drawing.Size(216, 20);
+            this.tbxSearchProduct.TabIndex = 5;
+            this.tbxSearchProduct.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxSearchProduct_KeyUp);
+            // 
             // ReceiptForm
             // 
             this.AcceptButton = this.btnOk;
@@ -377,6 +387,7 @@ namespace vBudgetForm
             this.Load += new System.EventHandler(this.ReceiptForm_Load);
             this.Resize += new System.EventHandler(this.ReceiptForm_Resize);
             this.scContent.Panel1.ResumeLayout(false);
+            this.scContent.Panel1.PerformLayout();
             this.scContent.Panel2.ResumeLayout(false);
             this.scContent.ResumeLayout(false);
             this.cmsProductsMenu.ResumeLayout(false);
@@ -418,5 +429,6 @@ namespace vBudgetForm
         private System.Windows.Forms.ContextMenuStrip cmsPositionsMenu;
         private System.Windows.Forms.ToolStripMenuItem tsmiChangePosition;
         private System.Windows.Forms.Button btnAddDiscountCard;
+        private System.Windows.Forms.TextBox tbxSearchProduct;
     }
 }

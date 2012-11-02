@@ -43,6 +43,7 @@ namespace vBudgetForm
             this.tsmiByLastMonth = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiByLastThreeMonths = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiByLastQuarter = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOnPeriod = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiByCategoryFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiByVendorFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTopPurchases = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,7 +74,6 @@ namespace vBudgetForm
             this.cmsReceiptsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiOnPeriod = new System.Windows.Forms.ToolStripMenuItem();
             this.msMainMenu.SuspendLayout();
             this.ssMainStatus.SuspendLayout();
             this.cmsReceiptsMenu.SuspendLayout();
@@ -135,7 +135,7 @@ namespace vBudgetForm
             this.tsmiTopPurchases,
             this.tsmiClearFilter});
             this.tsmiFilters.Name = "tsmiFilters";
-            this.tsmiFilters.Size = new System.Drawing.Size(152, 22);
+            this.tsmiFilters.Size = new System.Drawing.Size(140, 22);
             this.tsmiFilters.Text = "Фильтры";
             // 
             // tsmiByDatesSection
@@ -180,6 +180,13 @@ namespace vBudgetForm
             this.tsmiByLastQuarter.Text = "За последний квартал";
             this.tsmiByLastQuarter.Click += new System.EventHandler(this.tsmiByLastQuarter_Click);
             // 
+            // tsmiOnPeriod
+            // 
+            this.tsmiOnPeriod.Name = "tsmiOnPeriod";
+            this.tsmiOnPeriod.Size = new System.Drawing.Size(201, 22);
+            this.tsmiOnPeriod.Text = "За период....";
+            this.tsmiOnPeriod.Click += new System.EventHandler(this.tsmiOnPeriod_Click);
+            // 
             // tsmiByCategoryFilter
             // 
             this.tsmiByCategoryFilter.Name = "tsmiByCategoryFilter";
@@ -214,7 +221,7 @@ namespace vBudgetForm
             this.tsmiByMonths,
             this.tsmiByID});
             this.tsmiSort.Name = "tsmiSort";
-            this.tsmiSort.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSort.Size = new System.Drawing.Size(140, 22);
             this.tsmiSort.Text = "Сортировка";
             // 
             // tsmiByWeeks
@@ -244,7 +251,7 @@ namespace vBudgetForm
             this.tsmiReceipts,
             this.tsmiBalance});
             this.tsmiSections.Name = "tsmiSections";
-            this.tsmiSections.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSections.Size = new System.Drawing.Size(140, 22);
             this.tsmiSections.Text = "Разделы";
             // 
             // tsmiReceipts
@@ -333,6 +340,7 @@ namespace vBudgetForm
             this.tsmiOftenlyBought.Name = "tsmiOftenlyBought";
             this.tsmiOftenlyBought.Size = new System.Drawing.Size(234, 22);
             this.tsmiOftenlyBought.Text = "Часто покупаемые продукты";
+            this.tsmiOftenlyBought.Click += new System.EventHandler(this.tsmiOftenlyBought_Click);
             // 
             // ssMainStatus
             // 
@@ -404,13 +412,6 @@ namespace vBudgetForm
             this.tsmiImport.Size = new System.Drawing.Size(128, 22);
             this.tsmiImport.Text = "Импорт...";
             this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
-            // 
-            // tsmiOnPeriod
-            // 
-            this.tsmiOnPeriod.Name = "tsmiOnPeriod";
-            this.tsmiOnPeriod.Size = new System.Drawing.Size(201, 22);
-            this.tsmiOnPeriod.Text = "За период....";
-            this.tsmiOnPeriod.Click += new System.EventHandler(this.tsmiOnPeriod_Click);
             // 
             // vBudgetForm
             // 

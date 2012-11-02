@@ -534,6 +534,24 @@ namespace vBudgetForm
             }
             return;
         }
+
+        private void tbxSearchProduct_KeyUp(object sender, KeyEventArgs e){
+            try{
+                if (this.tbxSearchProduct.Text.Length > 0){
+                    System.Data.SqlClient.SqlCommand command = Producer.Product.Select(this.tbxSearchProduct.Text);
+                    command.Connection = this.cConnection;
+                    System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
+                    this.products = new DataTable("Products");
+                    sda.Fill(this.products);
+                    this.lbxProducts.DataSource = this.products;
+                    this.lbxProducts.ValueMember = "ProductID";
+                    this.lbxProducts.DisplayMember = "ProductName";
+                }
+            }catch(System.Exception ex ){
+                MessageBox.Show(ex.Message);
+            }
+            return;
+        }
 //            if( e.ColumnIndex == 7 ){
 //                decimal vl = (decimal)e.Value;
 //                vl = Math.Round(vl, 2);
