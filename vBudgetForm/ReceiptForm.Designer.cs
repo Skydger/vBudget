@@ -47,6 +47,7 @@ namespace vBudgetForm
             this.tbxReceiptNumber = new System.Windows.Forms.TextBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.scContent = new System.Windows.Forms.SplitContainer();
+            this.tbxSearchProduct = new System.Windows.Forms.TextBox();
             this.btnNewCategory = new System.Windows.Forms.Button();
             this.btnAddProduct = new System.Windows.Forms.Button();
             this.lbxProducts = new System.Windows.Forms.ListBox();
@@ -66,7 +67,7 @@ namespace vBudgetForm
             this.lblPositions = new System.Windows.Forms.Label();
             this.lblReceiptSum = new System.Windows.Forms.Label();
             this.btnAddDiscountCard = new System.Windows.Forms.Button();
-            this.tbxSearchProduct = new System.Windows.Forms.TextBox();
+            this.tsmiChangeProduct = new System.Windows.Forms.ToolStripMenuItem();
             this.scContent.Panel1.SuspendLayout();
             this.scContent.Panel2.SuspendLayout();
             this.scContent.SuspendLayout();
@@ -177,6 +178,14 @@ namespace vBudgetForm
             this.scContent.TabIndex = 10;
             this.scContent.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scContent_SplitterMoved);
             // 
+            // tbxSearchProduct
+            // 
+            this.tbxSearchProduct.Location = new System.Drawing.Point(29, 30);
+            this.tbxSearchProduct.Name = "tbxSearchProduct";
+            this.tbxSearchProduct.Size = new System.Drawing.Size(216, 20);
+            this.tbxSearchProduct.TabIndex = 5;
+            this.tbxSearchProduct.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxSearchProduct_KeyUp);
+            // 
             // btnNewCategory
             // 
             this.btnNewCategory.Location = new System.Drawing.Point(225, 3);
@@ -253,14 +262,15 @@ namespace vBudgetForm
             // cmsPositionsMenu
             // 
             this.cmsPositionsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiChangePosition});
+            this.tsmiChangePosition,
+            this.tsmiChangeProduct});
             this.cmsPositionsMenu.Name = "cmsPositionsMenu";
-            this.cmsPositionsMenu.Size = new System.Drawing.Size(182, 26);
+            this.cmsPositionsMenu.Size = new System.Drawing.Size(243, 70);
             // 
             // tsmiChangePosition
             // 
             this.tsmiChangePosition.Name = "tsmiChangePosition";
-            this.tsmiChangePosition.Size = new System.Drawing.Size(181, 22);
+            this.tsmiChangePosition.Size = new System.Drawing.Size(242, 22);
             this.tsmiChangePosition.Text = "Изменить позицию";
             this.tsmiChangePosition.Click += new System.EventHandler(this.tsmiChangePosition_Click);
             // 
@@ -348,13 +358,12 @@ namespace vBudgetForm
             this.btnAddDiscountCard.UseVisualStyleBackColor = true;
             this.btnAddDiscountCard.Click += new System.EventHandler(this.btnAddDiscountCard_Click);
             // 
-            // tbxSearchProduct
+            // tsmiChangeProduct
             // 
-            this.tbxSearchProduct.Location = new System.Drawing.Point(29, 30);
-            this.tbxSearchProduct.Name = "tbxSearchProduct";
-            this.tbxSearchProduct.Size = new System.Drawing.Size(216, 20);
-            this.tbxSearchProduct.TabIndex = 5;
-            this.tbxSearchProduct.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxSearchProduct_KeyUp);
+            this.tsmiChangeProduct.Name = "tsmiChangeProduct";
+            this.tsmiChangeProduct.Size = new System.Drawing.Size(242, 22);
+            this.tsmiChangeProduct.Text = "Заменить другим продуктом...";
+            this.tsmiChangeProduct.Click += new System.EventHandler(this.tsmiChangeProduct_Click);
             // 
             // ReceiptForm
             // 
@@ -430,5 +439,6 @@ namespace vBudgetForm
         private System.Windows.Forms.ToolStripMenuItem tsmiChangePosition;
         private System.Windows.Forms.Button btnAddDiscountCard;
         private System.Windows.Forms.TextBox tbxSearchProduct;
+        private System.Windows.Forms.ToolStripMenuItem tsmiChangeProduct;
     }
 }

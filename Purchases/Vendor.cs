@@ -16,7 +16,7 @@ namespace Purchases
             }
             string sQuery = "SELECT v.VendorID, v.VendorName, v.VendorType, v.Phones, v.Address,\n" +
                             "       v.Logo, v.INoTP, v.Web, v.Created, v.Updated, v.Deleted,\n" +
-                            "       vp.TypeName\n" +
+                            "       vp.TypeName, v.VendorName + ' ' + v.Address AS VendorNameAddress\n" +
                             "FROM " + Vendor.Table + " AS v\n" +
                             "LEFT JOIN Purchases.VendorTypes AS vp\n" +
                             "       ON vp.TypeID = v.VendorType\n" +
@@ -38,7 +38,7 @@ namespace Purchases
             }
             string sQuery = "SELECT v.VendorID, v.VendorName, v.VendorType, v.Phones, v.Address,\n" +
                             "       v.Logo, v.INoTP, v.Web, v.Created, v.Updated, v.Deleted,\n" +
-                            "       vp.TypeName\n" +
+                            "       vp.TypeName, v.VendorName + ' ' + v.Address AS VendorNameAddress\n" +
                             "FROM " + Vendor.Table + " AS v\n" +
                             "LEFT JOIN Purchases.VendorTypes AS vp\n" +
                             "       ON vp.TypeID = v.VendorType\n" +

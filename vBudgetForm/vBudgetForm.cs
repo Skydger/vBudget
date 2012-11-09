@@ -123,11 +123,11 @@ namespace vBudgetForm
             lvi.Group = group;
             this.lvReceipts.Items.Add(lvi);
         }
-        protected void CalculateTotal(){
+        protected void CalculateTotal(bool add_new_rows ){
             decimal total = 0;
             int i = 0;
             foreach (System.Data.DataRow drw in this.receipts.Rows){
-                //this.AddNewRow(i++, drw);
+                if (add_new_rows) this.AddNewRow(i++, drw);
                 total += (decimal)drw["Price"];
             }
             this.tsslQueryResult.Text = "Всего записей: " + i.ToString() + " на сумму " + total.ToString();
@@ -151,7 +151,7 @@ namespace vBudgetForm
                 this.receipts.Columns[colname].AutoIncrementSeed = -1;
                 this.receipts.Columns[colname].AutoIncrementStep = -1;
 
-                this.CalculateTotal();
+                this.CalculateTotal( true );
 //                this.receipts.Columns[colname].AutoIncrement = true;
 //                this.receipts.Columns[colname].AutoIncrementSeed = (int)this.receipts.Rows[i - 1][colname] + 1;
             }catch (System.Data.SqlClient.SqlException ex){
@@ -185,7 +185,7 @@ namespace vBudgetForm
             if (rptf.ShowDialog() == DialogResult.OK){
                 this.receipts.Rows.Add(new_row);
                 this.AddNewRow(this.receipts.Rows.Count - 1, new_row);
-                this.CalculateTotal();
+                this.CalculateTotal(false);
             }
         }
 
@@ -208,7 +208,7 @@ namespace vBudgetForm
                         this.lvReceipts.SelectedIndices.Add(row_num);
     //                    this.receipts.Rows.Add(new_row);
     //                    this.AddNewRow(this.receipts.Rows.Count, new_row);
-                        this.CalculateTotal();
+                        this.CalculateTotal(false);
                     }
                 }else{
                     MessageBox.Show("Ошибка получения чека!");

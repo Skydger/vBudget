@@ -37,6 +37,7 @@ namespace vBudgetForm
 
             this.cbxVendors.DataSource = this.vendors;
             this.cbxVendors.DisplayMember = "VendorName";
+            //this.cbxVendors.DisplayMember = "VendorNameAddress";
             this.cbxVendors.ValueMember = "VendorID";
 
             System.Data.SqlClient.SqlCommand prdccmd = Producer.Commands.ProductCategories();
@@ -469,6 +470,7 @@ namespace vBudgetForm
 
                 this.cbxVendors.DataSource = this.vendors;
                 this.cbxVendors.DisplayMember = "VendorName";
+                //this.cbxVendors.DisplayMember = "VendorNameAddress";
                 this.cbxVendors.ValueMember = "VendorID";
             }
         }
@@ -517,6 +519,7 @@ namespace vBudgetForm
 
                     this.cbxVendors.DataSource = this.vendors;
                     this.cbxVendors.DisplayMember = "VendorName";
+                    //this.cbxVendors.DisplayMember = "VendorNameAddress";
                     this.cbxVendors.ValueMember = "VendorID";
 
                     this.block = true;
@@ -552,11 +555,18 @@ namespace vBudgetForm
             }
             return;
         }
-//            if( e.ColumnIndex == 7 ){
-//                decimal vl = (decimal)e.Value;
-//                vl = Math.Round(vl, 2);
-                
-////                e.Handled
-        //            }
+
+        private void tsmiChangeProduct_Click(object sender, EventArgs e){
+            if (this.dgvReceiptContent.SelectedRows.Count == 1){
+                System.Data.DataRow position = ((DataRowView)this.dgvReceiptContent.SelectedRows[0].DataBoundItem).Row;
+                if ((position != null) && !System.Convert.IsDBNull(position["ProductID"]) ){
+                    ChangePositionForm frm = new ChangePositionForm(this.cConnection, position["ProductID"] );
+                    if (frm.ShowDialog() == DialogResult.OK){
+                        position["ProductID"] = frm.NewProductID;
+                    }
+                }
+            }
+            return;
+        }
     }
 }

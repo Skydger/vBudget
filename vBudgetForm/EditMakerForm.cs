@@ -51,7 +51,8 @@ namespace vBudgetForm
             string error = "";
             this.maker["Name"] = this.tbxMakerName.Text;
             this.maker["MakerCategory"] = this.cbxCategories.SelectedValue;
-            this.maker["Vendor"] = this.cbxVendors.SelectedValue;
+            if( !System.Convert.IsDBNull( this.cbxVendors.SelectedValue ) )
+                this.maker["Vendor"] = this.cbxVendors.SelectedValue;
             if (this.is_new){
                 noerrors = Producer.Maker.Insert(this.cConnection, this.maker, out error);
             }else

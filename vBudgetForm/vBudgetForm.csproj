@@ -42,6 +42,12 @@
     <Compile Include="AddProductForm.Designer.cs">
       <DependentUpon>AddProductForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChangePositionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangePositionForm.Designer.cs">
+      <DependentUpon>ChangePositionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DiscountCardsListForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +101,10 @@
     <EmbeddedResource Include="AddProductForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AddProductForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangePositionForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChangePositionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DiscountCardsListForm.resx">
       <SubType>Designer</SubType>
