@@ -58,6 +58,7 @@ namespace vBudgetForm
             this.dgvReceiptContent = new System.Windows.Forms.DataGridView();
             this.cmsPositionsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiChangePosition = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiChangeProduct = new System.Windows.Forms.ToolStripMenuItem();
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblComment = new System.Windows.Forms.Label();
             this.tbxComment = new System.Windows.Forms.TextBox();
@@ -67,7 +68,6 @@ namespace vBudgetForm
             this.lblPositions = new System.Windows.Forms.Label();
             this.lblReceiptSum = new System.Windows.Forms.Label();
             this.btnAddDiscountCard = new System.Windows.Forms.Button();
-            this.tsmiChangeProduct = new System.Windows.Forms.ToolStripMenuItem();
             this.scContent.Panel1.SuspendLayout();
             this.scContent.Panel2.SuspendLayout();
             this.scContent.SuspendLayout();
@@ -265,7 +265,7 @@ namespace vBudgetForm
             this.tsmiChangePosition,
             this.tsmiChangeProduct});
             this.cmsPositionsMenu.Name = "cmsPositionsMenu";
-            this.cmsPositionsMenu.Size = new System.Drawing.Size(243, 70);
+            this.cmsPositionsMenu.Size = new System.Drawing.Size(243, 48);
             // 
             // tsmiChangePosition
             // 
@@ -273,6 +273,13 @@ namespace vBudgetForm
             this.tsmiChangePosition.Size = new System.Drawing.Size(242, 22);
             this.tsmiChangePosition.Text = "Изменить позицию";
             this.tsmiChangePosition.Click += new System.EventHandler(this.tsmiChangePosition_Click);
+            // 
+            // tsmiChangeProduct
+            // 
+            this.tsmiChangeProduct.Name = "tsmiChangeProduct";
+            this.tsmiChangeProduct.Size = new System.Drawing.Size(242, 22);
+            this.tsmiChangeProduct.Text = "Заменить другим продуктом...";
+            this.tsmiChangeProduct.Click += new System.EventHandler(this.tsmiChangeProduct_Click);
             // 
             // btnCancel
             // 
@@ -357,13 +364,6 @@ namespace vBudgetForm
             this.btnAddDiscountCard.Text = "...";
             this.btnAddDiscountCard.UseVisualStyleBackColor = true;
             this.btnAddDiscountCard.Click += new System.EventHandler(this.btnAddDiscountCard_Click);
-            // 
-            // tsmiChangeProduct
-            // 
-            this.tsmiChangeProduct.Name = "tsmiChangeProduct";
-            this.tsmiChangeProduct.Size = new System.Drawing.Size(242, 22);
-            this.tsmiChangeProduct.Text = "Заменить другим продуктом...";
-            this.tsmiChangeProduct.Click += new System.EventHandler(this.tsmiChangeProduct_Click);
             // 
             // ReceiptForm
             // 

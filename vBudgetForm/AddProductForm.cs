@@ -10,15 +10,19 @@ namespace vBudgetForm
 {
     public partial class AddProductForm : Form
     {
+        private bool block;
+        
         public AddProductForm( System.Data.SqlClient.SqlConnection inConnection,
                                ref System.Data.DataRow inProduct )
         {
             this.InitializeComponent();
             this.cConnection = inConnection;
             this.product = inProduct;
+            this.block = false;
         }
 
         private void AddProductForm_Load(object sender, EventArgs e){
+            this.block = true;
             if (System.Convert.IsDBNull(this.product["ProductID"]) || (((int)this.product["ProductID"]) < 0 )){
                 this.Text = "Новый продукт";
                 this.isNew = true;
@@ -69,6 +73,7 @@ namespace vBudgetForm
             if (!System.Convert.IsDBNull(this.product["Barcode"])) this.tbxBarcode.Text = (string)this.product["Barcode"];
             if (!System.Convert.IsDBNull(this.product["Comment"])) this.tbxComment.Text = (string)this.product["Comment"];
             if (!System.Convert.IsDBNull(this.product["Deleted"])) this.cbDeleted.Checked = (bool)this.product["Deleted"];
+            this.block = false;
         }
 
         private void btnAccept_Click(object sender, EventArgs e){
@@ -115,7 +120,22 @@ namespace vBudgetForm
         }
 
         private void cbxCategories_SelectedIndexChanged(object sender, EventArgs e){
-            
+            if (!this.block){
+                System.Data.SqlClient.SqlCommand cmd = null;
+                if (this.cbxCategories.SelectedIndex >= 0){
+                    cmd = Producer.ProductTypes.Select((int)this.cbxCategories.SelectedValue);
+                }else{
+                    cmd = Producer.Commands.Products(-1, -1);
+                }
+                cmd.Connection = this.cConnection;
+                System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
+                this.types_table = new DataTable("ProductTypes");
+                sda.Fill(this.types_table);
+                this.cbxTypes.DataSource = this.types_table;
+                this.cbxTypes.DisplayMember = "Name";
+                this.cbxTypes.ValueMember = "TypeId";
+            }
+            return;
         }
 
         private void btnAddCategory_Click(object sender, EventArgs e){

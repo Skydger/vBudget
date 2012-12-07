@@ -238,7 +238,7 @@ namespace vBudgetForm
         }
 
         private void RefreshElements(){
-            this.lbxProducts.Size = new Size(this.scContent.SplitterDistance - this.btnAddProduct.Size.Width - 2, this.scContent.Height - 33);
+            this.lbxProducts.Size = new Size(this.scContent.SplitterDistance - this.btnAddProduct.Size.Width - 2, this.scContent.Height - 48);
             int y = (this.scContent.Height / 2) - this.btnAddProduct.Size.Height / 2;
             this.btnAddProduct.Location = new Point(this.lbxProducts.Size.Width + 2, y);
             this.lblPositions.Location = new Point(this.lblPositions.Location.X, this.Height - 74);
@@ -250,11 +250,12 @@ namespace vBudgetForm
             return;
         }
         private void ReceiptForm_Resize(object sender, EventArgs e){
-            this.scContent.Size = new Size(this.Width - 32, this.Height - 192);
+            this.scContent.Size = new Size(this.Width - 32, this.Height - 192 );
             this.btnOk.Location = new Point(this.Width - 256, this.Height - 72);
             this.btnCancel.Location = new Point(this.Width - 94, this.Height - 72);
             this.RefreshElements();
         }
+
         private void scContent_SplitterMoved(object sender, SplitterEventArgs e){
             this.RefreshElements();
             return;
@@ -568,5 +569,7 @@ namespace vBudgetForm
             }
             return;
         }
+
+
     }
 }

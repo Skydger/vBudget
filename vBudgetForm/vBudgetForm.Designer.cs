@@ -74,6 +74,7 @@ namespace vBudgetForm
             this.cmsReceiptsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiProductPrices = new System.Windows.Forms.ToolStripMenuItem();
             this.msMainMenu.SuspendLayout();
             this.ssMainStatus.SuspendLayout();
             this.cmsReceiptsMenu.SuspendLayout();
@@ -330,7 +331,8 @@ namespace vBudgetForm
             // tsmiStatistics
             // 
             this.tsmiStatistics.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiOftenlyBought});
+            this.tsmiOftenlyBought,
+            this.tsmiProductPrices});
             this.tsmiStatistics.Name = "tsmiStatistics";
             this.tsmiStatistics.Size = new System.Drawing.Size(80, 20);
             this.tsmiStatistics.Text = "Статистика";
@@ -413,6 +415,12 @@ namespace vBudgetForm
             this.tsmiImport.Text = "Импорт...";
             this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
             // 
+            // tsmiProductPrices
+            // 
+            this.tsmiProductPrices.Name = "tsmiProductPrices";
+            this.tsmiProductPrices.Size = new System.Drawing.Size(234, 22);
+            this.tsmiProductPrices.Text = "Цены на продукты";
+            // 
             // vBudgetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -480,5 +488,6 @@ namespace vBudgetForm
         private System.Windows.Forms.ToolStripMenuItem tsmiStatistics;
         private System.Windows.Forms.ToolStripMenuItem tsmiOftenlyBought;
         private System.Windows.Forms.ToolStripMenuItem tsmiOnPeriod;
+        private System.Windows.Forms.ToolStripMenuItem tsmiProductPrices;
     }
 }
