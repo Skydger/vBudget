@@ -57,7 +57,7 @@ namespace Producer
             string sWhere = "";
             if ( name.Length > 0){
                 sWhere += (sWhere.Length > 0 ? "      AND " : "    WHERE ");
-                sWhere += "p.ProductName like @ProductName\n";
+                sWhere += "p.ProductName like @ProductName OR p.Barcode like @ProductName\n";
                 cmd.Parameters.AddWithValue("@ProductName", "%" + name + "%" );
             }
             string sQuery = "   SELECT p.ProductID, p.ProductName, p.Category, p.Type, p.Maker, p.Barcode,\n" +
