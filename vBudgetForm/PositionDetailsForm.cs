@@ -174,8 +174,10 @@ namespace vBudgetForm
 
         private void cbxPrices_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( !this.block_refresh && !System.Convert.IsDBNull( this.cbxPrices.SelectedValue ) )
+            if( !this.block_refresh && !System.Convert.IsDBNull( this.cbxPrices.SelectedValue ) ){
                 this.nudPrice.Value = (decimal)this.cbxPrices.SelectedValue;
+                this.nudAmount.Value = 1;
+            }
         }
     }
 }

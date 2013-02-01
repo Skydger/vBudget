@@ -47,6 +47,7 @@ namespace vBudgetForm
             this.tbxReceiptNumber = new System.Windows.Forms.TextBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.scContent = new System.Windows.Forms.SplitContainer();
+            this.lblSearch = new System.Windows.Forms.Label();
             this.tbxSearchProduct = new System.Windows.Forms.TextBox();
             this.btnNewCategory = new System.Windows.Forms.Button();
             this.btnAddProduct = new System.Windows.Forms.Button();
@@ -62,8 +63,8 @@ namespace vBudgetForm
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblComment = new System.Windows.Forms.Label();
             this.tbxComment = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblReceiptNumber = new System.Windows.Forms.Label();
+            this.lblDiscountCard = new System.Windows.Forms.Label();
             this.cbxDiscountCards = new System.Windows.Forms.ComboBox();
             this.lblPositions = new System.Windows.Forms.Label();
             this.lblReceiptSum = new System.Windows.Forms.Label();
@@ -110,6 +111,7 @@ namespace vBudgetForm
             this.cbxVendors.Name = "cbxVendors";
             this.cbxVendors.Size = new System.Drawing.Size(360, 21);
             this.cbxVendors.TabIndex = 16;
+            this.cbxVendors.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cbxVendors_KeyUp);
             this.cbxVendors.TextChanged += new System.EventHandler(this.cbxVendors_TextChanged);
             // 
             // btnNewVendor
@@ -164,6 +166,7 @@ namespace vBudgetForm
             // 
             // scContent.Panel1
             // 
+            this.scContent.Panel1.Controls.Add(this.lblSearch);
             this.scContent.Panel1.Controls.Add(this.tbxSearchProduct);
             this.scContent.Panel1.Controls.Add(this.btnNewCategory);
             this.scContent.Panel1.Controls.Add(this.btnAddProduct);
@@ -178,11 +181,20 @@ namespace vBudgetForm
             this.scContent.TabIndex = 10;
             this.scContent.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scContent_SplitterMoved);
             // 
+            // lblSearch
+            // 
+            this.lblSearch.AutoSize = true;
+            this.lblSearch.Location = new System.Drawing.Point(3, 33);
+            this.lblSearch.Name = "lblSearch";
+            this.lblSearch.Size = new System.Drawing.Size(42, 13);
+            this.lblSearch.TabIndex = 6;
+            this.lblSearch.Text = "Поиск:";
+            // 
             // tbxSearchProduct
             // 
-            this.tbxSearchProduct.Location = new System.Drawing.Point(29, 30);
+            this.tbxSearchProduct.Location = new System.Drawing.Point(43, 30);
             this.tbxSearchProduct.Name = "tbxSearchProduct";
-            this.tbxSearchProduct.Size = new System.Drawing.Size(216, 20);
+            this.tbxSearchProduct.Size = new System.Drawing.Size(202, 20);
             this.tbxSearchProduct.TabIndex = 5;
             this.tbxSearchProduct.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxSearchProduct_KeyUp);
             // 
@@ -309,23 +321,23 @@ namespace vBudgetForm
             this.tbxComment.Size = new System.Drawing.Size(395, 60);
             this.tbxComment.TabIndex = 13;
             // 
-            // label1
+            // lblReceiptNumber
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 63);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 13);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Номер чека:";
+            this.lblReceiptNumber.AutoSize = true;
+            this.lblReceiptNumber.Location = new System.Drawing.Point(13, 63);
+            this.lblReceiptNumber.Name = "lblReceiptNumber";
+            this.lblReceiptNumber.Size = new System.Drawing.Size(70, 13);
+            this.lblReceiptNumber.TabIndex = 14;
+            this.lblReceiptNumber.Text = "Номер чека:";
             // 
-            // label2
+            // lblDiscountCard
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 87);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(104, 13);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "Дисконтная карта:";
+            this.lblDiscountCard.AutoSize = true;
+            this.lblDiscountCard.Location = new System.Drawing.Point(13, 87);
+            this.lblDiscountCard.Name = "lblDiscountCard";
+            this.lblDiscountCard.Size = new System.Drawing.Size(104, 13);
+            this.lblDiscountCard.TabIndex = 16;
+            this.lblDiscountCard.Text = "Дисконтная карта:";
             // 
             // cbxDiscountCards
             // 
@@ -375,9 +387,9 @@ namespace vBudgetForm
             this.Controls.Add(this.btnAddDiscountCard);
             this.Controls.Add(this.lblReceiptSum);
             this.Controls.Add(this.lblPositions);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblDiscountCard);
             this.Controls.Add(this.cbxDiscountCards);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblReceiptNumber);
             this.Controls.Add(this.tbxComment);
             this.Controls.Add(this.lblComment);
             this.Controls.Add(this.btnCancel);
@@ -430,8 +442,8 @@ namespace vBudgetForm
         private System.Windows.Forms.ToolStripMenuItem tsmiEditProduct;
         private System.Windows.Forms.Label lblComment;
         private System.Windows.Forms.TextBox tbxComment;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblReceiptNumber;
+        private System.Windows.Forms.Label lblDiscountCard;
         private System.Windows.Forms.ComboBox cbxDiscountCards;
         private System.Windows.Forms.Label lblPositions;
         private System.Windows.Forms.Label lblReceiptSum;
@@ -440,5 +452,6 @@ namespace vBudgetForm
         private System.Windows.Forms.Button btnAddDiscountCard;
         private System.Windows.Forms.TextBox tbxSearchProduct;
         private System.Windows.Forms.ToolStripMenuItem tsmiChangeProduct;
+        private System.Windows.Forms.Label lblSearch;
     }
 }

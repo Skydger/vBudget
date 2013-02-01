@@ -452,13 +452,18 @@ namespace vBudgetForm
             this.tsmiByLastThreeMonths.Checked = false;
             this.tsmiOnPeriod.Checked = true;
             VisualControls.PeriodPicker period = new VisualControls.PeriodPicker();
+            if (this.dates != null){
+                period.StartDate = this.dates[0];
+                period.EndtDate = dates[1];
+            }else{
+                this.dates = new DateTime[2];
+            }
             if (period.ShowDialog() == DialogResult.OK){
                 Purchases.Criteria crt = new Purchases.Criteria();
                 crt.DateFilter = Purchases.DateFilterType.Between;
-                DateTime[] dates = new DateTime[2];
                 dates[0] = period.StartDate;
                 dates[1] = period.EndtDate;
-                crt.Dates = dates;
+                crt.Dates = this.dates;
                 this.ByDateFilter(crt);
             }
             return;

@@ -433,6 +433,8 @@ namespace vBudgetForm
                     prod["Price"] = pf.Price;
                     prod["Discount"] = pf.Discount;
                     prod["Units"] = pf.Units;
+
+                    this.RecalculateReceipt();
                 }
             }
             return;
@@ -503,53 +505,64 @@ namespace vBudgetForm
         }
 
         private void cbxVendors_KeyUp(object sender, KeyEventArgs e){
+            string vendor_name = this.cbxVendors.Text;
+            try{
+                if ((e.KeyCode != Keys.Up) && (e.KeyCode != Keys.Down) && (e.KeyCode != Keys.Alt) &&
+                    (e.KeyCode != Keys.Home) && (e.KeyCode != Keys.End) && (e.KeyCode != Keys.Shift) &&
+                    (e.KeyCode != Keys.Left) && (e.KeyCode != Keys.Right)
+                    )
+                {
+                    if (!this.block && !this.cbxVendors.Items.Contains(vendor_name))
+                    {
+                        this.cbxVendors.SuspendLayout();
+                        System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(vendor_name);
+                        cmd.Connection = this.cConnection;
 
+                        System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
+                        this.vendors = new System.Data.DataTable("Vendors");
+                        sda.Fill(this.vendors);
+
+                        this.cbxVendors.DataSource = this.vendors;
+                        this.cbxVendors.DisplayMember = "VendorName";
+                        //this.cbxVendors.DisplayMember = "VendorNameAddress";
+                        this.cbxVendors.ValueMember = "VendorID";
+
+                        this.block = true;
+                        this.cbxVendors.SelectedIndex = -1;
+                        this.cbxVendors.Text = vendor_name;
+                        this.cbxVendors.Select(this.cbxVendors.Text.Length, 0);
+                        this.block = false;
+
+                        this.cbxVendors.DroppedDown = true;
+                        this.cbxVendors.ResumeLayout(false);
+                    }
+                }else{
+                    e.Handled = true;
+                }
+            }catch (System.Exception ex){
+                MessageBox.Show(ex.Message);
+            }
+            return;
         }
 
         private void cbxVendors_TextChanged(object sender, EventArgs e){
-            string vendor_name = this.cbxVendors.Text;
-            try{
-                if ( !this.block && !this.cbxVendors.Items.Contains(vendor_name) ){
-                    this.cbxVendors.SuspendLayout();
-                    System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(vendor_name);
-                    cmd.Connection = this.cConnection;
-
-                    System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
-                    this.vendors = new System.Data.DataTable("Vendors");
-                    sda.Fill(this.vendors);
-
-                    this.cbxVendors.DataSource = this.vendors;
-                    this.cbxVendors.DisplayMember = "VendorName";
-                    //this.cbxVendors.DisplayMember = "VendorNameAddress";
-                    this.cbxVendors.ValueMember = "VendorID";
-
-                    this.block = true;
-                    this.cbxVendors.SelectedIndex = -1;
-                    this.cbxVendors.Text = vendor_name;
-                    this.cbxVendors.Select(this.cbxVendors.Text.Length, 0);
-                    this.block = false;
-
-                    this.cbxVendors.DroppedDown = true;
-                    this.cbxVendors.ResumeLayout(false);
-                }
-            }catch(System.Exception ex){
-                MessageBox.Show(ex.Message);
-
-            }
+            
             return;
         }
 
         private void tbxSearchProduct_KeyUp(object sender, KeyEventArgs e){
             try{
-                if (this.tbxSearchProduct.Text.Length > 0){
-                    System.Data.SqlClient.SqlCommand command = Producer.Product.Select(this.tbxSearchProduct.Text);
-                    command.Connection = this.cConnection;
-                    System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
-                    this.products = new DataTable("Products");
-                    sda.Fill(this.products);
-                    this.lbxProducts.DataSource = this.products;
-                    this.lbxProducts.ValueMember = "ProductID";
-                    this.lbxProducts.DisplayMember = "ProductName";
+                if ( ( e.KeyCode != Keys.Up ) && ( e.KeyCode != Keys.Down ) ){
+                    if (this.tbxSearchProduct.Text.Length > 0){
+                        System.Data.SqlClient.SqlCommand command = Producer.Product.Select(this.tbxSearchProduct.Text);
+                        command.Connection = this.cConnection;
+                        System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
+                        this.products = new DataTable("Products");
+                        sda.Fill(this.products);
+                        this.lbxProducts.DataSource = this.products;
+                        this.lbxProducts.ValueMember = "ProductID";
+                        this.lbxProducts.DisplayMember = "ProductName";
+                    }
                 }
             }catch(System.Exception ex ){
                 MessageBox.Show(ex.Message);
