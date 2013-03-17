@@ -34,14 +34,14 @@ namespace vBudgetForm
             this.zgcStatistics = new ZedGraph.ZedGraphControl();
             this.scStatisticsContainer = new System.Windows.Forms.SplitContainer();
             this.lbxObjects = new System.Windows.Forms.ListBox();
+            this.cmsStatisticsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiStatisticsType = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSumByDates = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAvgByDates = new System.Windows.Forms.ToolStripMenuItem();
             this.tsStatisticsTools = new System.Windows.Forms.ToolStrip();
             this.tssbtnStatisticsType = new System.Windows.Forms.ToolStripSplitButton();
             this.tsmiSummaryByDates = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiByWeeks = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiByMonths = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiByVendors = new System.Windows.Forms.ToolStripMenuItem();
             this.scStatisticsContainer.Panel1.SuspendLayout();
             this.scStatisticsContainer.Panel2.SuspendLayout();
             this.scStatisticsContainer.SuspendLayout();
@@ -81,13 +81,20 @@ namespace vBudgetForm
             // 
             // lbxObjects
             // 
+            this.lbxObjects.ContextMenuStrip = this.cmsStatisticsMenu;
             this.lbxObjects.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbxObjects.FormattingEnabled = true;
             this.lbxObjects.Location = new System.Drawing.Point(0, 0);
             this.lbxObjects.Name = "lbxObjects";
+            this.lbxObjects.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbxObjects.Size = new System.Drawing.Size(258, 407);
             this.lbxObjects.TabIndex = 0;
             this.lbxObjects.SelectedIndexChanged += new System.EventHandler(this.lbxObjects_SelectedIndexChanged);
+            // 
+            // cmsStatisticsMenu
+            // 
+            this.cmsStatisticsMenu.Name = "cmsStatisticsMenu";
+            this.cmsStatisticsMenu.Size = new System.Drawing.Size(61, 4);
             // 
             // tsmiStatisticsType
             // 
@@ -124,7 +131,8 @@ namespace vBudgetForm
             // 
             this.tssbtnStatisticsType.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tssbtnStatisticsType.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiSummaryByDates});
+            this.tsmiSummaryByDates,
+            this.tsmiByVendors});
             this.tssbtnStatisticsType.Image = ((System.Drawing.Image)(resources.GetObject("tssbtnStatisticsType.Image")));
             this.tssbtnStatisticsType.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tssbtnStatisticsType.Name = "tssbtnStatisticsType";
@@ -133,25 +141,17 @@ namespace vBudgetForm
             // 
             // tsmiSummaryByDates
             // 
-            this.tsmiSummaryByDates.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiByWeeks,
-            this.tsmiByMonths});
             this.tsmiSummaryByDates.Name = "tsmiSummaryByDates";
-            this.tsmiSummaryByDates.Size = new System.Drawing.Size(185, 22);
+            this.tsmiSummaryByDates.Size = new System.Drawing.Size(214, 22);
             this.tsmiSummaryByDates.Text = "Суммарно по датам";
+            this.tsmiSummaryByDates.Click += new System.EventHandler(this.tsmiSummaryByDates_Click);
             // 
-            // tsmiByWeeks
+            // tsmiByVendors
             // 
-            this.tsmiByWeeks.Name = "tsmiByWeeks";
-            this.tsmiByWeeks.Size = new System.Drawing.Size(142, 22);
-            this.tsmiByWeeks.Text = "По неделям";
-            // 
-            // tsmiByMonths
-            // 
-            this.tsmiByMonths.Name = "tsmiByMonths";
-            this.tsmiByMonths.Size = new System.Drawing.Size(142, 22);
-            this.tsmiByMonths.Text = "По месяцам";
-            this.tsmiByMonths.Click += new System.EventHandler(this.tsmiByMonths_Click);
+            this.tsmiByVendors.Name = "tsmiByVendors";
+            this.tsmiByVendors.Size = new System.Drawing.Size(214, 22);
+            this.tsmiByVendors.Text = "Суммарно по продавцам";
+            this.tsmiByVendors.Click += new System.EventHandler(this.tsmiByVendors_Click);
             // 
             // StatisticsForm
             // 
@@ -185,7 +185,7 @@ namespace vBudgetForm
         private System.Windows.Forms.ToolStrip tsStatisticsTools;
         private System.Windows.Forms.ToolStripSplitButton tssbtnStatisticsType;
         private System.Windows.Forms.ToolStripMenuItem tsmiSummaryByDates;
-        private System.Windows.Forms.ToolStripMenuItem tsmiByWeeks;
-        private System.Windows.Forms.ToolStripMenuItem tsmiByMonths;
+        private System.Windows.Forms.ToolStripMenuItem tsmiByVendors;
+        private System.Windows.Forms.ContextMenuStrip cmsStatisticsMenu;
     }
 }

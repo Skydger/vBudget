@@ -1,0 +1,55 @@
+------ Rebuild All started: Project: Statistics, Configuration: Release Any CPU ------
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\Csc.exe /noconfig /nowarn:1701,1702 /errorreport:prompt /warn:4 /define:TRACE /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Xml.dll /debug:pdbonly /optimize+ /out:obj\Release\Statistics.dll /target:library Products.cs Properties\AssemblyInfo.cs Purchases.cs
+
+Compile complete -- 0 errors, 0 warnings
+Statistics -> L:\src\cs\Apps\vBudget\bin\Release\Statistics.dll
+------ Rebuild All started: Project: Effects, Configuration: Release Any CPU ------
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\Csc.exe /noconfig /nowarn:1701,1702 /errorreport:prompt /warn:4 /define:TRACE /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Windows.Forms.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Xml.dll /debug:pdbonly /optimize+ /out:obj\Release\Effects.dll /target:library Dates.cs ListViewColumnSorter.cs Properties\AssemblyInfo.cs
+
+Compile complete -- 0 errors, 0 warnings
+Effects -> L:\src\cs\Apps\vBudget\Effects\bin\Release\Effects.dll
+------ Rebuild All started: Project: Vault, Configuration: Release Any CPU ------
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\Csc.exe /noconfig /nowarn:1701,1702 /errorreport:prompt /warn:4 /define:TRACE /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Xml.dll /debug:pdbonly /optimize+ /out:obj\Release\Vault.dll /target:library Users.cs Properties\AssemblyInfo.cs
+
+Compile complete -- 0 errors, 0 warnings
+Vault -> L:\src\cs\Apps\vBudget\bin\Release\Vault.dll
+------ Rebuild All started: Project: Settings, Configuration: Release Any CPU ------
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\Csc.exe /noconfig /nowarn:1701,1702 /errorreport:prompt /warn:4 /define:TRACE /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Drawing.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Windows.Forms.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Xml.dll /debug:pdbonly /optimize+ /out:obj\Release\Settings.dll /resource:obj\Release\Settings.DataBaseSettingsForm.resources /target:library DataBaseSettingsForm.cs DataBaseSettingsForm.designer.cs Properties\AssemblyInfo.cs
+
+Compile complete -- 0 errors, 0 warnings
+Settings -> L:\src\cs\Apps\vBudget\bin\Release\Settings.dll
+------ Rebuild All started: Project: Producer, Configuration: Release Any CPU ------
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\Csc.exe /noconfig /nowarn:1701,1702 /errorreport:prompt /warn:4 /define:TRACE /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Xml.dll /debug:pdbonly /optimize+ /out:obj\Release\Producer.dll /target:library Categories.cs Commands.cs Maker.cs Product.cs Properties\AssemblyInfo.cs ProductTypes.cs
+
+Compile complete -- 0 errors, 0 warnings
+Producer -> L:\src\cs\Apps\vBudget\bin\Release\Producer.dll
+------ Rebuild All started: Project: Purchases, Configuration: Release Any CPU ------
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\Csc.exe /noconfig /nowarn:1701,1702 /errorreport:prompt /warn:4 /define:TRACE /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Xml.dll /debug:pdbonly /optimize+ /out:obj\Release\Purchases.dll /target:library Commands.cs Criteria.cs DiscountCard.cs Receipt.cs ReceiptContent.cs Vendor.cs Properties\AssemblyInfo.cs
+L:\src\cs\Apps\vBudget\Purchases\Commands.cs(34,20): warning CS0219: The variable 'joins' is assigned but its value is never used
+L:\src\cs\Apps\vBudget\Purchases\Receipt.cs(8,21): warning CS0169: The private field 'Purchases.Receipt.iReceiptId' is never used
+L:\src\cs\Apps\vBudget\Purchases\Receipt.cs(9,24): warning CS0169: The private field 'Purchases.Receipt.sNumber' is never used
+L:\src\cs\Apps\vBudget\Purchases\Receipt.cs(10,26): warning CS0169: The private field 'Purchases.Receipt.dtPayed' is never used
+L:\src\cs\Apps\vBudget\Purchases\Receipt.cs(11,25): warning CS0169: The private field 'Purchases.Receipt.dPrice' is never used
+L:\src\cs\Apps\vBudget\Purchases\Receipt.cs(12,25): warning CS0169: The private field 'Purchases.Receipt.dDiscount' is never used
+L:\src\cs\Apps\vBudget\Purchases\Receipt.cs(13,21): warning CS0169: The private field 'Purchases.Receipt.iDiscountCard' is never used
+L:\src\cs\Apps\vBudget\Purchases\Receipt.cs(14,24): warning CS0169: The private field 'Purchases.Receipt.sComment' is never used
+L:\src\cs\Apps\vBudget\Purchases\Receipt.cs(15,21): warning CS0169: The private field 'Purchases.Receipt.iVendor' is never used
+L:\src\cs\Apps\vBudget\Purchases\Receipt.cs(16,23): warning CS0169: The private field 'Purchases.Receipt.sDeleted' is never used
+
+Compile complete -- 0 errors, 10 warnings
+Purchases -> L:\src\cs\Apps\vBudget\bin\Release\Purchases.dll
+------ Rebuild All started: Project: VisualControls, Configuration: Release Any CPU ------
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\Csc.exe /noconfig /nowarn:1701,1702 /errorreport:prompt /warn:4 /define:TRACE /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Drawing.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Windows.Forms.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Xml.dll /debug:pdbonly /optimize+ /out:obj\Release\Controls.dll /resource:obj\Release\VisualControls.ElementsList.resources /resource:obj\Release\VisualControls.PeriodPicker.resources /target:library ElementsList.cs ElementsList.Designer.cs ListOptions.cs PeriodPicker.cs PeriodPicker.Designer.cs Properties\Settings.Designer.cs VisualControl.cs Properties\AssemblyInfo.cs
+L:\src\cs\Apps\vBudget\VisualControls\ElementsList.cs(14,24): warning CS0169: The private field 'VisualControls.ElementsList.sValueColumn' is never used
+
+Compile complete -- 0 errors, 1 warnings
+VisualControls -> L:\src\cs\Apps\vBudget\bin\Release\Controls.dll
+------ Rebuild All started: Project: vBudgetForm, Configuration: Release Any CPU ------
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\Microsoft.Common.targets : warning MSB3245: Could not resolve this reference. Could not locate the assembly "ZedGraph". Check to make sure the assembly exists on disk. If this reference is required by your code, you may get compilation errors.
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\Csc.exe /noconfig /nowarn:1701,1702 /errorreport:prompt /warn:4 /define:TRACE /reference:L:\src\cs\Apps\vBudget\bin\Release\Controls.dll /reference:L:\src\cs\Apps\vBudget\Effects\bin\Release\Effects.dll /reference:L:\src\cs\Apps\vBudget\bin\Release\Producer.dll /reference:L:\src\cs\Apps\vBudget\bin\Release\Purchases.dll /reference:L:\src\cs\Apps\vBudget\bin\Release\Settings.dll /reference:L:\src\cs\Apps\vBudget\bin\Release\Statistics.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Data.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Deployment.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Drawing.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Windows.Forms.dll /reference:C:\Windows\Microsoft.NET\Framework\v2.0.50727\System.Xml.dll /reference:L:\src\cs\Apps\vBudget\bin\Release\Vault.dll /debug:pdbonly /optimize+ /out:obj\Release\vBudgetForm.exe /resource:obj\Release\vBudgetForm.AddProductForm.resources /resource:obj\Release\vBudgetForm.ChangePositionForm.resources /resource:obj\Release\vBudgetForm.DiscountCardsListForm.resources /resource:obj\Release\vBudgetForm.EditCategoryForm.resources /resource:obj\Release\vBudgetForm.EditDiscountCardForm.resources /resource:obj\Release\vBudgetForm.EditMakerForm.resources /resource:obj\Release\vBudgetForm.MakersListForm.resources /resource:obj\Release\vBudgetForm.PositionDetailsForm.resources /resource:obj\Release\vBudgetForm.ProductsListForm.resources /resource:obj\Release\vBudgetForm.ProductTypeForm.resources /resource:obj\Release\vBudgetForm.Properties.Resources.resources /resource:obj\Release\vBudgetForm.ReceiptForm.resources /resource:obj\Release\vBudgetForm.StatisticsForm.resources /resource:obj\Release\vBudgetForm.vBudgetForm.resources /resource:obj\Release\vBudgetForm.VendorForm.resources /resource:obj\Release\vBudgetForm.VendorsListForm.resources /target:winexe AddProductForm.cs AddProductForm.Designer.cs ChangePositionForm.cs ChangePositionForm.Designer.cs DiscountCardsListForm.cs DiscountCardsListForm.Designer.cs EditCategoryForm.cs EditCategoryForm.Designer.cs EditDiscountCardForm.cs EditDiscountCardForm.Designer.cs EditMakerForm.cs EditMakerForm.Designer.cs MakersListForm.cs MakersListForm.Designer.cs PositionDetailsForm.cs PositionDetailsForm.Designer.cs ProductsListForm.cs ProductsListForm.Designer.cs ProductTypeForm.cs ProductTypeForm.Designer.cs Program.cs Properties\AssemblyInfo.cs Properties\Resources.Designer.cs Properties\Settings.Designer.cs ReceiptForm.cs ReceiptForm.Designer.cs StatisticsForm.cs StatisticsForm.Designer.cs vBudgetForm.cs vBudgetForm.Designer.cs VendorForm.cs VendorForm.Designer.cs VendorsListForm.cs VendorsListForm.Designer.cs
+L:\src\cs\Apps\vBudget\vBudgetForm\StatisticsForm.Designer.cs(179,17): error CS0246: The type or namespace name 'ZedGraph' could not be found (are you missing a using directive or an assembly reference?)
+
+Compile complete -- 1 errors, 0 warnings
+Done building project "vBudgetForm.csproj" -- FAILED.
+========== Rebuild All: 7 succeeded, 1 failed, 0 skipped ==========
+
