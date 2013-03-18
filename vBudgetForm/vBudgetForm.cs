@@ -178,14 +178,19 @@ namespace vBudgetForm
         }
 
         private void tsmiNewReceipt_Click(object sender, EventArgs e){
-            System.Data.DataRow new_row = this.receipts.NewRow();
-            new_row["Created"] = System.DateTime.Now;
-            new_row["Updated"] = System.DateTime.Now;
-            ReceiptForm rptf = new ReceiptForm(this.cConnection, ref new_row, true );
-            if (rptf.ShowDialog() == DialogResult.OK){
-                this.receipts.Rows.Add(new_row);
-                this.AddNewRow(this.receipts.Rows.Count - 1, new_row);
-                this.CalculateTotal(false);
+            try{
+                System.Data.DataRow new_row = this.receipts.NewRow();
+                new_row["Created"] = System.DateTime.Now;
+                new_row["Updated"] = System.DateTime.Now;
+                ReceiptForm rptf = new ReceiptForm(this.cConnection, ref new_row, true);
+                if (rptf.ShowDialog() == DialogResult.OK)
+                {
+                    this.receipts.Rows.Add(new_row);
+                    this.AddNewRow(this.receipts.Rows.Count - 1, new_row);
+                    this.CalculateTotal(false);
+                }
+            }catch(System.Exception ex ){
+                MessageBox.Show("Ошибка при создании нового чека:\n" + ex.Message);
             }
         }
 

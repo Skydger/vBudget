@@ -103,6 +103,58 @@ namespace vBudgetForm
             }
             return;
         }
+        private void ByWeeks(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Data.SqlClient.SqlCommand mnth = Statistics.Purchases.ByWeeks();
+                mnth.Connection = this.connection;
+                System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(mnth);
+                System.Data.DataTable st = new System.Data.DataTable("Summary");
+                sda.Fill(st);
+
+                ZedGraph.GraphPane pane = this.zgcStatistics.GraphPane;
+                pane.YAxis.Title.Text = "Сумма, р";
+                ZedGraph.PointPairList list = new ZedGraph.PointPairList();
+                foreach (System.Data.DataRow row in st.Rows)
+                {
+                    int year = 1970;
+                    int week = 1;
+                    int day = 1;
+                    if (!System.Convert.IsDBNull(row["Year"]) &&
+                       !System.Convert.IsDBNull(row["Week"]))
+                    {
+                        year = (int)row["Year"];
+                        day = (int)row["SumDay"];
+                        week = (int)row["Week"];
+                        int month = week / 4;
+                        if (month > 12) month = 12;
+                        if (month == 0) month = 1;
+                        System.DateTime dt = new DateTime(year, month, day);
+                        ZedGraph.XDate xDate = new ZedGraph.XDate(dt);
+                        decimal val = (decimal)row["Summary"];
+                        list.Add(xDate.XLDate, (double)val);
+                    }
+                }
+                ZedGraph.BarItem curve = pane.AddBar("", list, Color.Blue);
+
+                // Для оси X установим календарный тип
+                pane.XAxis.Type = ZedGraph.AxisType.Date;
+
+                // pretty it up a little
+                pane.Chart.Fill = new ZedGraph.Fill(Color.White, Color.LightGoldenrodYellow, 45.0f);
+                pane.Fill = new ZedGraph.Fill(Color.White, Color.FromArgb(220, 220, 255), 45.0f);
+
+                // Tell ZedGraph to calculate the axis ranges
+                this.zgcStatistics.AxisChange();
+                this.zgcStatistics.Invalidate();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return;
+        }
 
         private void ByVendorsPerMonth(object sender, EventArgs e)
         {
@@ -286,6 +338,7 @@ namespace vBudgetForm
             sti.Name = "tsmiByWeeks";
             sti.Size = new System.Drawing.Size(152, 22);
             sti.Text = "По неделям";
+            sti.Click += new EventHandler(ByWeeks);
             this.cmsStatisticsMenu.Items.Add(sti);
 
             //this.tsmiSummaryByDates.DropDownItems.Clear();
