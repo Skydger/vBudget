@@ -25,8 +25,11 @@ namespace Producer
 
             }
  */
-            string sQuery = "   SELECT MakerId, Name, MakerCategory, Vendor\n" +
-                            "     FROM " + Maker.Table + "\n" +
+            string sQuery = "SELECT m.MakerId, m.Name, m.MakerCategory, m.Vendor,\n" +
+                            "       c.CategoryName\n" +
+                            "  FROM " + Maker.Table + " AS m\n" +
+                            "  JOIN [Producer].[Categories] AS c\n" +
+                            "    ON m.MakerCategory = c.CategoryID\n" +
                             sWhere +
                             "ORDER BY Name";
             cmd.CommandTimeout = 0;

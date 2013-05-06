@@ -30,7 +30,8 @@ namespace vBudgetForm
             this.cbxCategories.DataSource = this.categories;
             this.cbxCategories.DisplayMember = "CategoryName";
             this.cbxCategories.ValueMember = "CategoryID";
-            this.cbxCategories.SelectedValue = this.current_category;
+            if( this.current_category != null )
+                this.cbxCategories.SelectedValue = this.current_category;
 
             System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(-1);
             cmd.Connection = this.cConnection;
@@ -42,6 +43,11 @@ namespace vBudgetForm
             this.cbxVendors.DisplayMember = "VendorName";
             this.cbxVendors.ValueMember = "VendorID";
             //this.cbxCategories.SelectedValue = this.current_category;
+            if (this.maker != null)
+            {
+                this.tbxMakerName.Text = (string)this.maker["Name"];
+                this.is_new = ( (int)this.maker["MakerId"] < 0 );
+            }
 
         }
 

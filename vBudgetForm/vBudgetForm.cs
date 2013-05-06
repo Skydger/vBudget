@@ -654,6 +654,22 @@ namespace vBudgetForm
             form.Show();
         }
 
+        private void tsmiMakers_Click(object sender, EventArgs e)
+        {
+            MakersListForm makers = new MakersListForm(this.cConnection);
+            if (makers.ShowDialog() == DialogResult.OK)
+            {
+            }
+        }
+
+        private void tsmiProductPrices_Click(object sender, EventArgs e)
+        {
+            PricesForm pf = new PricesForm(this.cConnection);
+            if (pf.ShowDialog() == DialogResult.OK)
+            {
+            }
+        }
+
 
     }
 }

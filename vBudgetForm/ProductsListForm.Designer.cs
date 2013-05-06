@@ -152,7 +152,7 @@ namespace vBudgetForm
             this.tsmiEditType,
             this.tsmiDeleteCategory});
             this.cmsProductTypesMenu.Name = "cmsProductTypesMenu";
-            this.cmsProductTypesMenu.Size = new System.Drawing.Size(155, 92);
+            this.cmsProductTypesMenu.Size = new System.Drawing.Size(155, 70);
             this.cmsProductTypesMenu.Opening += new System.ComponentModel.CancelEventHandler(this.cmsProductTypesMenu_Opening);
             // 
             // tsmiAddNewType
@@ -184,7 +184,7 @@ namespace vBudgetForm
             this.Controls.Add(this.scProductsContainer);
             this.Name = "ProductsListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ProductsListForm";
+            this.Text = "Продукты";
             this.Load += new System.EventHandler(this.ProductsListForm_Load);
             this.Resize += new System.EventHandler(this.ProductsListForm_Resize);
             this.cmsProductsMenu.ResumeLayout(false);

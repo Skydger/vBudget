@@ -70,6 +70,9 @@ namespace vBudgetForm
                 sda.Fill(st);
 
                 ZedGraph.GraphPane pane = this.zgcStatistics.GraphPane;
+                pane.CurveList.Clear();
+                pane.GraphObjList.Clear();
+
                 pane.YAxis.Title.Text = "Сумма, р";
                 ZedGraph.PointPairList list = new ZedGraph.PointPairList();
                 foreach (System.Data.DataRow row in st.Rows)
@@ -114,6 +117,9 @@ namespace vBudgetForm
                 sda.Fill(st);
 
                 ZedGraph.GraphPane pane = this.zgcStatistics.GraphPane;
+                pane.CurveList.Clear();
+                pane.GraphObjList.Clear();
+
                 pane.YAxis.Title.Text = "Сумма, р";
                 ZedGraph.PointPairList list = new ZedGraph.PointPairList();
                 foreach (System.Data.DataRow row in st.Rows)

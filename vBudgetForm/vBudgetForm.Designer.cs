@@ -59,6 +59,7 @@ namespace vBudgetForm
             this.tsmiActions = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiNewReceipt = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiPersons = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDataExchange = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDigests = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMakers = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProducts = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,7 +77,6 @@ namespace vBudgetForm
             this.cmsReceiptsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiDataExchange = new System.Windows.Forms.ToolStripMenuItem();
             this.msMainMenu.SuspendLayout();
             this.ssMainStatus.SuspendLayout();
             this.cmsReceiptsMenu.SuspendLayout();
@@ -138,7 +138,7 @@ namespace vBudgetForm
             this.tsmiTopPurchases,
             this.tsmiClearFilter});
             this.tsmiFilters.Name = "tsmiFilters";
-            this.tsmiFilters.Size = new System.Drawing.Size(152, 22);
+            this.tsmiFilters.Size = new System.Drawing.Size(140, 22);
             this.tsmiFilters.Text = "Фильтры";
             // 
             // tsmiByDatesSection
@@ -224,7 +224,7 @@ namespace vBudgetForm
             this.tsmiByMonths,
             this.tsmiByID});
             this.tsmiSort.Name = "tsmiSort";
-            this.tsmiSort.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSort.Size = new System.Drawing.Size(140, 22);
             this.tsmiSort.Text = "Сортировка";
             // 
             // tsmiByWeeks
@@ -254,7 +254,7 @@ namespace vBudgetForm
             this.tsmiReceipts,
             this.tsmiBalance});
             this.tsmiSections.Name = "tsmiSections";
-            this.tsmiSections.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSections.Size = new System.Drawing.Size(140, 22);
             this.tsmiSections.Text = "Разделы";
             // 
             // tsmiReceipts
@@ -293,6 +293,12 @@ namespace vBudgetForm
             this.tsmiPersons.Size = new System.Drawing.Size(166, 22);
             this.tsmiPersons.Text = "Пользователи";
             // 
+            // tsmiDataExchange
+            // 
+            this.tsmiDataExchange.Name = "tsmiDataExchange";
+            this.tsmiDataExchange.Size = new System.Drawing.Size(166, 22);
+            this.tsmiDataExchange.Text = "Обмен данными";
+            // 
             // tsmiDigests
             // 
             this.tsmiDigests.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -309,6 +315,7 @@ namespace vBudgetForm
             this.tsmiMakers.Name = "tsmiMakers";
             this.tsmiMakers.Size = new System.Drawing.Size(178, 22);
             this.tsmiMakers.Text = "Изготовители";
+            this.tsmiMakers.Click += new System.EventHandler(this.tsmiMakers_Click);
             // 
             // tsmiProducts
             // 
@@ -352,6 +359,7 @@ namespace vBudgetForm
             this.tsmiProductPrices.Name = "tsmiProductPrices";
             this.tsmiProductPrices.Size = new System.Drawing.Size(234, 22);
             this.tsmiProductPrices.Text = "Цены на продукты";
+            this.tsmiProductPrices.Click += new System.EventHandler(this.tsmiProductPrices_Click);
             // 
             // ssMainStatus
             // 
@@ -423,12 +431,6 @@ namespace vBudgetForm
             this.tsmiImport.Size = new System.Drawing.Size(128, 22);
             this.tsmiImport.Text = "Импорт...";
             this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
-            // 
-            // tsmiDataExchange
-            // 
-            this.tsmiDataExchange.Name = "tsmiDataExchange";
-            this.tsmiDataExchange.Size = new System.Drawing.Size(166, 22);
-            this.tsmiDataExchange.Text = "Обмен данными";
             // 
             // vBudgetForm
             // 
