@@ -5,11 +5,14 @@ using System.Text;
 namespace Producer
 {
     public class Product{
+
+        public enum OrderColumn { ProductID = 0, ProductName = 1, Category = 2, Type = 3, Maker = 4, Barcode = 5 }
         static private string sTable = "Producer.Products";
 
-        public static System.Data.SqlClient.SqlCommand Select(int category_id, int [] type_ids, int product_id){
+        public static System.Data.SqlClient.SqlCommand Select(int category_id, int[] type_ids, int product_id, List<OrderColumn> order_by)
+        {
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-            string sWhere = "";
+            string sWhere = "", sOrder = "";
             if( category_id > 0 ){
                 sWhere += (sWhere.Length > 0 ? "      AND " : "    WHERE ");
                 sWhere += "p.Category = " + category_id.ToString() + "\n";
@@ -31,10 +34,21 @@ namespace Producer
                 sWhere += (sWhere.Length > 0 ? "      AND " : "    WHERE ");
                 sWhere += "p.ProductID = " + product_id.ToString() + "\n";
             }
+            if ( (order_by != null) && (order_by.Count > 0) )
+            {
+                sOrder = "";
+                foreach (OrderColumn col in order_by)
+                {
+                    if (sOrder.Length == 0) sOrder = "    ORDER BY ";
+                    else sOrder += ", ";
+                    sOrder += string.Format("p.{0}", col.ToString());
+                }
+            }
+
             string sQuery = "   SELECT p.ProductID, p.ProductName, p.Category, p.Type, p.Maker, p.Barcode,\n" +
                             "          p.Comment, p.Created, p.Updated, p.Deleted,\n" +
                             "          m.Name AS MakerName, m.MakerCategory, m.Vendor,\n" +
-                            "          c.CategoryName,\n" +
+                            "          c.CategoryID, c.CategoryName,\n" +
                             "          pt.Name AS TypeName, pt.Comment\n" +
                             "     FROM " + sTable + " AS p\n" +
                             "LEFT JOIN Producer.Makers AS m\n" +
@@ -45,21 +59,32 @@ namespace Producer
                             "       ON pt.TypeId = p.Type AND\n" +
                             "          pt.Category = p.Category\n" +
                             sWhere +
-                            "ORDER BY p.ProductName";
+                            sOrder;
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
             return cmd;
         }
 
-        public static System.Data.SqlClient.SqlCommand Select( string name ){
+        public static System.Data.SqlClient.SqlCommand Select( string name, List<OrderColumn> order_by ){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-            string sWhere = "";
+            string sWhere = "", sOrder = "";
             if ( name.Length > 0){
                 sWhere += (sWhere.Length > 0 ? "      AND " : "    WHERE ");
                 sWhere += "p.ProductName like @ProductName OR p.Barcode like @ProductName\n";
-                cmd.Parameters.AddWithValue("@ProductName", "%" + name + "%" );
+                cmd.Parameters.AddWithValue("@ProductName", string.Format("%{0}%", name) );
             }
+            if ((order_by != null) && (order_by.Count > 0))
+            {
+                sOrder = "";
+                foreach (OrderColumn col in order_by)
+                {
+                    if (sOrder.Length == 0) sOrder = "\nORDER BY ";
+                    else sOrder += ", ";
+                    sOrder += string.Format("p.{0}", col.ToString());
+                }
+            }
+
             string sQuery = "   SELECT p.ProductID, p.ProductName, p.Category, p.Type, p.Maker, p.Barcode,\n" +
                             "          p.Comment, p.Created, p.Updated, p.Deleted,\n" +
                             "          m.Name AS MakerName, m.MakerCategory, m.Vendor,\n" +
@@ -74,7 +99,7 @@ namespace Producer
                             "       ON pt.TypeId = p.Type AND\n" +
                             "          pt.Category = p.Category\n" +
                             sWhere +
-                            "ORDER BY p.ProductName";
+                            sOrder;
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
@@ -216,5 +241,39 @@ namespace Producer
             }
             return last_id;
         }
+
+        public static bool Delete(System.Data.SqlClient.SqlConnection connection,
+                                  System.Data.SqlClient.SqlTransaction tran,
+                                  System.Data.DataRow row, out string message)
+        {
+            bool done = false;
+            message = "";
+            try
+            {
+                connection.Open();
+                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+                string sQuery = "DELETE FROM Producer.Products\n" +
+                                " WHERE ProductID = @ProductID";
+                cmd.Parameters.AddWithValue("@ProductID", row["ProductID"]);
+                cmd.Connection = connection;
+                if (tran != null) cmd.Transaction = tran;
+                cmd.CommandTimeout = 0;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = sQuery;
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                done = true;
+            }
+            catch (System.Exception ex)
+            {
+                message = ex.Message;
+            }
+            finally
+            {
+                if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+            }
+            return done;
+        }
+
     }
 }

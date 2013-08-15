@@ -22,5 +22,8 @@
   &lt;string&gt;BLYUDOV\HASPSRMDATABASE&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
+    <Setting Name="Language" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ru-RU</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

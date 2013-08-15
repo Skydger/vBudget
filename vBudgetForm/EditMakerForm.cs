@@ -43,7 +43,7 @@ namespace vBudgetForm
             this.cbxVendors.DisplayMember = "VendorName";
             this.cbxVendors.ValueMember = "VendorID";
             //this.cbxCategories.SelectedValue = this.current_category;
-            if (this.maker != null)
+            if ( (this.maker != null) && !System.Convert.IsDBNull( this.maker["Name"] ) )
             {
                 this.tbxMakerName.Text = (string)this.maker["Name"];
                 this.is_new = ( (int)this.maker["MakerId"] < 0 );

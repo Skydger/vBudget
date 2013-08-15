@@ -87,7 +87,7 @@ namespace vBudgetForm
             try
             {
                 this.block_refresh = true;
-                this.cbxUnits.SelectedIndex = 0;
+                //this.cbxUnits.SelectedIndex = 0;
                 System.Data.DataTable buyers = null;
                 System.Data.DataTable recvrs = null;
                 System.Data.SqlClient.SqlCommand cmd = Vault.Users.Select(-1);
@@ -142,6 +142,18 @@ namespace vBudgetForm
                 this.cbxPrices.DataSource = p_prices;
                 this.cbxPrices.DisplayMember = "PricaAndVendor";
                 this.cbxPrices.ValueMember = "Price";
+
+                // Getting list of units
+                System.Data.DataTable punits = new System.Data.DataTable("UnitsList"); ;
+                cmd = Statistics.Products.UnitsList();
+                cmd.Connection = this.cConnection;
+
+                pda = new System.Data.SqlClient.SqlDataAdapter(cmd);
+                pda.Fill(punits);
+                this.cbxUnits.DataSource = punits;
+                this.cbxUnits.DisplayMember = "Units";
+                this.cbxUnits.ValueMember = "Units";
+
                 this.block_refresh = false;
             }catch(System.Exception ex ){
                 MessageBox.Show(ex.Message);
@@ -176,7 +188,8 @@ namespace vBudgetForm
         {
             if( !this.block_refresh && !System.Convert.IsDBNull( this.cbxPrices.SelectedValue ) ){
                 this.nudPrice.Value = (decimal)this.cbxPrices.SelectedValue;
-                this.nudAmount.Value = 1;
+                if( this.nudAmount.Value == 0 )
+                    this.nudAmount.Value = 1;
             }
         }
     }

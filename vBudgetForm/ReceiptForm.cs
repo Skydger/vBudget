@@ -507,8 +507,8 @@ namespace vBudgetForm
         private void cbxVendors_KeyUp(object sender, KeyEventArgs e){
             string vendor_name = this.cbxVendors.Text;
             try{
-                if ((e.KeyCode != Keys.Up) && (e.KeyCode != Keys.Down) && (e.KeyCode != Keys.Alt) &&
-                    (e.KeyCode != Keys.Home) && (e.KeyCode != Keys.End) && (e.KeyCode != Keys.Shift) &&
+                if ((e.KeyCode != Keys.Up) && (e.KeyCode != Keys.Down) && !e.Shift && !e.Alt && !e.Control &&
+                    (e.KeyCode != Keys.Home) && (e.KeyCode != Keys.End) && (e.KeyCode != Keys.ShiftKey) &&
                     (e.KeyCode != Keys.Left) && (e.KeyCode != Keys.Right)
                     )
                 {
@@ -536,6 +536,8 @@ namespace vBudgetForm
                         this.cbxVendors.DroppedDown = true;
                         this.cbxVendors.ResumeLayout(false);
                     }
+                }else if( e.Shift ){ //&& !e.Alt && !e.Control
+
                 }else{
                     e.Handled = true;
                 }
@@ -554,7 +556,9 @@ namespace vBudgetForm
             try{
                 if ( ( e.KeyCode != Keys.Up ) && ( e.KeyCode != Keys.Down ) ){
                     if (this.tbxSearchProduct.Text.Length > 0){
-                        System.Data.SqlClient.SqlCommand command = Producer.Product.Select(this.tbxSearchProduct.Text);
+                        List<Producer.Product.OrderColumn> cols = new List<Producer.Product.OrderColumn>();
+                        cols.Add(Producer.Product.OrderColumn.ProductName);
+                        System.Data.SqlClient.SqlCommand command = Producer.Product.Select(this.tbxSearchProduct.Text, cols);
                         command.Connection = this.cConnection;
                         System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
                         this.products = new DataTable("Products");
@@ -580,6 +584,135 @@ namespace vBudgetForm
                     }
                 }
             }
+            return;
+        }
+
+        private void tsmiDeleteProduct_Click(object sender, EventArgs e)
+        {
+            if ((this.lbxProducts.SelectedItem != null) &&
+                 !System.Convert.IsDBNull(this.lbxProducts.SelectedValue))
+            {
+                System.Data.DataRow product = this.products.Rows[this.lbxProducts.SelectedIndex];
+                DeleteProductForm frm = new DeleteProductForm(this.cConnection, product);
+                DialogResult dr = frm.ShowDialog();
+                if ( dr == DialogResult.OK)
+                {
+                    MessageBox.Show("Продукт успешно удалён!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (dr == DialogResult.Ignore)
+                {
+                    MessageBox.Show("Продукт успешно удалён!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (dr == DialogResult.Cancel)
+                {
+                    MessageBox.Show("Удаление отменено пользователем", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (dr == DialogResult.Abort)
+                {
+                    MessageBox.Show("Удаление прервано из-за ошибки", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+            }
+        }
+
+        private void tsmiNewBySelected_Click(object sender, EventArgs e)
+        {
+            if ((this.lbxProducts.SelectedItem != null) &&
+                 !System.Convert.IsDBNull(this.lbxProducts.SelectedValue))
+            {
+                System.Data.DataRow product = this.products.Rows[this.lbxProducts.SelectedIndex];
+
+                System.Data.DataRow new_product = this.products.NewRow();
+                new_product["ProductName"] = product["ProductName"];
+                new_product["Category"] = product["Category"];
+                new_product["Type"] = product["Type"];
+                new_product["Maker"] = product["Maker"];
+                new_product["Barcode"] = product["Barcode"];
+
+                //if (!System.Convert.IsDBNull(this.cbxCategory.SelectedValue)) new_product["Category"] = this.cbxCategory.SelectedValue;
+
+                AddProductForm apf = new AddProductForm(this.cConnection, ref new_product);
+                if (apf.ShowDialog() == DialogResult.OK)
+                {
+                    //                this.AddNewRow(this.lvProducts.Items.Count, new_product);
+                    //                this.lbxProducts
+                    //                string message = "";
+                    this.products.Rows.Add(new_product);
+                }
+
+            }
+
+        }
+        protected void CheckReceiptExistance()
+        {
+            if (this.isNew && !this.block)
+            {
+                DateTime dt = this.dtpPeceiptDate.Value;
+                string num = this.tbxReceiptNumber.Text;
+                int ven_id = -1;
+                if ((this.cbxVendors.SelectedIndex >= 0) &&
+                     !System.Convert.IsDBNull(this.cbxVendors.SelectedValue))
+                {
+
+                    ven_id = (int)this.cbxVendors.SelectedValue;
+                }
+                bool ok = false;
+                string error = "";
+                System.Data.SqlClient.SqlCommand cmd = Purchases.Receipt.Exists(dt, num, ven_id, -1, out ok, out error);
+                if (ok)
+                {
+                    cmd.Connection = this.cConnection;
+                    System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
+                    System.Data.DataTable receipts = new System.Data.DataTable("Receipts");
+                    sda.Fill(receipts);
+                    if (receipts != null )                        
+                    {
+                        string msg = "";
+                        if (receipts.Rows.Count == 1)
+                        {
+                            string vnd = "<не указан>";
+                            if (!System.Convert.IsDBNull(receipts.Rows[0]["VendorName"]))
+                            {
+                                vnd = (string)receipts.Rows[0]["VendorName"];
+                            }
+                            msg = string.Format("Такой чек уже присутствует в базе данных под идентификатором {0}\n"+
+                                                "{1}\nСумма: {2}, оплачен {3}.\nПозиций: {4} ",
+                                                receipts.Rows[0]["ReceiptID"], vnd,
+                                                receipts.Rows[0]["Price"],
+                                                receipts.Rows[0]["Payed"], receipts.Rows[0]["Amount"]);
+                            MessageBox.Show(msg);
+                        }
+                        else if (receipts.Rows.Count > 1)
+                        {
+                            msg = string.Format("Похожие чеки уже присутствуют в базе данных (всего: {0})!", receipts.Rows.Count);
+                            MessageBox.Show(msg);
+                        }
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show(error, "Ошибка получения команды для проверки существования чека");
+                }
+            }
+            return;
+        }
+
+        private void dtpPeceiptDate_ValueChanged(object sender, EventArgs e)
+        {
+            this.CheckReceiptExistance();
+            return;
+        }
+
+        private void tbxReceiptNumber_TextChanged(object sender, EventArgs e)
+        {
+            this.CheckReceiptExistance();
+            return;
+        }
+
+        private void cbxVendors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.CheckReceiptExistance();
             return;
         }
 

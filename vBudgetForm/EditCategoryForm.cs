@@ -33,11 +33,23 @@ namespace vBudgetForm
             string error = "";
             this.product_category["CategoryName"] = this.tbxCategoryName.Text;
             if (this.isNewCategory){
-                noerrors = Producer.Categories.Insert(this.cConnection, this.product_category, out error);
+                bool exists = false;
+                if (Producer.Categories.Exists(this.cConnection, this.tbxCategoryName.Text, out exists, out error))
+                {
+                    if (!exists)
+                        noerrors = Producer.Categories.Insert(this.cConnection, this.product_category, out error);
+                    else
+                    {
+                        noerrors = false;
+                        error = "Категория с таким именем уже существует!";
+                    }
+                }else{
+                    noerrors = false;
+                }
             }else
                 noerrors = Producer.Categories.Update(this.cConnection, this.product_category, out error);
             if (!noerrors){
-                MessageBox.Show(error);
+                MessageBox.Show(error, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }else{
                 if (this.isNewCategory) this.product_category["CategoryID"] = Producer.Categories.LastId(this.cConnection, out error);
                 if (error.Length > 0)

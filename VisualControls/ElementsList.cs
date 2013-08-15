@@ -13,6 +13,8 @@ namespace VisualControls{
         private object [] chosen;
         private string sValueColumn;
         private ListOptions options;
+        private string sDisplayColumn;
+        private System.Data.DataTable source;
 
         public object [] Selected{
             get { return this.chosen; }
@@ -27,9 +29,10 @@ namespace VisualControls{
             this.clbElements.DisplayMember = display;
             this.clbElements.ValueMember = value;
             this.is_simple_array = false;
-//            foreach (string element in elements){
-//                this.clbElements.Items.Add(element);
-//            }
+
+            this.sDisplayColumn = display;
+            this.sValueColumn = value;
+            this.source = table;
         }
         public ElementsList( ListOptions in_options, string object_types, object[] elements){
             InitializeComponent();
@@ -42,7 +45,8 @@ namespace VisualControls{
         }
 
         private void ObjectListForm_Resize(object sender, EventArgs e){
-            this.clbElements.Size = new Size( this.Width - 32, this.Height - 78 );
+            this.clbElements.Size = new Size( this.Width - 40, this.Height - 100 );
+            this.tbxSearch.Size = new Size( this.Width - 88, this.tbxSearch.Height );
             this.btnAdd.Location = new Point(12, this.Height - 63);
             this.btnCancel.Location = new System.Drawing.Point(this.Width - 95, this.Height - 63);
         }
@@ -75,6 +79,37 @@ namespace VisualControls{
                     }
                 }
             }
+        }
+
+        private void tbxSearch_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (this.tbxSearch.Text.Length > 0)
+            {
+                DataTable dtb = null;
+                if (e.KeyCode == Keys.Back)
+                {
+                    dtb = this.source;
+                }
+                else
+                {
+                    dtb = (DataTable)this.clbElements.DataSource;
+                }
+                string filter = string.Format("{0} like '%{1}%'", this.sDisplayColumn, this.tbxSearch.Text);
+                DataRow[] dr = dtb.Select(filter);
+                DataTable dtb2 = dtb.Clone();
+                foreach (DataRow d in dr)
+                {
+                    dtb2.ImportRow(d);
+                }
+                this.clbElements.DataSource = dtb2;
+            }
+            else
+            {
+                this.clbElements.DataSource = this.source;
+            }
+            this.clbElements.DisplayMember = this.sDisplayColumn;
+            this.clbElements.ValueMember = this.sValueColumn;
+            return;
         }
     }
 }

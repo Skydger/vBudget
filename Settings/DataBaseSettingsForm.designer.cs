@@ -11,6 +11,7 @@ namespace Settings
         private string sUserLogin;
         private string sUserPassword;
         private string sDefaultDataBase;
+        private string sDefaultLanguage;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -46,143 +47,156 @@ namespace Settings
             this.lblServer = new System.Windows.Forms.Label();
             this.cbIntegratedSecurity = new System.Windows.Forms.CheckBox();
             this.lblAuthSettings = new System.Windows.Forms.Label();
+            this.tcSettingsControl = new System.Windows.Forms.TabControl();
+            this.tpDbSettings = new System.Windows.Forms.TabPage();
+            this.btnBrowse = new System.Windows.Forms.Button();
+            this.tpInterfaceSettings = new System.Windows.Forms.TabPage();
+            this.cbxLanguage = new System.Windows.Forms.ComboBox();
+            this.lblLanguage = new System.Windows.Forms.Label();
+            this.tcSettingsControl.SuspendLayout();
+            this.tpDbSettings.SuspendLayout();
+            this.tpInterfaceSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(168, 163);
+            resources.ApplyResources(this.btnOk, "btnOk");
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(75, 23);
-            this.btnOk.TabIndex = 3;
-            this.btnOk.Text = "Применить";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(269, 163);
+            resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 4;
-            this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // cbDataBases
             // 
             this.cbDataBases.FormattingEnabled = true;
-            this.cbDataBases.Location = new System.Drawing.Point(168, 136);
+            resources.ApplyResources(this.cbDataBases, "cbDataBases");
             this.cbDataBases.Name = "cbDataBases";
-            this.cbDataBases.Size = new System.Drawing.Size(176, 21);
-            this.cbDataBases.TabIndex = 16;
             // 
             // lblDataBase
             // 
-            this.lblDataBase.AutoSize = true;
-            this.lblDataBase.Location = new System.Drawing.Point(16, 139);
+            resources.ApplyResources(this.lblDataBase, "lblDataBase");
             this.lblDataBase.Name = "lblDataBase";
-            this.lblDataBase.Size = new System.Drawing.Size(146, 13);
-            this.lblDataBase.TabIndex = 15;
-            this.lblDataBase.Text = "База данных по умолчанию";
             // 
             // tbPassword
             // 
-            this.tbPassword.Location = new System.Drawing.Point(168, 110);
+            resources.ApplyResources(this.tbPassword, "tbPassword");
             this.tbPassword.Name = "tbPassword";
-            this.tbPassword.PasswordChar = '*';
-            this.tbPassword.Size = new System.Drawing.Size(176, 20);
-            this.tbPassword.TabIndex = 14;
             // 
             // lblPassword
             // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(16, 113);
+            resources.ApplyResources(this.lblPassword, "lblPassword");
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(48, 13);
-            this.lblPassword.TabIndex = 13;
-            this.lblPassword.Text = "Пароль:";
             // 
             // tbUser
             // 
-            this.tbUser.Location = new System.Drawing.Point(168, 84);
+            resources.ApplyResources(this.tbUser, "tbUser");
             this.tbUser.Name = "tbUser";
-            this.tbUser.Size = new System.Drawing.Size(176, 20);
-            this.tbUser.TabIndex = 12;
             // 
             // lblLogin
             // 
-            this.lblLogin.AutoSize = true;
-            this.lblLogin.Location = new System.Drawing.Point(16, 87);
+            resources.ApplyResources(this.lblLogin, "lblLogin");
             this.lblLogin.Name = "lblLogin";
-            this.lblLogin.Size = new System.Drawing.Size(83, 13);
-            this.lblLogin.TabIndex = 11;
-            this.lblLogin.Text = "Пользователь:";
             // 
             // cbServer
             // 
             this.cbServer.FormattingEnabled = true;
-            this.cbServer.Location = new System.Drawing.Point(88, 29);
+            resources.ApplyResources(this.cbServer, "cbServer");
             this.cbServer.Name = "cbServer";
-            this.cbServer.Size = new System.Drawing.Size(256, 21);
-            this.cbServer.TabIndex = 10;
             this.cbServer.Validated += new System.EventHandler(this.cbServer_Validated);
             // 
             // lblServer
             // 
-            this.lblServer.AutoSize = true;
-            this.lblServer.Location = new System.Drawing.Point(16, 32);
+            resources.ApplyResources(this.lblServer, "lblServer");
             this.lblServer.Name = "lblServer";
-            this.lblServer.Size = new System.Drawing.Size(66, 13);
-            this.lblServer.TabIndex = 9;
-            this.lblServer.Text = "Сервер БД:";
             // 
             // cbIntegratedSecurity
             // 
-            this.cbIntegratedSecurity.AutoSize = true;
-            this.cbIntegratedSecurity.Location = new System.Drawing.Point(19, 61);
+            resources.ApplyResources(this.cbIntegratedSecurity, "cbIntegratedSecurity");
             this.cbIntegratedSecurity.Name = "cbIntegratedSecurity";
-            this.cbIntegratedSecurity.Size = new System.Drawing.Size(305, 17);
-            this.cbIntegratedSecurity.TabIndex = 17;
-            this.cbIntegratedSecurity.Text = "Интегрированная авторизация (авторизация Windows)";
             this.cbIntegratedSecurity.UseVisualStyleBackColor = true;
             this.cbIntegratedSecurity.CheckedChanged += new System.EventHandler(this.cbIntegratedSecurity_CheckedChanged);
             // 
             // lblAuthSettings
             // 
-            this.lblAuthSettings.AutoSize = true;
-            this.lblAuthSettings.Location = new System.Drawing.Point(3, 9);
+            resources.ApplyResources(this.lblAuthSettings, "lblAuthSettings");
             this.lblAuthSettings.Name = "lblAuthSettings";
-            this.lblAuthSettings.Size = new System.Drawing.Size(131, 13);
-            this.lblAuthSettings.TabIndex = 18;
-            this.lblAuthSettings.Text = "Авторизация SQL Server";
+            // 
+            // tcSettingsControl
+            // 
+            this.tcSettingsControl.Controls.Add(this.tpDbSettings);
+            this.tcSettingsControl.Controls.Add(this.tpInterfaceSettings);
+            resources.ApplyResources(this.tcSettingsControl, "tcSettingsControl");
+            this.tcSettingsControl.Name = "tcSettingsControl";
+            this.tcSettingsControl.SelectedIndex = 0;
+            // 
+            // tpDbSettings
+            // 
+            this.tpDbSettings.Controls.Add(this.btnBrowse);
+            this.tpDbSettings.Controls.Add(this.lblAuthSettings);
+            this.tpDbSettings.Controls.Add(this.cbIntegratedSecurity);
+            this.tpDbSettings.Controls.Add(this.cbDataBases);
+            this.tpDbSettings.Controls.Add(this.lblServer);
+            this.tpDbSettings.Controls.Add(this.lblDataBase);
+            this.tpDbSettings.Controls.Add(this.cbServer);
+            this.tpDbSettings.Controls.Add(this.tbPassword);
+            this.tpDbSettings.Controls.Add(this.lblLogin);
+            this.tpDbSettings.Controls.Add(this.lblPassword);
+            this.tpDbSettings.Controls.Add(this.tbUser);
+            resources.ApplyResources(this.tpDbSettings, "tpDbSettings");
+            this.tpDbSettings.Name = "tpDbSettings";
+            this.tpDbSettings.UseVisualStyleBackColor = true;
+            // 
+            // btnBrowse
+            // 
+            resources.ApplyResources(this.btnBrowse, "btnBrowse");
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
+            // tpInterfaceSettings
+            // 
+            this.tpInterfaceSettings.Controls.Add(this.cbxLanguage);
+            this.tpInterfaceSettings.Controls.Add(this.lblLanguage);
+            resources.ApplyResources(this.tpInterfaceSettings, "tpInterfaceSettings");
+            this.tpInterfaceSettings.Name = "tpInterfaceSettings";
+            this.tpInterfaceSettings.UseVisualStyleBackColor = true;
+            // 
+            // cbxLanguage
+            // 
+            this.cbxLanguage.FormattingEnabled = true;
+            resources.ApplyResources(this.cbxLanguage, "cbxLanguage");
+            this.cbxLanguage.Name = "cbxLanguage";
+            this.cbxLanguage.SelectedIndexChanged += new System.EventHandler(this.cbxLanguage_SelectedIndexChanged);
+            // 
+            // lblLanguage
+            // 
+            resources.ApplyResources(this.lblLanguage, "lblLanguage");
+            this.lblLanguage.Name = "lblLanguage";
             // 
             // DataBaseSettingsForm
             // 
             this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(353, 194);
-            this.Controls.Add(this.lblAuthSettings);
-            this.Controls.Add(this.cbIntegratedSecurity);
-            this.Controls.Add(this.cbDataBases);
-            this.Controls.Add(this.lblDataBase);
-            this.Controls.Add(this.tbPassword);
-            this.Controls.Add(this.lblPassword);
-            this.Controls.Add(this.tbUser);
-            this.Controls.Add(this.lblLogin);
-            this.Controls.Add(this.cbServer);
-            this.Controls.Add(this.lblServer);
-            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.tcSettingsControl);
             this.Controls.Add(this.btnOk);
+            this.Controls.Add(this.btnCancel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DataBaseSettingsForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Настройки соединения с БД";
             this.Load += new System.EventHandler(this.DataBaseSettingsForm_Load);
+            this.tcSettingsControl.ResumeLayout(false);
+            this.tpDbSettings.ResumeLayout(false);
+            this.tpDbSettings.PerformLayout();
+            this.tpInterfaceSettings.ResumeLayout(false);
+            this.tpInterfaceSettings.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -200,5 +214,11 @@ namespace Settings
         private System.Windows.Forms.Label lblServer;
         private System.Windows.Forms.CheckBox cbIntegratedSecurity;
         private System.Windows.Forms.Label lblAuthSettings;
+        private System.Windows.Forms.TabControl tcSettingsControl;
+        private System.Windows.Forms.TabPage tpDbSettings;
+        private System.Windows.Forms.Button btnBrowse;
+        private System.Windows.Forms.TabPage tpInterfaceSettings;
+        private System.Windows.Forms.ComboBox cbxLanguage;
+        private System.Windows.Forms.Label lblLanguage;
     }
 }

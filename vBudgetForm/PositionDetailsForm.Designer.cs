@@ -123,7 +123,7 @@ namespace vBudgetForm
             // 
             // nudDiscount
             // 
-            this.nudDiscount.DecimalPlaces = 2;
+            this.nudDiscount.DecimalPlaces = 3;
             this.nudDiscount.Location = new System.Drawing.Point(420, 51);
             this.nudDiscount.Name = "nudDiscount";
             this.nudDiscount.Size = new System.Drawing.Size(83, 20);
@@ -194,9 +194,6 @@ namespace vBudgetForm
             // cbxUnits
             // 
             this.cbxUnits.FormattingEnabled = true;
-            this.cbxUnits.Items.AddRange(new object[] {
-            "øò",
-            "êã"});
             this.cbxUnits.Location = new System.Drawing.Point(420, 74);
             this.cbxUnits.Name = "cbxUnits";
             this.cbxUnits.Size = new System.Drawing.Size(104, 21);

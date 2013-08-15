@@ -9,7 +9,7 @@ namespace vBudgetForm
         private System.Data.SqlClient.SqlConnection connection = null;
         private System.Data.DataTable categories = null;
         private System.Data.DataTable products = null;
-        private System.Data.DataRow product = null;
+        //private System.Data.DataRow product = null;
         private int product_id = -1;
 
         /// <summary>

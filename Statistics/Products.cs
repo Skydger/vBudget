@@ -31,9 +31,24 @@ namespace Statistics
                             "    ON rc.ReceiptID = r.ReceiptID\n" +
                             "  JOIN Purchases.Vendors AS v\n" +
                             "    ON v.VendorID = r.Vendor\n" +
-                            " WHERE ProductID = @product";
+                            " WHERE ProductID = @product\n" +
+                            " ORDER BY rc.Price DESC";
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             cmd.Parameters.AddWithValue("@product", product);
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
+        /// <summary>
+        /// SqlCommand to gain units list used in receipts
+        /// </summary>
+        /// <returns></returns>
+        public static System.Data.SqlClient.SqlCommand UnitsList(){
+            string sQuery = "SELECT DISTINCT Units\n" +
+                            "  FROM Purchases.ReceiptContents\n" +
+                            " ORDER BY Units DESC\n";
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;

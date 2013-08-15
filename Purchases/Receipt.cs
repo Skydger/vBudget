@@ -5,15 +5,15 @@ using System.Text;
 namespace Purchases
 {
     public class Receipt{
-        private int iReceiptId;
-        private string sNumber;
-        private DateTime dtPayed;
-        private decimal dPrice;
-        private decimal dDiscount;
-        private int iDiscountCard;
-        private string sComment;
-        private int iVendor;
-        private short sDeleted;
+        //private int iReceiptId;
+        //private string sNumber;
+        //private DateTime dtPayed;
+        //private decimal dPrice;
+        //private decimal dDiscount;
+        //private int iDiscountCard;
+        //private string sComment;
+        //private int iVendor;
+        //private short sDeleted;
 
 
         // подготовка параметров для SqlCommand таблицы чека
@@ -77,6 +77,55 @@ namespace Purchases
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
 //            cmd = Receipt.AddParameters(cmd);
+            return cmd;
+        }
+        public static System.Data.SqlClient.SqlCommand DeleteCommand(System.Data.DataRow row)
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "DELETE FROM Purchases.Receipts\n" +
+                            " WHERE ReceiptID = @ReceiptID";
+            cmd.Parameters.AddWithValue("@ReceiptID", row["ReceiptID"]);
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
+
+        public static System.Data.SqlClient.SqlCommand Exists(DateTime payed, string number, int vendor, int d_card, out bool ok, out string error)
+        {
+            ok = true;
+            error = "";
+            System.Data.SqlClient.SqlCommand cmd = null;
+            try
+            {
+                cmd = new System.Data.SqlClient.SqlCommand();
+                string query = "SELECT * FROM Purchases.Receipts AS r\n" +
+                               "  JOIN Purchases.Vendors AS v\n" +
+                               "    ON v.VendorID = r.Vendor" +
+                               "  LEFT JOIN (SELECT ReceiptID, COUNT(*) AS Amount\n" +
+                               "               FROM Purchases.ReceiptContents\n" +
+                               "              GROUP BY ReceiptID ) AS contents\n" +
+                               "    ON contents.ReceiptID = r.ReceiptID\n" +
+                               " WHERE (CAST(r.Payed AS DATE) = CAST(@Payed AS DATE) AND\n" +
+                               "        DATEPART(hour, r.Payed) = DATEPART(hour, @Payed) AND\n" +
+                               "        DATEPART(minute, r.Payed) = DATEPART(minute, @Payed) AND\n" +
+                               "        r.Number like @Number AND\n" +
+                               "        r.Vendor = @Vendor)";/* OR\n" +
+                               "       (Payed = @Payed AND Number like @Number) OR\n" +
+                               "       (Vendor = @Vendor AND Number like @Number) OR\n" +
+                               "       (Vendor = @Vendor AND Payed = @Payed)";*/
+                cmd.Parameters.AddWithValue("@Payed", payed);
+                cmd.Parameters.AddWithValue("@Number", string.Format("{0}", number) );
+                cmd.Parameters.AddWithValue("@Vendor", vendor);
+                cmd.CommandTimeout = 0;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = query;
+            }
+            catch (System.Exception ex)
+            {
+                ok = false;
+                error = ex.Message;
+            }
             return cmd;
         }
 

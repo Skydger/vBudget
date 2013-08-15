@@ -30,11 +30,13 @@ namespace VisualControls{
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.clbElements = new System.Windows.Forms.CheckedListBox();
+            this.lblSearch = new System.Windows.Forms.Label();
+            this.tbxSearch = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(12, 149);
+            this.btnAdd.Location = new System.Drawing.Point(12, 157);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAdd.TabIndex = 1;
@@ -45,7 +47,7 @@ namespace VisualControls{
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(198, 149);
+            this.btnCancel.Location = new System.Drawing.Point(198, 157);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 2;
@@ -57,11 +59,28 @@ namespace VisualControls{
             // 
             this.clbElements.CheckOnClick = true;
             this.clbElements.FormattingEnabled = true;
-            this.clbElements.Location = new System.Drawing.Point(12, 10);
+            this.clbElements.Location = new System.Drawing.Point(12, 31);
             this.clbElements.Name = "clbElements";
-            this.clbElements.Size = new System.Drawing.Size(261, 139);
+            this.clbElements.Size = new System.Drawing.Size(261, 124);
             this.clbElements.TabIndex = 3;
             this.clbElements.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbElements_ItemCheck);
+            // 
+            // lblSearch
+            // 
+            this.lblSearch.AutoSize = true;
+            this.lblSearch.Location = new System.Drawing.Point(12, 9);
+            this.lblSearch.Name = "lblSearch";
+            this.lblSearch.Size = new System.Drawing.Size(42, 13);
+            this.lblSearch.TabIndex = 4;
+            this.lblSearch.Text = "Поиск:";
+            // 
+            // tbxSearch
+            // 
+            this.tbxSearch.Location = new System.Drawing.Point(60, 6);
+            this.tbxSearch.Name = "tbxSearch";
+            this.tbxSearch.Size = new System.Drawing.Size(213, 20);
+            this.tbxSearch.TabIndex = 5;
+            this.tbxSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxSearch_KeyUp);
             // 
             // ElementsList
             // 
@@ -69,7 +88,9 @@ namespace VisualControls{
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(285, 178);
+            this.ClientSize = new System.Drawing.Size(285, 186);
+            this.Controls.Add(this.tbxSearch);
+            this.Controls.Add(this.lblSearch);
             this.Controls.Add(this.clbElements);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAdd);
@@ -79,6 +100,7 @@ namespace VisualControls{
             this.Text = "Выберите";
             this.Resize += new System.EventHandler(this.ObjectListForm_Resize);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -87,6 +109,8 @@ namespace VisualControls{
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.CheckedListBox clbElements;
+        private System.Windows.Forms.Label lblSearch;
+        private System.Windows.Forms.TextBox tbxSearch;
 
     }
 }

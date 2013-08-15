@@ -30,6 +30,11 @@ namespace Settings
             get { return this.sDefaultDataBase; }
             set { this.sDefaultDataBase = value; }
         }
+        public string DefaultLanguage
+        {
+            get { return this.sDefaultLanguage; }
+            set { this.sDefaultLanguage = value; }
+        }
 
         public DataBaseSettingsForm()
         {
@@ -40,21 +45,6 @@ namespace Settings
         }
 
         protected void CheckSettings(){
-//            this.rbNativeAuthorization.Checked = true;
-/*
-            if ((Properties.Settings.Default.DataServers != null) && Properties.Settings.Default.DataServers.Count > 0)
-            {
-                foreach (string server_name in Properties.Settings.Default.DataServers){
-                    this.cbServer.Items.Add(server_name);
-                }
-                this.cbServer.SelectedIndex = 0;
-            }
-            this.cbIntegratedSecurity.Checked = Properties.Settings.Default.UseIntegratedSecurity;
-            this.tbUser.Text = Properties.Settings.Default.UserLogin;
-            this.tbPassword.Text = Properties.Settings.Default.UserPassword;
-            // TODO: загрузка списка баз
-            this.cbDataBases.Text = Properties.Settings.Default.DefaultDataBase;
-*/
             this.cbServer.Items.Clear();
             if ((this.asDataServers != null) && this.asDataServers.Count > 0)
             {
@@ -68,26 +58,36 @@ namespace Settings
             this.tbPassword.Text = this.sUserPassword;
             // TODO: загрузка списка баз
             this.cbDataBases.Text = this.sDefaultDataBase;
+
+            this.cbxLanguage.Items.Clear();
+            this.cbxLanguage.Items.Add("Русский");
+            this.cbxLanguage.Items.Add("English");
+            this.cbxLanguage.SelectedIndex = (this.sDefaultLanguage == "ru-RU" ? 0 : 1);
+
+            System.Globalization.CultureInfo nс = new System.Globalization.CultureInfo(this.sDefaultLanguage);
+            System.Threading.Thread.CurrentThread.CurrentCulture = nс;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = nс;
+
+            System.Resources.ResourceManager manager = new System.Resources.ResourceManager("Settings.SettingsResource", System.Reflection.Assembly.GetExecutingAssembly());
+            this.Text = manager.GetString("Main.Name");
+            this.tcSettingsControl.TabPages[0].Text = manager.GetString("Tab.CS.Name");
+            this.tcSettingsControl.TabPages[1].Text = manager.GetString("Tab.IS.Name");
+
+            this.lblAuthSettings.Text = manager.GetString("Tab.CS.AuthType");
+            this.lblServer.Text = manager.GetString("Tab.CS.Server");
+            this.cbIntegratedSecurity.Text = manager.GetString("Tab.CS.IntegratedAuth");
+
+            this.lblLogin.Text = manager.GetString("Tab.CS.User");
+            this.lblPassword.Text = manager.GetString("Tab.CS.Password");
+            this.lblDataBase.Text = manager.GetString("Tab.CS.DefaultDatabase");
+
+            this.lblLanguage.Text = manager.GetString("Tab.IS.Language");
+            
+            this.btnOk.Text = manager.GetString("Main.Apply");
+            this.btnCancel.Text = manager.GetString("Main.Cancel");
+            return;
         }
         private void btnOk_Click(object sender, EventArgs e){
-/*
-//            Properties.Settings.Default.UseABBYAuthorizer = this.rbABBYYAuthorizer.Checked;
-            Properties.Settings.Default.UseIntegratedSecurity = this.cbIntegratedSecurity.Checked;
-
-            if (Properties.Settings.Default.DataServers != null)
-                Properties.Settings.Default.DataServers.Clear();
-            else
-                Properties.Settings.Default.DataServers = new System.Collections.Specialized.StringCollection();
-            foreach ( string server_name in this.cbServer.Items){
-                Properties.Settings.Default.DataServers.Add(server_name);
-            }
-            Properties.Settings.Default.UserLogin = this.tbUser.Text;
-            Properties.Settings.Default.UserPassword = this.tbPassword.Text;
-            Properties.Settings.Default.DefaultDataBase = this.cbDataBases.Text;
-            this.DialogResult = DialogResult.OK;
-            this.Close();
- */
-
             this.bIntegratedSecurity = this.cbIntegratedSecurity.Checked;
 
             if (this.asDataServers != null)
@@ -142,6 +142,62 @@ namespace Settings
         private void rbABBYYAuthorizer_CheckedChanged(object sender, EventArgs e){
 
             this.ChangeAuthType(true);
+        }
+
+        private bool GetDatabase()
+        {
+            bool done = false;
+            try
+            {
+                System.Data.SqlClient.SqlConnectionStringBuilder sqlConnBuilder =
+                        new System.Data.SqlClient.SqlConnectionStringBuilder();
+                sqlConnBuilder.DataSource = this.cbServer.Text;
+                if (this.cbIntegratedSecurity.Checked)
+                {
+                    sqlConnBuilder.IntegratedSecurity = this.cbIntegratedSecurity.Checked;
+                }
+                else
+                {
+                    sqlConnBuilder.UserID = this.tbUser.Text;
+                    sqlConnBuilder.Password = this.tbPassword.Text;
+                }
+                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+                System.Data.SqlClient.SqlConnection conn = new System.Data.SqlClient.SqlConnection(sqlConnBuilder.ConnectionString);
+                cmd.Connection = conn;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "sp_databases";
+                conn.Open();
+                System.Data.SqlClient.SqlDataReader reader = cmd.ExecuteReader();
+                string sel_db = this.cbDataBases.Text;
+                this.cbDataBases.Items.Clear();
+                int sel = -1;
+                while (reader.Read())
+                {
+                    string db_name = (string)reader["DATABASE_NAME"];
+                    int idx = this.cbDataBases.Items.Add(db_name);
+                    if (sel_db == db_name)
+                        sel = idx;
+                }
+                this.cbDataBases.SelectedIndex = sel;
+                done = true;
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return done;
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            this.GetDatabase();
+            return;
+        }
+
+        private void cbxLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // TODO
+            this.sDefaultLanguage = (this.cbxLanguage.SelectedIndex == 0 ? "ru-RU" : "en-US");
         }
 
     }

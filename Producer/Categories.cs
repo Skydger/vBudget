@@ -93,5 +93,36 @@ namespace Producer{
             }
             return last_id;
         }
+        public static bool Exists(System.Data.SqlClient.SqlConnection connection, string category_name, out bool exists, out string message)
+        {
+            bool ret = false;
+            exists = false;
+            message = "";
+            int cat_id = -1;
+            try
+            {
+                connection.Open();
+                string sQuery = "SELECT CategoryID\n" +
+                                "  FROM " + Categories.Table + "\n" +
+                                " WHERE CategoryName = @Category";
+                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sQuery);
+                cmd.Parameters.AddWithValue("@Category", category_name );
+                cmd.Connection = connection;
+                object res = cmd.ExecuteScalar();
+                if (!System.Convert.IsDBNull(res)) cat_id = (int)res;
+                connection.Close();
+                exists = (cat_id != -1);
+                ret = true;
+            }
+            catch (System.Exception ex)
+            {
+                message = ex.Message;
+            }
+            finally
+            {
+                if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+            }
+            return ret;
+        }
     }
 }

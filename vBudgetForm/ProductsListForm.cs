@@ -115,7 +115,9 @@ namespace vBudgetForm
         private void RefreshProductList(int cat_id, int [] type_id){
             this.lvProducts.Items.Clear();
 //            if ( (cat_id > 0) || (type_id > 0)){
-                System.Data.SqlClient.SqlCommand prd_cmd = Producer.Product.Select(cat_id, type_id, -1);
+            List<Producer.Product.OrderColumn> ord = new List<Producer.Product.OrderColumn>();
+            ord.Add(Producer.Product.OrderColumn.ProductName);
+            System.Data.SqlClient.SqlCommand prd_cmd = Producer.Product.Select(cat_id, type_id, -1, ord);
                 prd_cmd.Connection = this.cConnection;
                 System.Data.SqlClient.SqlDataAdapter pda = new System.Data.SqlClient.SqlDataAdapter(prd_cmd);
                 this.products = new DataTable("Products");
@@ -307,7 +309,9 @@ namespace vBudgetForm
                     (cnt > 0) &&
                      (MessageBox.Show("Найдены заказы (" + cnt.ToString() + "), содержащие выбранный продукт, переназначить (это действие нельзы отменить)?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Hand) == DialogResult.Yes)
                     ){
-                    System.Data.SqlClient.SqlCommand command = Producer.Product.Select((int)row["Category"], null, -1);
+                    List<Producer.Product.OrderColumn> ord = new List<Producer.Product.OrderColumn>();
+                    ord.Add(Producer.Product.OrderColumn.ProductName);
+                    System.Data.SqlClient.SqlCommand command = Producer.Product.Select((int)row["Category"], null, -1, ord);
                     command.Connection = this.cConnection;
                     System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
                     System.Data.DataTable tbl = new System.Data.DataTable("Products");

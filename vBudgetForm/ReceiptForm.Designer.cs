@@ -54,7 +54,9 @@ namespace vBudgetForm
             this.lbxProducts = new System.Windows.Forms.ListBox();
             this.cmsProductsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiAddProduct = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiNewBySelected = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEditProduct = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDeleteProduct = new System.Windows.Forms.ToolStripMenuItem();
             this.cbxCategory = new System.Windows.Forms.ComboBox();
             this.dgvReceiptContent = new System.Windows.Forms.DataGridView();
             this.cmsPositionsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -111,6 +113,7 @@ namespace vBudgetForm
             this.cbxVendors.Name = "cbxVendors";
             this.cbxVendors.Size = new System.Drawing.Size(360, 21);
             this.cbxVendors.TabIndex = 16;
+            this.cbxVendors.SelectedIndexChanged += new System.EventHandler(this.cbxVendors_SelectedIndexChanged);
             this.cbxVendors.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cbxVendors_KeyUp);
             this.cbxVendors.TextChanged += new System.EventHandler(this.cbxVendors_TextChanged);
             // 
@@ -141,6 +144,7 @@ namespace vBudgetForm
             this.dtpPeceiptDate.Name = "dtpPeceiptDate";
             this.dtpPeceiptDate.Size = new System.Drawing.Size(147, 20);
             this.dtpPeceiptDate.TabIndex = 6;
+            this.dtpPeceiptDate.ValueChanged += new System.EventHandler(this.dtpPeceiptDate_ValueChanged);
             // 
             // tbxReceiptNumber
             // 
@@ -148,6 +152,7 @@ namespace vBudgetForm
             this.tbxReceiptNumber.Name = "tbxReceiptNumber";
             this.tbxReceiptNumber.Size = new System.Drawing.Size(176, 20);
             this.tbxReceiptNumber.TabIndex = 8;
+            this.tbxReceiptNumber.TextChanged += new System.EventHandler(this.tbxReceiptNumber_TextChanged);
             // 
             // btnOk
             // 
@@ -232,31 +237,47 @@ namespace vBudgetForm
             // 
             this.cmsProductsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAddProduct,
-            this.tsmiEditProduct});
+            this.tsmiNewBySelected,
+            this.tsmiEditProduct,
+            this.tsmiDeleteProduct});
             this.cmsProductsMenu.Name = "cmsProductsMenu";
-            this.cmsProductsMenu.Size = new System.Drawing.Size(202, 48);
+            this.cmsProductsMenu.Size = new System.Drawing.Size(242, 92);
             this.cmsProductsMenu.Opening += new System.ComponentModel.CancelEventHandler(this.cmsProductsMenu_Opening);
             // 
             // tsmiAddProduct
             // 
             this.tsmiAddProduct.Name = "tsmiAddProduct";
-            this.tsmiAddProduct.Size = new System.Drawing.Size(201, 22);
+            this.tsmiAddProduct.Size = new System.Drawing.Size(241, 22);
             this.tsmiAddProduct.Text = "Новый продукт";
             this.tsmiAddProduct.Click += new System.EventHandler(this.tsmiAddProduct_Click);
+            // 
+            // tsmiNewBySelected
+            // 
+            this.tsmiNewBySelected.Name = "tsmiNewBySelected";
+            this.tsmiNewBySelected.Size = new System.Drawing.Size(241, 22);
+            this.tsmiNewBySelected.Text = "Новый на основе выбранного";
+            this.tsmiNewBySelected.Click += new System.EventHandler(this.tsmiNewBySelected_Click);
             // 
             // tsmiEditProduct
             // 
             this.tsmiEditProduct.Name = "tsmiEditProduct";
-            this.tsmiEditProduct.Size = new System.Drawing.Size(201, 22);
+            this.tsmiEditProduct.Size = new System.Drawing.Size(241, 22);
             this.tsmiEditProduct.Text = "Редактировать продукт";
             this.tsmiEditProduct.Click += new System.EventHandler(this.tsmiEditProduct_Click);
+            // 
+            // tsmiDeleteProduct
+            // 
+            this.tsmiDeleteProduct.Name = "tsmiDeleteProduct";
+            this.tsmiDeleteProduct.Size = new System.Drawing.Size(241, 22);
+            this.tsmiDeleteProduct.Text = "Удалить продукт";
+            this.tsmiDeleteProduct.Click += new System.EventHandler(this.tsmiDeleteProduct_Click);
             // 
             // cbxCategory
             // 
             this.cbxCategory.FormattingEnabled = true;
-            this.cbxCategory.Location = new System.Drawing.Point(0, 3);
+            this.cbxCategory.Location = new System.Drawing.Point(6, 3);
             this.cbxCategory.Name = "cbxCategory";
-            this.cbxCategory.Size = new System.Drawing.Size(219, 21);
+            this.cbxCategory.Size = new System.Drawing.Size(213, 21);
             this.cbxCategory.TabIndex = 1;
             this.cbxCategory.SelectedIndexChanged += new System.EventHandler(this.cbxCategory_SelectedIndexChanged);
             // 
@@ -453,5 +474,7 @@ namespace vBudgetForm
         private System.Windows.Forms.TextBox tbxSearchProduct;
         private System.Windows.Forms.ToolStripMenuItem tsmiChangeProduct;
         private System.Windows.Forms.Label lblSearch;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDeleteProduct;
+        private System.Windows.Forms.ToolStripMenuItem tsmiNewBySelected;
     }
 }

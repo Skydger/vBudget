@@ -5,6 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Globalization;
+using System.Resources;
+using System.Threading;
 
 namespace vBudgetForm
 {
@@ -12,14 +15,7 @@ namespace vBudgetForm
     {
         public vBudgetForm()
         {
-            InitializeComponent();
-            this.lvReceipts.Columns.Add("№", 50);
-            this.lvReceipts.Columns.Add("ID", 70);
-            this.lvReceipts.Columns.Add("Номер", 100);
-            this.lvReceipts.Columns.Add("Оплачено", 100);
-            this.lvReceipts.Columns.Add("Продавец", 200);
-            this.lvReceipts.Columns.Add("Цена", 100);
-            this.lvReceipts.Columns.Add("Комментарий", 150);
+            this.InitializeComponent();
 
             this.receipts = new DataTable("Receipts");
             this.lvColumnSorter = new Effects.ListViewColumnSorter();
@@ -70,20 +66,26 @@ namespace vBudgetForm
             lvi.Name = (row_num + 1).ToString();
             lvi.Text = (row_num + 1).ToString();
             DateTime r_dtm = new DateTime(1900, 1, 1 );
+            DateTime c_dtm = new DateTime(1900, 1, 1);
             if (!System.Convert.IsDBNull(row["Payed"])) r_dtm = ((DateTime)row["Payed"]);
             string num = "";
             if (!System.Convert.IsDBNull(row["Number"])) num = (string)row["Number"];
             string vendor = "";
             if (!System.Convert.IsDBNull(row["VendorName"])) vendor = (string)row["VendorName"];
             decimal price = 0;
+            string comment = "";
+            if (!System.Convert.IsDBNull(row["Comment"])) comment = (string)row["Comment"];
             if (!System.Convert.IsDBNull(row["Price"])) price = (decimal)row["Price"];
+            if (!System.Convert.IsDBNull(row["Created"])) c_dtm = ((DateTime)row["Created"]);
             lvi.SubItems.Add( ((int)row["ReceiptID"]).ToString());
             lvi.SubItems.Add(num);
-//            lvi.SubItems.Add(r_dtm.ToShortDateString() + " " + r_dtm.ToShortTimeString());
             string dformat = "dd.MM.yyyy HH:mm";
             lvi.SubItems.Add(r_dtm.ToString(dformat));
             lvi.SubItems.Add(vendor);
             lvi.SubItems.Add(price.ToString("0.00"));
+            lvi.SubItems.Add(comment);
+            lvi.SubItems.Add(c_dtm.ToString(dformat));
+            lvi.Tag = row;
             this.lvReceipts.Items.Add(lvi);
         }
 
@@ -107,6 +109,7 @@ namespace vBudgetForm
             lvi.SubItems.Add(vendor);
             lvi.SubItems.Add(price.ToString("0.00"));
             lvi.Group = group;
+            lvi.Tag = row;
             this.lvReceipts.Items.Add(lvi);
         }
 
@@ -130,7 +133,7 @@ namespace vBudgetForm
                 if (add_new_rows) this.AddNewRow(i++, drw);
                 total += (decimal)drw["Price"];
             }
-            this.tsslQueryResult.Text = "Всего записей: " + i.ToString() + " на сумму " + total.ToString();
+            this.tsslQueryResult.Text = string.Format("Всего записей: {0} на сумму {1}", this.receipts.Rows.Count, total );
             return;
         }
         protected void LoadReceipts( Purchases.Criteria criteries ){
@@ -163,11 +166,24 @@ namespace vBudgetForm
         }
 
         private void vBudgetForm_Load(object sender, EventArgs e){
-//            this.cmsReceiptsMenu.Items.Add(this.tsmiActions);
-//            this.cmsReceiptsMenu.Items.Add(this.tsmiNewReceipt);
-//            this.tsmiActions.DropDownItems.Add(this.tsmiNewReceipt);
-            
+            this.lvReceipts.Columns.Clear();
+            this.settings.DefaultLanguage = Properties.Settings.Default.Language;
+            CultureInfo nс = new CultureInfo(this.settings.DefaultLanguage);
+            Thread.CurrentThread.CurrentCulture = nс;
+            Thread.CurrentThread.CurrentUICulture = nс;
+
+            this.manager = new System.Resources.ResourceManager("vBudgetForm.vBudgetResource", System.Reflection.Assembly.GetExecutingAssembly());
+            this.lvReceipts.Columns.Add("№", 50);
+            this.lvReceipts.Columns.Add("ID", 70);
+            this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Number"), 100);
+            this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Payed"), 100);
+            this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Vendor"), 200);
+            this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Price"), 100);
+            this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Comment"), 150);
+            this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Created"), 100);
+
             if (this.TryConnect()){
+
                 Purchases.Criteria crt = new Purchases.Criteria();
                 DateTime [] dates = new DateTime[1] { System.DateTime.Now.AddDays(-7.0) };
                 crt.Dates = new DateTime[1];
@@ -175,6 +191,7 @@ namespace vBudgetForm
                 crt.DateFilter = Purchases.DateFilterType.MoreOrEqual;
                 this.LoadReceipts(crt);
             }
+            return;
         }
 
         private void tsmiNewReceipt_Click(object sender, EventArgs e){
@@ -192,13 +209,37 @@ namespace vBudgetForm
             }catch(System.Exception ex ){
                 MessageBox.Show("Ошибка при создании нового чека:\n" + ex.Message);
             }
+            return;
         }
 
         private void lvReceipts_ItemActivate(object sender, EventArgs e){
             int row_num = -1;
             if (this.lvReceipts.SelectedIndices.Count == 1)
                 row_num = this.lvReceipts.SelectedIndices[0];
-            if (row_num >= 0){
+            //if (row_num >= 0){
+            if ( this.lvReceipts.SelectedItems.Count == 1 ){
+                System.Data.DataRow old_row = (System.Data.DataRow)this.lvReceipts.SelectedItems[0].Tag;
+                if( old_row != null ){
+                    ReceiptForm rptf = new ReceiptForm(this.cConnection, ref old_row, false);
+                    if (rptf.ShowDialog() == DialogResult.OK)
+                    {
+                        this.lvReceipts.Items.Clear();
+                        int i = 0;
+                        foreach (System.Data.DataRow drw in this.receipts.Rows)
+                        {
+                            this.AddNewRow(i++, drw);
+                        }
+                        this.lvReceipts.SelectedIndices.Add(row_num);
+                        //                    this.receipts.Rows.Add(new_row);
+                        //                    this.AddNewRow(this.receipts.Rows.Count, new_row);
+                        this.CalculateTotal(false);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка получения чека!");
+                }
+/*
                 int idx = -1;
                 string snum = this.lvReceipts.Items[row_num].Text;
                 if( System.Int32.TryParse(snum, out idx) && (idx > 0) ){
@@ -218,7 +259,9 @@ namespace vBudgetForm
                 }else{
                     MessageBox.Show("Ошибка получения чека!");
                 }
+ */ 
             }
+            return;
         }
 
         private void tsmiProducts_Click(object sender, EventArgs e){
@@ -242,12 +285,14 @@ namespace vBudgetForm
             this.settings.UserLogin = Properties.Settings.Default.UserLogin;
             this.settings.UserPassword = Properties.Settings.Default.UserPassword;
             this.settings.DefaultDataBase = Properties.Settings.Default.DefaultDataBase;
+            this.settings.DefaultLanguage = Properties.Settings.Default.Language;
             if (this.settings.ShowDialog() == DialogResult.OK){
                 Properties.Settings.Default.DataServers = this.settings.DataServers;
                 Properties.Settings.Default.UseIntegratedSecurity = this.settings.IsIntegratedSecurity;
                 Properties.Settings.Default.UserLogin = this.settings.UserLogin;
                 Properties.Settings.Default.UserPassword = this.settings.UserPassword;
                 Properties.Settings.Default.DefaultDataBase = this.settings.DefaultDataBase;
+                Properties.Settings.Default.Language = this.settings.DefaultLanguage;
                 Properties.Settings.Default.Save();
                 this.vBudgetForm_Load(sender, e);
             }
@@ -378,6 +423,11 @@ namespace vBudgetForm
                 this.LoadReceipts(crt);
             }
             return;
+        }
+
+        private void tsmiByCategoryFilter_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void tsmiClearFilter_Click(object sender, EventArgs e){
@@ -667,6 +717,37 @@ namespace vBudgetForm
             PricesForm pf = new PricesForm(this.cConnection);
             if (pf.ShowDialog() == DialogResult.OK)
             {
+            }
+        }
+
+        private void tsmiAddReceipt_Click(object sender, EventArgs e)
+        {
+            this.tsmiNewReceipt_Click(sender, e);
+        }
+
+        private void cmsReceiptsMenu_Opened(object sender, EventArgs e)
+        {
+            this.tsmiDeleteReceipt.Enabled = true;
+            if (this.lvReceipts.SelectedItems.Count == 0)
+            {
+                this.tsmiDeleteReceipt.Enabled = false;
+            }
+            else if (this.lvReceipts.SelectedItems.Count == 1)
+            {
+                this.tsmiDeleteReceipt.Text = "Удалить чек";
+            }
+            else if (this.lvReceipts.SelectedItems.Count > 1)
+            {
+                this.tsmiDeleteReceipt.Text = "Удалить чеки";
+            }
+        }
+
+        private void tsmiDeleteReceipt_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Внимание! Чек и его состав будут полностью удалены (операция необратима), продолжить?",
+                                "Внимание", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+
             }
         }
 

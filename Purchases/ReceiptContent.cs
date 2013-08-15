@@ -45,5 +45,83 @@ namespace Purchases
             cmd = ReceiptContent.AddParameters(cmd);
             return cmd;
         }
+
+        public static System.Data.SqlClient.SqlCommand DeleteCommand()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "DELETE FROM Purchases.ReceiptContents\n" +
+                            " WHERE ContentID = @ContentId";
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.Int, 0, "ContentID");
+            cmd = ReceiptContent.AddParameters(cmd);
+            return cmd;
+        }
+        public static System.Data.SqlClient.SqlCommand DeleteAllCommand()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "DELETE FROM Purchases.ReceiptContents\n" +
+                            " WHERE ReceiptID = @Receipt";
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            cmd.Parameters.Add("@Receipt", System.Data.SqlDbType.Int, sizeof(int), "ReceiptID");
+            cmd = ReceiptContent.AddParameters(cmd);
+            return cmd;
+        }
+
+        public static System.Data.SqlClient.SqlCommand ExistsCommand(int ProductID)
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string query = "SELECT *\n" +
+                           "  FROM Producer.Products AS p\n" +
+                           "  JOIN Purchases.ReceiptContents AS c\n" +
+                           "    ON c.ProductID = p.ProductID\n" +
+                           "  JOIN Purchases.Receipts AS r\n" +
+                           "    ON r.ReceiptID = c.ReceiptID\n" +
+                           " WHERE p.ProductID = @ProductID";
+
+            cmd.Parameters.AddWithValue("@ProductID", ProductID);
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = query;
+            return cmd;
+        }
+
+        public static bool ChangeProduct( System.Data.SqlClient.SqlConnection connection,
+                                          System.Data.SqlClient.SqlTransaction tran,
+                                          object old_product_id, object new_product_id, out string error)
+        {
+            bool done = false;
+            error = "";
+            try
+            {
+                connection.Open();
+                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+                string query = "UPDATE Purchases.ReceiptContents SET ProductID = @NewProduct\n" +
+                                "WHERE ProductID = @OldProduct";
+                cmd.Parameters.AddWithValue("@NewProduct", new_product_id);
+                cmd.Parameters.AddWithValue("@OldProduct", old_product_id);
+                cmd.CommandTimeout = 0;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = query;
+                cmd.Connection = connection;
+                if (tran != null) cmd.Transaction = tran;
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                done = true;
+            }
+            catch (System.Exception ex)
+            {
+                error = ex.Message;
+            }
+            finally
+            {
+                if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+            }
+
+            return done;
+        }
     }
 }

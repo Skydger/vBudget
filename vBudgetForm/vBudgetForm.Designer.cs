@@ -10,6 +10,7 @@ namespace vBudgetForm
         private Effects.ListViewColumnSorter lvColumnSorter = null;
         private Settings.DataBaseSettingsForm settings = null;
         private System.DateTime[] dates;
+        private System.Resources.ResourceManager manager = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -33,6 +34,7 @@ namespace vBudgetForm
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(vBudgetForm));
             this.msMainMenu = new System.Windows.Forms.MenuStrip();
             this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,6 +77,10 @@ namespace vBudgetForm
             this.tsTools = new System.Windows.Forms.ToolStrip();
             this.lvReceipts = new System.Windows.Forms.ListView();
             this.cmsReceiptsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiAddReceipt = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiDeleteReceipt = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
             this.msMainMenu.SuspendLayout();
@@ -84,53 +90,70 @@ namespace vBudgetForm
             // 
             // msMainMenu
             // 
+            this.msMainMenu.AccessibleDescription = null;
+            this.msMainMenu.AccessibleName = null;
+            resources.ApplyResources(this.msMainMenu, "msMainMenu");
+            this.msMainMenu.BackgroundImage = null;
+            this.msMainMenu.Font = null;
             this.msMainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
             this.tsmiViewSection,
             this.tsmiActions,
             this.tsmiDigests,
             this.tsmiStatistics});
-            this.msMainMenu.Location = new System.Drawing.Point(0, 0);
             this.msMainMenu.Name = "msMainMenu";
-            this.msMainMenu.Size = new System.Drawing.Size(772, 24);
-            this.msMainMenu.TabIndex = 0;
-            this.msMainMenu.Text = "Главное меню";
             // 
             // tsmiFile
             // 
+            this.tsmiFile.AccessibleDescription = null;
+            this.tsmiFile.AccessibleName = null;
+            resources.ApplyResources(this.tsmiFile, "tsmiFile");
+            this.tsmiFile.BackgroundImage = null;
             this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiSettings,
             this.tsmiExit});
             this.tsmiFile.Name = "tsmiFile";
-            this.tsmiFile.Size = new System.Drawing.Size(48, 20);
-            this.tsmiFile.Text = "Файл";
+            this.tsmiFile.ShortcutKeyDisplayString = null;
             // 
             // tsmiSettings
             // 
+            this.tsmiSettings.AccessibleDescription = null;
+            this.tsmiSettings.AccessibleName = null;
+            resources.ApplyResources(this.tsmiSettings, "tsmiSettings");
+            this.tsmiSettings.BackgroundImage = null;
             this.tsmiSettings.Name = "tsmiSettings";
-            this.tsmiSettings.Size = new System.Drawing.Size(134, 22);
-            this.tsmiSettings.Text = "Настройки";
+            this.tsmiSettings.ShortcutKeyDisplayString = null;
             this.tsmiSettings.Click += new System.EventHandler(this.tsmiSettings_Click);
             // 
             // tsmiExit
             // 
+            this.tsmiExit.AccessibleDescription = null;
+            this.tsmiExit.AccessibleName = null;
+            resources.ApplyResources(this.tsmiExit, "tsmiExit");
+            this.tsmiExit.BackgroundImage = null;
             this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(134, 22);
-            this.tsmiExit.Text = "Выход";
+            this.tsmiExit.ShortcutKeyDisplayString = null;
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
             // tsmiViewSection
             // 
+            this.tsmiViewSection.AccessibleDescription = null;
+            this.tsmiViewSection.AccessibleName = null;
+            resources.ApplyResources(this.tsmiViewSection, "tsmiViewSection");
+            this.tsmiViewSection.BackgroundImage = null;
             this.tsmiViewSection.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFilters,
             this.tsmiSort,
             this.tsmiSections});
             this.tsmiViewSection.Name = "tsmiViewSection";
-            this.tsmiViewSection.Size = new System.Drawing.Size(39, 20);
-            this.tsmiViewSection.Text = "Вид";
+            this.tsmiViewSection.ShortcutKeyDisplayString = null;
             // 
             // tsmiFilters
             // 
+            this.tsmiFilters.AccessibleDescription = null;
+            this.tsmiFilters.AccessibleName = null;
+            resources.ApplyResources(this.tsmiFilters, "tsmiFilters");
+            this.tsmiFilters.BackgroundImage = null;
             this.tsmiFilters.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiByDatesSection,
             this.tsmiByCategoryFilter,
@@ -138,11 +161,14 @@ namespace vBudgetForm
             this.tsmiTopPurchases,
             this.tsmiClearFilter});
             this.tsmiFilters.Name = "tsmiFilters";
-            this.tsmiFilters.Size = new System.Drawing.Size(140, 22);
-            this.tsmiFilters.Text = "Фильтры";
+            this.tsmiFilters.ShortcutKeyDisplayString = null;
             // 
             // tsmiByDatesSection
             // 
+            this.tsmiByDatesSection.AccessibleDescription = null;
+            this.tsmiByDatesSection.AccessibleName = null;
+            resources.ApplyResources(this.tsmiByDatesSection, "tsmiByDatesSection");
+            this.tsmiByDatesSection.BackgroundImage = null;
             this.tsmiByDatesSection.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiByLastWeek,
             this.tsmiByLastMonth,
@@ -150,239 +176,327 @@ namespace vBudgetForm
             this.tsmiByLastQuarter,
             this.tsmiOnPeriod});
             this.tsmiByDatesSection.Name = "tsmiByDatesSection";
-            this.tsmiByDatesSection.Size = new System.Drawing.Size(161, 22);
-            this.tsmiByDatesSection.Text = "По дате";
+            this.tsmiByDatesSection.ShortcutKeyDisplayString = null;
             // 
             // tsmiByLastWeek
             // 
+            this.tsmiByLastWeek.AccessibleDescription = null;
+            this.tsmiByLastWeek.AccessibleName = null;
+            resources.ApplyResources(this.tsmiByLastWeek, "tsmiByLastWeek");
+            this.tsmiByLastWeek.BackgroundImage = null;
             this.tsmiByLastWeek.Checked = true;
             this.tsmiByLastWeek.CheckState = System.Windows.Forms.CheckState.Checked;
             this.tsmiByLastWeek.Name = "tsmiByLastWeek";
-            this.tsmiByLastWeek.Size = new System.Drawing.Size(201, 22);
-            this.tsmiByLastWeek.Text = "За последнюю неделю";
+            this.tsmiByLastWeek.ShortcutKeyDisplayString = null;
             this.tsmiByLastWeek.Click += new System.EventHandler(this.tsmiByLastWeek_Click);
             // 
             // tsmiByLastMonth
             // 
+            this.tsmiByLastMonth.AccessibleDescription = null;
+            this.tsmiByLastMonth.AccessibleName = null;
+            resources.ApplyResources(this.tsmiByLastMonth, "tsmiByLastMonth");
+            this.tsmiByLastMonth.BackgroundImage = null;
             this.tsmiByLastMonth.Name = "tsmiByLastMonth";
-            this.tsmiByLastMonth.Size = new System.Drawing.Size(201, 22);
-            this.tsmiByLastMonth.Text = "За последний месяц";
+            this.tsmiByLastMonth.ShortcutKeyDisplayString = null;
             this.tsmiByLastMonth.Click += new System.EventHandler(this.tsmiByLastMonth_Click);
             // 
             // tsmiByLastThreeMonths
             // 
+            this.tsmiByLastThreeMonths.AccessibleDescription = null;
+            this.tsmiByLastThreeMonths.AccessibleName = null;
+            resources.ApplyResources(this.tsmiByLastThreeMonths, "tsmiByLastThreeMonths");
+            this.tsmiByLastThreeMonths.BackgroundImage = null;
             this.tsmiByLastThreeMonths.Name = "tsmiByLastThreeMonths";
-            this.tsmiByLastThreeMonths.Size = new System.Drawing.Size(201, 22);
-            this.tsmiByLastThreeMonths.Text = "За последние 3 месяца";
+            this.tsmiByLastThreeMonths.ShortcutKeyDisplayString = null;
             this.tsmiByLastThreeMonths.Click += new System.EventHandler(this.tsmiByLastThreeMonths_Click);
             // 
             // tsmiByLastQuarter
             // 
+            this.tsmiByLastQuarter.AccessibleDescription = null;
+            this.tsmiByLastQuarter.AccessibleName = null;
+            resources.ApplyResources(this.tsmiByLastQuarter, "tsmiByLastQuarter");
+            this.tsmiByLastQuarter.BackgroundImage = null;
             this.tsmiByLastQuarter.Name = "tsmiByLastQuarter";
-            this.tsmiByLastQuarter.Size = new System.Drawing.Size(201, 22);
-            this.tsmiByLastQuarter.Text = "За последний квартал";
+            this.tsmiByLastQuarter.ShortcutKeyDisplayString = null;
             this.tsmiByLastQuarter.Click += new System.EventHandler(this.tsmiByLastQuarter_Click);
             // 
             // tsmiOnPeriod
             // 
+            this.tsmiOnPeriod.AccessibleDescription = null;
+            this.tsmiOnPeriod.AccessibleName = null;
+            resources.ApplyResources(this.tsmiOnPeriod, "tsmiOnPeriod");
+            this.tsmiOnPeriod.BackgroundImage = null;
             this.tsmiOnPeriod.Name = "tsmiOnPeriod";
-            this.tsmiOnPeriod.Size = new System.Drawing.Size(201, 22);
-            this.tsmiOnPeriod.Text = "За период....";
+            this.tsmiOnPeriod.ShortcutKeyDisplayString = null;
             this.tsmiOnPeriod.Click += new System.EventHandler(this.tsmiOnPeriod_Click);
             // 
             // tsmiByCategoryFilter
             // 
+            this.tsmiByCategoryFilter.AccessibleDescription = null;
+            this.tsmiByCategoryFilter.AccessibleName = null;
+            resources.ApplyResources(this.tsmiByCategoryFilter, "tsmiByCategoryFilter");
+            this.tsmiByCategoryFilter.BackgroundImage = null;
             this.tsmiByCategoryFilter.Name = "tsmiByCategoryFilter";
-            this.tsmiByCategoryFilter.Size = new System.Drawing.Size(161, 22);
-            this.tsmiByCategoryFilter.Text = "По категории";
+            this.tsmiByCategoryFilter.ShortcutKeyDisplayString = null;
+            this.tsmiByCategoryFilter.Click += new System.EventHandler(this.tsmiByCategoryFilter_Click);
             // 
             // tsmiByVendorFilter
             // 
+            this.tsmiByVendorFilter.AccessibleDescription = null;
+            this.tsmiByVendorFilter.AccessibleName = null;
+            resources.ApplyResources(this.tsmiByVendorFilter, "tsmiByVendorFilter");
+            this.tsmiByVendorFilter.BackgroundImage = null;
             this.tsmiByVendorFilter.Name = "tsmiByVendorFilter";
-            this.tsmiByVendorFilter.Size = new System.Drawing.Size(161, 22);
-            this.tsmiByVendorFilter.Text = "По продавцу";
+            this.tsmiByVendorFilter.ShortcutKeyDisplayString = null;
             this.tsmiByVendorFilter.Click += new System.EventHandler(this.tsmiByVendorFilter_Click);
             // 
             // tsmiTopPurchases
             // 
+            this.tsmiTopPurchases.AccessibleDescription = null;
+            this.tsmiTopPurchases.AccessibleName = null;
+            resources.ApplyResources(this.tsmiTopPurchases, "tsmiTopPurchases");
+            this.tsmiTopPurchases.BackgroundImage = null;
             this.tsmiTopPurchases.Name = "tsmiTopPurchases";
-            this.tsmiTopPurchases.Size = new System.Drawing.Size(161, 22);
-            this.tsmiTopPurchases.Text = "Топ-23 покупок";
+            this.tsmiTopPurchases.ShortcutKeyDisplayString = null;
             this.tsmiTopPurchases.Click += new System.EventHandler(this.tsmiTopPurchases_Click);
             // 
             // tsmiClearFilter
             // 
+            this.tsmiClearFilter.AccessibleDescription = null;
+            this.tsmiClearFilter.AccessibleName = null;
+            resources.ApplyResources(this.tsmiClearFilter, "tsmiClearFilter");
+            this.tsmiClearFilter.BackgroundImage = null;
             this.tsmiClearFilter.Name = "tsmiClearFilter";
-            this.tsmiClearFilter.Size = new System.Drawing.Size(161, 22);
-            this.tsmiClearFilter.Text = "Сбросить";
+            this.tsmiClearFilter.ShortcutKeyDisplayString = null;
             this.tsmiClearFilter.Click += new System.EventHandler(this.tsmiClearFilter_Click);
             // 
             // tsmiSort
             // 
+            this.tsmiSort.AccessibleDescription = null;
+            this.tsmiSort.AccessibleName = null;
+            resources.ApplyResources(this.tsmiSort, "tsmiSort");
+            this.tsmiSort.BackgroundImage = null;
             this.tsmiSort.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiByWeeks,
             this.tsmiByMonths,
             this.tsmiByID});
             this.tsmiSort.Name = "tsmiSort";
-            this.tsmiSort.Size = new System.Drawing.Size(140, 22);
-            this.tsmiSort.Text = "Сортировка";
+            this.tsmiSort.ShortcutKeyDisplayString = null;
             // 
             // tsmiByWeeks
             // 
+            this.tsmiByWeeks.AccessibleDescription = null;
+            this.tsmiByWeeks.AccessibleName = null;
+            resources.ApplyResources(this.tsmiByWeeks, "tsmiByWeeks");
+            this.tsmiByWeeks.BackgroundImage = null;
             this.tsmiByWeeks.Name = "tsmiByWeeks";
-            this.tsmiByWeeks.Size = new System.Drawing.Size(184, 22);
-            this.tsmiByWeeks.Text = "По неделям";
+            this.tsmiByWeeks.ShortcutKeyDisplayString = null;
             this.tsmiByWeeks.Click += new System.EventHandler(this.tsmiByWeeks_Click);
             // 
             // tsmiByMonths
             // 
+            this.tsmiByMonths.AccessibleDescription = null;
+            this.tsmiByMonths.AccessibleName = null;
+            resources.ApplyResources(this.tsmiByMonths, "tsmiByMonths");
+            this.tsmiByMonths.BackgroundImage = null;
             this.tsmiByMonths.Name = "tsmiByMonths";
-            this.tsmiByMonths.Size = new System.Drawing.Size(184, 22);
-            this.tsmiByMonths.Text = "По месяцам";
+            this.tsmiByMonths.ShortcutKeyDisplayString = null;
             this.tsmiByMonths.Click += new System.EventHandler(this.tsmiByMonths_Click);
             // 
             // tsmiByID
             // 
+            this.tsmiByID.AccessibleDescription = null;
+            this.tsmiByID.AccessibleName = null;
+            resources.ApplyResources(this.tsmiByID, "tsmiByID");
+            this.tsmiByID.BackgroundImage = null;
             this.tsmiByID.Name = "tsmiByID";
-            this.tsmiByID.Size = new System.Drawing.Size(184, 22);
-            this.tsmiByID.Text = "По идентификатору";
+            this.tsmiByID.ShortcutKeyDisplayString = null;
             this.tsmiByID.Click += new System.EventHandler(this.tsmiByID_Click);
             // 
             // tsmiSections
             // 
+            this.tsmiSections.AccessibleDescription = null;
+            this.tsmiSections.AccessibleName = null;
+            resources.ApplyResources(this.tsmiSections, "tsmiSections");
+            this.tsmiSections.BackgroundImage = null;
             this.tsmiSections.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiReceipts,
             this.tsmiBalance});
             this.tsmiSections.Name = "tsmiSections";
-            this.tsmiSections.Size = new System.Drawing.Size(140, 22);
-            this.tsmiSections.Text = "Разделы";
+            this.tsmiSections.ShortcutKeyDisplayString = null;
             // 
             // tsmiReceipts
             // 
+            this.tsmiReceipts.AccessibleDescription = null;
+            this.tsmiReceipts.AccessibleName = null;
+            resources.ApplyResources(this.tsmiReceipts, "tsmiReceipts");
+            this.tsmiReceipts.BackgroundImage = null;
             this.tsmiReceipts.Name = "tsmiReceipts";
-            this.tsmiReceipts.Size = new System.Drawing.Size(123, 22);
-            this.tsmiReceipts.Text = "Чеки";
+            this.tsmiReceipts.ShortcutKeyDisplayString = null;
             // 
             // tsmiBalance
             // 
+            this.tsmiBalance.AccessibleDescription = null;
+            this.tsmiBalance.AccessibleName = null;
+            resources.ApplyResources(this.tsmiBalance, "tsmiBalance");
+            this.tsmiBalance.BackgroundImage = null;
             this.tsmiBalance.Name = "tsmiBalance";
-            this.tsmiBalance.Size = new System.Drawing.Size(123, 22);
-            this.tsmiBalance.Text = "Платежи";
+            this.tsmiBalance.ShortcutKeyDisplayString = null;
             // 
             // tsmiActions
             // 
+            this.tsmiActions.AccessibleDescription = null;
+            this.tsmiActions.AccessibleName = null;
+            resources.ApplyResources(this.tsmiActions, "tsmiActions");
+            this.tsmiActions.BackgroundImage = null;
             this.tsmiActions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiNewReceipt,
             this.tsmiPersons,
             this.tsmiDataExchange});
             this.tsmiActions.Name = "tsmiActions";
-            this.tsmiActions.Size = new System.Drawing.Size(70, 20);
-            this.tsmiActions.Text = "Действия";
+            this.tsmiActions.ShortcutKeyDisplayString = null;
             // 
             // tsmiNewReceipt
             // 
-            this.tsmiNewReceipt.Enabled = false;
+            this.tsmiNewReceipt.AccessibleDescription = null;
+            this.tsmiNewReceipt.AccessibleName = null;
+            resources.ApplyResources(this.tsmiNewReceipt, "tsmiNewReceipt");
+            this.tsmiNewReceipt.BackgroundImage = null;
             this.tsmiNewReceipt.Name = "tsmiNewReceipt";
-            this.tsmiNewReceipt.Size = new System.Drawing.Size(166, 22);
-            this.tsmiNewReceipt.Text = "Новый чек";
+            this.tsmiNewReceipt.ShortcutKeyDisplayString = null;
             this.tsmiNewReceipt.Click += new System.EventHandler(this.tsmiNewReceipt_Click);
             // 
             // tsmiPersons
             // 
+            this.tsmiPersons.AccessibleDescription = null;
+            this.tsmiPersons.AccessibleName = null;
+            resources.ApplyResources(this.tsmiPersons, "tsmiPersons");
+            this.tsmiPersons.BackgroundImage = null;
             this.tsmiPersons.Name = "tsmiPersons";
-            this.tsmiPersons.Size = new System.Drawing.Size(166, 22);
-            this.tsmiPersons.Text = "Пользователи";
+            this.tsmiPersons.ShortcutKeyDisplayString = null;
             // 
             // tsmiDataExchange
             // 
+            this.tsmiDataExchange.AccessibleDescription = null;
+            this.tsmiDataExchange.AccessibleName = null;
+            resources.ApplyResources(this.tsmiDataExchange, "tsmiDataExchange");
+            this.tsmiDataExchange.BackgroundImage = null;
             this.tsmiDataExchange.Name = "tsmiDataExchange";
-            this.tsmiDataExchange.Size = new System.Drawing.Size(166, 22);
-            this.tsmiDataExchange.Text = "Обмен данными";
+            this.tsmiDataExchange.ShortcutKeyDisplayString = null;
             // 
             // tsmiDigests
             // 
+            this.tsmiDigests.AccessibleDescription = null;
+            this.tsmiDigests.AccessibleName = null;
+            resources.ApplyResources(this.tsmiDigests, "tsmiDigests");
+            this.tsmiDigests.BackgroundImage = null;
             this.tsmiDigests.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiMakers,
             this.tsmiProducts,
             this.tsmiVendors,
             this.tsmiDiscountCards});
             this.tsmiDigests.Name = "tsmiDigests";
-            this.tsmiDigests.Size = new System.Drawing.Size(94, 20);
-            this.tsmiDigests.Text = "Справочники";
+            this.tsmiDigests.ShortcutKeyDisplayString = null;
             // 
             // tsmiMakers
             // 
+            this.tsmiMakers.AccessibleDescription = null;
+            this.tsmiMakers.AccessibleName = null;
+            resources.ApplyResources(this.tsmiMakers, "tsmiMakers");
+            this.tsmiMakers.BackgroundImage = null;
             this.tsmiMakers.Name = "tsmiMakers";
-            this.tsmiMakers.Size = new System.Drawing.Size(178, 22);
-            this.tsmiMakers.Text = "Изготовители";
+            this.tsmiMakers.ShortcutKeyDisplayString = null;
             this.tsmiMakers.Click += new System.EventHandler(this.tsmiMakers_Click);
             // 
             // tsmiProducts
             // 
+            this.tsmiProducts.AccessibleDescription = null;
+            this.tsmiProducts.AccessibleName = null;
+            resources.ApplyResources(this.tsmiProducts, "tsmiProducts");
+            this.tsmiProducts.BackgroundImage = null;
             this.tsmiProducts.Name = "tsmiProducts";
-            this.tsmiProducts.Size = new System.Drawing.Size(178, 22);
-            this.tsmiProducts.Text = "Продукты";
+            this.tsmiProducts.ShortcutKeyDisplayString = null;
             this.tsmiProducts.Click += new System.EventHandler(this.tsmiProducts_Click);
             // 
             // tsmiVendors
             // 
+            this.tsmiVendors.AccessibleDescription = null;
+            this.tsmiVendors.AccessibleName = null;
+            resources.ApplyResources(this.tsmiVendors, "tsmiVendors");
+            this.tsmiVendors.BackgroundImage = null;
             this.tsmiVendors.Name = "tsmiVendors";
-            this.tsmiVendors.Size = new System.Drawing.Size(178, 22);
-            this.tsmiVendors.Text = "Продавцы";
+            this.tsmiVendors.ShortcutKeyDisplayString = null;
             this.tsmiVendors.Click += new System.EventHandler(this.tsmiVendors_Click);
             // 
             // tsmiDiscountCards
             // 
+            this.tsmiDiscountCards.AccessibleDescription = null;
+            this.tsmiDiscountCards.AccessibleName = null;
+            resources.ApplyResources(this.tsmiDiscountCards, "tsmiDiscountCards");
+            this.tsmiDiscountCards.BackgroundImage = null;
             this.tsmiDiscountCards.Name = "tsmiDiscountCards";
-            this.tsmiDiscountCards.Size = new System.Drawing.Size(178, 22);
-            this.tsmiDiscountCards.Text = "Дисконтные карты";
+            this.tsmiDiscountCards.ShortcutKeyDisplayString = null;
             this.tsmiDiscountCards.Click += new System.EventHandler(this.tsmiDiscountCards_Click);
             // 
             // tsmiStatistics
             // 
+            this.tsmiStatistics.AccessibleDescription = null;
+            this.tsmiStatistics.AccessibleName = null;
+            resources.ApplyResources(this.tsmiStatistics, "tsmiStatistics");
+            this.tsmiStatistics.BackgroundImage = null;
             this.tsmiStatistics.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiOftenlyBought,
             this.tsmiProductPrices});
             this.tsmiStatistics.Name = "tsmiStatistics";
-            this.tsmiStatistics.Size = new System.Drawing.Size(80, 20);
-            this.tsmiStatistics.Text = "Статистика";
+            this.tsmiStatistics.ShortcutKeyDisplayString = null;
             // 
             // tsmiOftenlyBought
             // 
+            this.tsmiOftenlyBought.AccessibleDescription = null;
+            this.tsmiOftenlyBought.AccessibleName = null;
+            resources.ApplyResources(this.tsmiOftenlyBought, "tsmiOftenlyBought");
+            this.tsmiOftenlyBought.BackgroundImage = null;
             this.tsmiOftenlyBought.Name = "tsmiOftenlyBought";
-            this.tsmiOftenlyBought.Size = new System.Drawing.Size(234, 22);
-            this.tsmiOftenlyBought.Text = "Часто покупаемые продукты";
+            this.tsmiOftenlyBought.ShortcutKeyDisplayString = null;
             this.tsmiOftenlyBought.Click += new System.EventHandler(this.tsmiOftenlyBought_Click);
             // 
             // tsmiProductPrices
             // 
+            this.tsmiProductPrices.AccessibleDescription = null;
+            this.tsmiProductPrices.AccessibleName = null;
+            resources.ApplyResources(this.tsmiProductPrices, "tsmiProductPrices");
+            this.tsmiProductPrices.BackgroundImage = null;
             this.tsmiProductPrices.Name = "tsmiProductPrices";
-            this.tsmiProductPrices.Size = new System.Drawing.Size(234, 22);
-            this.tsmiProductPrices.Text = "Цены на продукты";
+            this.tsmiProductPrices.ShortcutKeyDisplayString = null;
             this.tsmiProductPrices.Click += new System.EventHandler(this.tsmiProductPrices_Click);
             // 
             // ssMainStatus
             // 
+            this.ssMainStatus.AccessibleDescription = null;
+            this.ssMainStatus.AccessibleName = null;
+            resources.ApplyResources(this.ssMainStatus, "ssMainStatus");
+            this.ssMainStatus.BackgroundImage = null;
+            this.ssMainStatus.Font = null;
             this.ssMainStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslConnectionState,
             this.tsslQueryResult});
-            this.ssMainStatus.Location = new System.Drawing.Point(0, 401);
             this.ssMainStatus.Name = "ssMainStatus";
-            this.ssMainStatus.Size = new System.Drawing.Size(772, 22);
-            this.ssMainStatus.TabIndex = 1;
-            this.ssMainStatus.Text = "Строка статуса";
             // 
             // tsslConnectionState
             // 
+            this.tsslConnectionState.AccessibleDescription = null;
+            this.tsslConnectionState.AccessibleName = null;
+            resources.ApplyResources(this.tsslConnectionState, "tsslConnectionState");
+            this.tsslConnectionState.BackgroundImage = null;
             this.tsslConnectionState.Name = "tsslConnectionState";
-            this.tsslConnectionState.Size = new System.Drawing.Size(214, 17);
-            this.tsslConnectionState.Text = "                                                                     ";
             // 
             // tsslQueryResult
             // 
+            this.tsslQueryResult.AccessibleDescription = null;
+            this.tsslQueryResult.AccessibleName = null;
+            resources.ApplyResources(this.tsslQueryResult, "tsslQueryResult");
+            this.tsslQueryResult.BackgroundImage = null;
             this.tsslQueryResult.Name = "tsslQueryResult";
-            this.tsslQueryResult.Size = new System.Drawing.Size(178, 17);
-            this.tsslQueryResult.Text = "                                                         ";
             // 
             // cConnection
             // 
@@ -390,21 +504,23 @@ namespace vBudgetForm
             // 
             // tsTools
             // 
-            this.tsTools.Location = new System.Drawing.Point(0, 24);
+            this.tsTools.AccessibleDescription = null;
+            this.tsTools.AccessibleName = null;
+            resources.ApplyResources(this.tsTools, "tsTools");
+            this.tsTools.BackgroundImage = null;
+            this.tsTools.Font = null;
             this.tsTools.Name = "tsTools";
-            this.tsTools.Size = new System.Drawing.Size(772, 25);
-            this.tsTools.TabIndex = 2;
-            this.tsTools.Text = "toolStrip1";
             // 
             // lvReceipts
             // 
+            this.lvReceipts.AccessibleDescription = null;
+            this.lvReceipts.AccessibleName = null;
+            resources.ApplyResources(this.lvReceipts, "lvReceipts");
+            this.lvReceipts.BackgroundImage = null;
             this.lvReceipts.ContextMenuStrip = this.cmsReceiptsMenu;
-            this.lvReceipts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvReceipts.Font = null;
             this.lvReceipts.FullRowSelect = true;
-            this.lvReceipts.Location = new System.Drawing.Point(0, 49);
             this.lvReceipts.Name = "lvReceipts";
-            this.lvReceipts.Size = new System.Drawing.Size(772, 352);
-            this.lvReceipts.TabIndex = 3;
             this.lvReceipts.UseCompatibleStateImageBehavior = false;
             this.lvReceipts.View = System.Windows.Forms.View.Details;
             this.lvReceipts.ItemActivate += new System.EventHandler(this.lvReceipts_ItemActivate);
@@ -412,38 +528,90 @@ namespace vBudgetForm
             // 
             // cmsReceiptsMenu
             // 
+            this.cmsReceiptsMenu.AccessibleDescription = null;
+            this.cmsReceiptsMenu.AccessibleName = null;
+            resources.ApplyResources(this.cmsReceiptsMenu, "cmsReceiptsMenu");
+            this.cmsReceiptsMenu.BackgroundImage = null;
+            this.cmsReceiptsMenu.Font = null;
             this.cmsReceiptsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAddReceipt,
+            this.toolStripMenuItem2,
+            this.tsmiDeleteReceipt,
+            this.toolStripMenuItem1,
             this.tsmiExportToolStripMenuItem,
             this.tsmiImport});
             this.cmsReceiptsMenu.Name = "cmsReceiptsMenu";
-            this.cmsReceiptsMenu.Size = new System.Drawing.Size(129, 48);
+            this.cmsReceiptsMenu.Opened += new System.EventHandler(this.cmsReceiptsMenu_Opened);
+            // 
+            // tsmiAddReceipt
+            // 
+            this.tsmiAddReceipt.AccessibleDescription = null;
+            this.tsmiAddReceipt.AccessibleName = null;
+            resources.ApplyResources(this.tsmiAddReceipt, "tsmiAddReceipt");
+            this.tsmiAddReceipt.BackgroundImage = null;
+            this.tsmiAddReceipt.Name = "tsmiAddReceipt";
+            this.tsmiAddReceipt.ShortcutKeyDisplayString = null;
+            this.tsmiAddReceipt.Click += new System.EventHandler(this.tsmiAddReceipt_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.AccessibleDescription = null;
+            this.toolStripMenuItem2.AccessibleName = null;
+            resources.ApplyResources(this.toolStripMenuItem2, "toolStripMenuItem2");
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            // 
+            // tsmiDeleteReceipt
+            // 
+            this.tsmiDeleteReceipt.AccessibleDescription = null;
+            this.tsmiDeleteReceipt.AccessibleName = null;
+            resources.ApplyResources(this.tsmiDeleteReceipt, "tsmiDeleteReceipt");
+            this.tsmiDeleteReceipt.BackgroundImage = null;
+            this.tsmiDeleteReceipt.Name = "tsmiDeleteReceipt";
+            this.tsmiDeleteReceipt.ShortcutKeyDisplayString = null;
+            this.tsmiDeleteReceipt.Click += new System.EventHandler(this.tsmiDeleteReceipt_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.AccessibleDescription = null;
+            this.toolStripMenuItem1.AccessibleName = null;
+            resources.ApplyResources(this.toolStripMenuItem1, "toolStripMenuItem1");
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             // 
             // tsmiExportToolStripMenuItem
             // 
+            this.tsmiExportToolStripMenuItem.AccessibleDescription = null;
+            this.tsmiExportToolStripMenuItem.AccessibleName = null;
+            resources.ApplyResources(this.tsmiExportToolStripMenuItem, "tsmiExportToolStripMenuItem");
+            this.tsmiExportToolStripMenuItem.BackgroundImage = null;
             this.tsmiExportToolStripMenuItem.Name = "tsmiExportToolStripMenuItem";
-            this.tsmiExportToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
-            this.tsmiExportToolStripMenuItem.Text = "Экспорт...";
+            this.tsmiExportToolStripMenuItem.ShortcutKeyDisplayString = null;
             this.tsmiExportToolStripMenuItem.Click += new System.EventHandler(this.tsmiExportToolStripMenuItem_Click);
             // 
             // tsmiImport
             // 
+            this.tsmiImport.AccessibleDescription = null;
+            this.tsmiImport.AccessibleName = null;
+            resources.ApplyResources(this.tsmiImport, "tsmiImport");
+            this.tsmiImport.BackgroundImage = null;
             this.tsmiImport.Name = "tsmiImport";
-            this.tsmiImport.Size = new System.Drawing.Size(128, 22);
-            this.tsmiImport.Text = "Импорт...";
+            this.tsmiImport.ShortcutKeyDisplayString = null;
             this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
             // 
             // vBudgetForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AccessibleDescription = null;
+            this.AccessibleName = null;
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(772, 423);
+            this.BackgroundImage = null;
             this.Controls.Add(this.lvReceipts);
             this.Controls.Add(this.tsTools);
             this.Controls.Add(this.ssMainStatus);
             this.Controls.Add(this.msMainMenu);
+            this.Font = null;
+            this.Icon = null;
             this.MainMenuStrip = this.msMainMenu;
             this.Name = "vBudgetForm";
-            this.Text = "vBudget";
             this.Load += new System.EventHandler(this.vBudgetForm_Load);
             this.msMainMenu.ResumeLayout(false);
             this.msMainMenu.PerformLayout();
@@ -501,5 +669,9 @@ namespace vBudgetForm
         private System.Windows.Forms.ToolStripMenuItem tsmiOnPeriod;
         private System.Windows.Forms.ToolStripMenuItem tsmiProductPrices;
         private System.Windows.Forms.ToolStripMenuItem tsmiDataExchange;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAddReceipt;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDeleteReceipt;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
