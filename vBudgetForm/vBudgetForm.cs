@@ -133,7 +133,7 @@ namespace vBudgetForm
                 if (add_new_rows) this.AddNewRow(i++, drw);
                 total += (decimal)drw["Price"];
             }
-            this.tsslQueryResult.Text = string.Format("Всего записей: {0} на сумму {1}", this.receipts.Rows.Count, total );
+            this.DisplaySubtotal(this.receipts.Rows.Count, total);
             return;
         }
         protected void LoadReceipts( Purchases.Criteria criteries ){
@@ -181,6 +181,29 @@ namespace vBudgetForm
             this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Price"), 100);
             this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Comment"), 150);
             this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Created"), 100);
+
+            // 'File' submenu
+            this.tsmiFile.Text = this.manager.GetString("Menu.F");
+            this.tsmiSettings.Text = this.manager.GetString("Menu.F.Settings");
+            this.tsmiExit.Text = this.manager.GetString("Menu.F.Exit");
+
+            // 'View' submenu
+            this.tsmiViewSection.Text = this.manager.GetString("Menu.V");
+            this.tsmiFilters.Text = this.manager.GetString("Menu.V.Filters");
+            this.tsmiSections.Text = this.manager.GetString("Menu.V.Sections");
+            this.tsmiSort.Text = this.manager.GetString("Menu.V.SortBy");
+            
+            // 'Actions' submenu
+            this.tsmiActions.Text = this.manager.GetString("Menu.A");
+            this.tsmiNewReceipt.Text = this.manager.GetString("Menu.A.New");
+            this.tsmiPersons.Text = this.manager.GetString("Menu.A.Persons");
+            this.tsmiDataExchange.Text = this.manager.GetString("Menu.A.Exchange");
+
+            // 'Digests' submenu
+            this.tsmiDigests.Text = this.manager.GetString("Menu.D");
+            // 'Statistics' submenu
+            this.tsmiStatistics.Text = this.manager.GetString("Menu.S");
+
 
             if (this.TryConnect()){
 
@@ -300,7 +323,9 @@ namespace vBudgetForm
         }
 
         private void tsmiExit_Click(object sender, EventArgs e){
-            if( MessageBox.Show("Действительно выйти из программы?", "Подтверждение действия", MessageBoxButtons.YesNo ) == DialogResult.Yes ){
+            string msg = this.manager.GetString("Exit.Message");
+            string cpt = this.manager.GetString("Exit.Caption");
+            if( MessageBox.Show(msg, cpt, MessageBoxButtons.YesNo ) == DialogResult.Yes ){
                 this.Close();
             }
         }
@@ -337,27 +362,39 @@ namespace vBudgetForm
 
         }
 
+        private void DisplaySubtotal(int count, decimal total)
+        {
+            this.tsslQueryResult.Text = string.Format(this.manager.GetString("Subtotal.Format"), count, total);
+            return;
+        }
         private void tsmiByWeeks_Click(object sender, EventArgs e){
             this.lvReceipts.Items.Clear();
             this.lvReceipts.Groups.Clear();
             ListViewGroup lgv = null;
             int i = 0;
-            int l_doy = 0;
+            int l_woy = 0, l_mon = 0;
             decimal total = 0, sub_total = 0;
+            string lcl_week = this.manager.GetString("Misc.Week");
             foreach (System.Data.DataRow drw in this.receipts.Rows){
                 System.DateTime dtm = (System.DateTime)drw["Payed"];
-                if ( (dtm.DayOfWeek == DayOfWeek.Sunday ) ||
-                     (dtm.DayOfYear - l_doy > 7)){
+
+                DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+                string m_name = dfi.GetMonthName(dtm.Month);
+                System.Globalization.Calendar cln = dfi.Calendar;
+                int wnum = cln.GetWeekOfYear(dtm, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+                if ( (dtm.Month != l_mon) ||
+                     (l_woy != wnum)){
                     if (lgv != null)
                         this.AddSummaryRow(lgv, sub_total);
                     lgv = new ListViewGroup();
                     this.lvReceipts.Groups.Add(lgv);
-                    string date = Effects.Dates.GetMonthName(dtm.Month) + ", " + dtm.Year.ToString() +
-                                  " неделя " + (dtm.DayOfYear/7).ToString();
+                    string date = string.Format("{0} {1}, {2} {3}", m_name, dtm.Year, lcl_week, wnum);
+
                     lgv.Name = date;
                     lgv.Header = date;
                     sub_total = 0;
-                    l_doy = dtm.DayOfYear;
+                    l_woy = wnum;
+                    l_mon = dtm.Month;
                 }
                 this.AddNewRow(lgv, i++, drw);
                 total += (decimal)drw["Price"];
@@ -365,7 +402,8 @@ namespace vBudgetForm
             }
             if (lgv != null)
                 this.AddSummaryRow(lgv, sub_total);
-            this.tsslQueryResult.Text = "Всего записей: " + i.ToString() + " на сумму " + total.ToString();
+
+            this.DisplaySubtotal(i, total);
             return;
         }
 
@@ -397,7 +435,7 @@ namespace vBudgetForm
             }
             if (lgv != null)
                 this.AddSummaryRow(lgv, sub_total);
-            this.tsslQueryResult.Text = "Всего записей: " + i.ToString() + " на сумму " + total.ToString();
+            this.DisplaySubtotal(i, total);
             return;
         }
 

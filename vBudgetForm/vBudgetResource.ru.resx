@@ -135,4 +135,55 @@
   <data name="Columns.Vendor" xml:space="preserve">
     <value>Продавец</value>
   </data>
+  <data name="Exit.Caption" xml:space="preserve">
+    <value>Подтверждение действия</value>
+  </data>
+  <data name="Exit.Message" xml:space="preserve">
+    <value>Закончить работу с программой?</value>
+  </data>
+  <data name="Menu.A" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="Menu.A.Exchange" xml:space="preserve">
+    <value>Обмен данными</value>
+  </data>
+  <data name="Menu.A.New" xml:space="preserve">
+    <value>Новый чек</value>
+  </data>
+  <data name="Menu.A.Persons" xml:space="preserve">
+    <value>Пользователи</value>
+  </data>
+  <data name="Menu.D" xml:space="preserve">
+    <value>Справочники</value>
+  </data>
+  <data name="Menu.F" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="Menu.F.Exit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="Menu.F.Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Menu.S" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="Menu.V" xml:space="preserve">
+    <value>Вид</value>
+  </data>
+  <data name="Menu.V.Filters" xml:space="preserve">
+    <value>Фильтры</value>
+  </data>
+  <data name="Menu.V.Sections" xml:space="preserve">
+    <value>Разделы</value>
+  </data>
+  <data name="Menu.V.SortBy" xml:space="preserve">
+    <value>Сортировка по...</value>
+  </data>
+  <data name="Misc.Week" xml:space="preserve">
+    <value>неделя</value>
+  </data>
+  <data name="Subtotal.Format" xml:space="preserve">
+    <value>Всего записей: {0} на сумму {1}</value>
+  </data>
 </root>
