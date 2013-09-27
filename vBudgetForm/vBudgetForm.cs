@@ -45,8 +45,8 @@ namespace vBudgetForm
             try{
                 this.cConnection.Open();
                 if (this.cConnection.State == ConnectionState.Open){
-                    this.tsslConnectionState.Text = "Подключено к " + server;
-                    this.Text = "vBudget (сервер: " + server + ")";
+                    this.tsslConnectionState.Text = this.manager.GetString("Connected.To") + server;
+                    this.Text = string.Format("vBudget ({0}: {1})", this.manager.GetString("Connected.Server"), server);
                     this.cConnection.Close();
                     done = true;
                 }else{

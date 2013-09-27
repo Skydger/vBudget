@@ -197,9 +197,9 @@ namespace vBudgetForm
             // 
             // tbxSearchProduct
             // 
-            this.tbxSearchProduct.Location = new System.Drawing.Point(43, 30);
+            this.tbxSearchProduct.Location = new System.Drawing.Point(47, 30);
             this.tbxSearchProduct.Name = "tbxSearchProduct";
-            this.tbxSearchProduct.Size = new System.Drawing.Size(202, 20);
+            this.tbxSearchProduct.Size = new System.Drawing.Size(200, 20);
             this.tbxSearchProduct.TabIndex = 5;
             this.tbxSearchProduct.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxSearchProduct_KeyUp);
             // 

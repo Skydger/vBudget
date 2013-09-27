@@ -12,11 +12,14 @@ namespace vBudgetForm
         private bool block;
         private decimal total_price;
         private decimal total_discount;
+        private System.Resources.ResourceManager manager;
         private int last_buyer;
         private int last_receiver;
 
         public ReceiptForm(System.Data.SqlClient.SqlConnection inConnection, ref System.Data.DataRow inReceipt, bool created ){
             InitializeComponent();
+            this.manager = new System.Resources.ResourceManager("vBudgetForm.ReceiptFormResource", System.Reflection.Assembly.GetExecutingAssembly());
+
             this.total_price = 0;
             this.total_discount = 0;
             this.cConnection = inConnection;
@@ -24,10 +27,29 @@ namespace vBudgetForm
             this.isNew = created;
             this.last_buyer = -1;
             this.last_receiver = -1;
-        } 
+        }
+        private void LoadFromResources()
+        {
+            this.Text = this.manager.GetString("Form.Title");
+            this.lblVendorType.Text = this.manager.GetString("Vendor.Type");
+            this.lblVendor.Text = this.manager.GetString("Vendor.Label");
+            this.lblComment.Text = this.manager.GetString("Receipt.Comment");
+            this.lblReceiptDate.Text = this.manager.GetString("Receipt.Date");
+            this.lblReceiptNumber.Text = this.manager.GetString("Receipt.Number");
+            this.lblDiscountCard.Text = this.manager.GetString("Receipt.DiscountCard");
+            this.lblSearch.Text = this.manager.GetString("Form.SearchLabel");
+            this.lblPositions.Text = this.manager.GetString("Receipt.Positions");
+            this.lblReceiptSum.Text = this.manager.GetString("Receipt.SubtotalPrice");
+            this.btnOk.Text = this.manager.GetString("Form.Accept");
+            this.btnCancel.Text = this.manager.GetString("Form.Cancel");
+            return;
+        }
+
 
         private void ReceiptForm_Load(object sender, EventArgs e){
             this.block = true;
+            this.LoadFromResources();
+
             System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(-1);
             cmd.Connection = this.cConnection;
 

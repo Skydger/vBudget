@@ -122,6 +122,12 @@
       <SubType>Designer</SubType>
       <DependentUpon>ChangePositionForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ReceiptFormResource.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReceiptFormResource.ru.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="vBudgetForm.en-US.resx">
       <SubType>Designer</SubType>
       <DependentUpon>vBudgetForm.cs</DependentUpon>

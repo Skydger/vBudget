@@ -135,6 +135,12 @@
   <data name="Columns.Vendor" xml:space="preserve">
     <value>Продавец</value>
   </data>
+  <data name="Connected.Server" xml:space="preserve">
+    <value>сервер</value>
+  </data>
+  <data name="Connected.To" xml:space="preserve">
+    <value>Подключено к </value>
+  </data>
   <data name="Exit.Caption" xml:space="preserve">
     <value>Подтверждение действия</value>
   </data>
