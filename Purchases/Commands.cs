@@ -113,9 +113,9 @@ namespace Purchases
             return cmd;
         }
 
-        public static System.Data.SqlClient.SqlCommand ReceiptContents(int receipt_id){
+        public static System.Data.SqlClient.SqlCommand ReceiptContents(Guid receipt_id){
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-                string sQuery = "SELECT rc.ContentID, rc.ReceiptID, rc.ProductID, pp.ProductName,\n" +
+                string sQuery = "SELECT rc.ContentID, rc.ReceiptID, rc.Position, rc.ProductID, pp.ProductName,\n" +
                                 "       rc.Amount, rc.Price, rc.Discount, rc.Units, rc.Buyer, rc.Receiver,\n" +
 //                                "       bb.Surname AS BuyerSurname, bb.Name AS BuyerName, bb.SecondName AS BuyerSecondName,\n" +
 //                                "       rr.Surname AS ReceiverSurname, rr.Name AS ReceiverName, rr.SecondName AS ReceiverSecondName,\n" +
@@ -133,7 +133,7 @@ namespace Purchases
                                 "LEFT JOIN Persons.Users AS rr\n" +
                                 "       ON rr.UserID = rc.Receiver\n" +
                                 "WHERE rc.ReceiptID = @Receipt\n" +
-                                "ORDER BY rc.ContentID";
+                                "ORDER BY rc.Position";
                 cmd.Parameters.AddWithValue("@Receipt", receipt_id);
                 cmd.CommandTimeout = 0;
                 cmd.CommandType = System.Data.CommandType.Text;

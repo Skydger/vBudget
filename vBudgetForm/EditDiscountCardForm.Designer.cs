@@ -10,7 +10,10 @@ namespace vBudgetForm
         private System.Data.DataTable vendors = null;
         private System.Data.DataTable users = null;
         private System.Data.DataRow card;
+        private System.Data.DataTable card_balance;
         private bool is_new = false;
+        private bool is_new_balance = false;
+        private bool has_balance = false;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -52,7 +55,9 @@ namespace vBudgetForm
             this.cbxExpired = new System.Windows.Forms.CheckBox();
             this.btnNewVendor = new System.Windows.Forms.Button();
             this.btnNewUser = new System.Windows.Forms.Button();
+            this.dgvBalanceInfo = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.nudPercents)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBalanceInfo)).BeginInit();
             this.SuspendLayout();
             // 
             // lblVendor
@@ -123,7 +128,7 @@ namespace vBudgetForm
             // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(245, 168);
+            this.btnAccept.Location = new System.Drawing.Point(245, 171);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(75, 23);
             this.btnAccept.TabIndex = 8;
@@ -134,7 +139,7 @@ namespace vBudgetForm
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(326, 168);
+            this.btnCancel.Location = new System.Drawing.Point(326, 171);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 9;
@@ -172,11 +177,13 @@ namespace vBudgetForm
             this.cbxDiscountType.FormattingEnabled = true;
             this.cbxDiscountType.Items.AddRange(new object[] {
             "Дисконтная",
-            "Накопительная"});
+            "Накопительная",
+            "Дисконтная и накопительная"});
             this.cbxDiscountType.Location = new System.Drawing.Point(255, 116);
             this.cbxDiscountType.Name = "cbxDiscountType";
             this.cbxDiscountType.Size = new System.Drawing.Size(146, 21);
             this.cbxDiscountType.TabIndex = 13;
+            this.cbxDiscountType.SelectedIndexChanged += new System.EventHandler(this.cbxDiscountType_SelectedIndexChanged);
             // 
             // lblSince
             // 
@@ -199,7 +206,7 @@ namespace vBudgetForm
             // cbxExpired
             // 
             this.cbxExpired.AutoSize = true;
-            this.cbxExpired.Location = new System.Drawing.Point(16, 172);
+            this.cbxExpired.Location = new System.Drawing.Point(16, 175);
             this.cbxExpired.Name = "cbxExpired";
             this.cbxExpired.Size = new System.Drawing.Size(167, 17);
             this.cbxExpired.TabIndex = 16;
@@ -224,13 +231,22 @@ namespace vBudgetForm
             this.btnNewUser.Text = "...";
             this.btnNewUser.UseVisualStyleBackColor = true;
             // 
+            // dgvBalanceInfo
+            // 
+            this.dgvBalanceInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvBalanceInfo.Location = new System.Drawing.Point(411, 4);
+            this.dgvBalanceInfo.Name = "dgvBalanceInfo";
+            this.dgvBalanceInfo.Size = new System.Drawing.Size(244, 190);
+            this.dgvBalanceInfo.TabIndex = 19;
+            // 
             // EditDiscountCardForm
             // 
             this.AcceptButton = this.btnAccept;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(414, 200);
+            this.ClientSize = new System.Drawing.Size(661, 202);
+            this.Controls.Add(this.dgvBalanceInfo);
             this.Controls.Add(this.btnNewUser);
             this.Controls.Add(this.btnNewVendor);
             this.Controls.Add(this.cbxExpired);
@@ -255,6 +271,7 @@ namespace vBudgetForm
             this.Text = "EditDiscountCardForm";
             this.Load += new System.EventHandler(this.EditDiscountCardForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudPercents)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBalanceInfo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -281,5 +298,6 @@ namespace vBudgetForm
         private System.Windows.Forms.CheckBox cbxExpired;
         private System.Windows.Forms.Button btnNewVendor;
         private System.Windows.Forms.Button btnNewUser;
+        private System.Windows.Forms.DataGridView dgvBalanceInfo;
     }
 }

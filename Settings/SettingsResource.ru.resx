@@ -123,6 +123,9 @@
   <data name="Main.Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="Main.Error" xml:space="preserve">
+    <value>Произошла ошибка!</value>
+  </data>
   <data name="Main.Name" xml:space="preserve">
     <value>Настройки</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="Tab.CS.Password" xml:space="preserve">
     <value>Пароль:</value>
+  </data>
+  <data name="Tab.CS.RoleError" xml:space="preserve">
+    <value>Ошибка! Необходимая роль сервера для этой операции отсутствует!</value>
   </data>
   <data name="Tab.CS.Server" xml:space="preserve">
     <value>Сервер БД:</value>

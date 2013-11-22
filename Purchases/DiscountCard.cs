@@ -5,26 +5,32 @@ using System.Text;
 namespace Purchases
 {
     /// <summary>
-    /// Класс дисконтных карт
+    /// Discount card class
     /// </summary>
     public class DiscountCard{
-        private static string Table = "Purchases.DiscountCards";
+        public static string Table = "Purchases.DiscountCards";
 
         /// <summary>
         /// Метод выборки дисконтных карт
         /// </summary>
         public static System.Data.SqlClient.SqlCommand Select(){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-            string sQuery = "    SELECT dc.CardID, dc.CardOwner, dc.VendorID, dc.CardName,\n" +
-                            "           dc.CardNumber, dc.DiscountPercent, dc.DiscountType,\n" +
-                            "           dc.Since, dc.Added, dc.Expired,\n" +
-                            "           pu.Surname, pu.Name, pu.SecondName,\n" +
-                            "           pv.VendorName\n" +
-                            "      FROM " + DiscountCard.Table + " AS dc\n" +
-                            "INNER JOIN Persons.Users AS pu\n" +
-                            "        ON pu.UserID = dc.CardOwner\n" +
-                            "INNER JOIN Purchases.Vendors AS pv\n" +
-                            "        ON pv.VendorID = dc.VendorID\n";
+            string sQuery = "SELECT dc.CardID, dc.CardOwner, dc.VendorID, dc.CardName,\n" +
+                            "       dc.CardNumber, dc.DiscountPercent, dc.DiscountType,\n" +
+                            "       dc.Since, dc.Added, dc.Expired,\n" +
+                            "       cb.OverallBalance, cb.DiscountBalance,\n" +
+                            "       cb.LastReceiptID, cb.Points,\n" +
+                            "       pu.Surname, pu.Name, pu.SecondName,\n" +
+                            "       pv.VendorName,\n" +
+                            "       CASE WHEN cb.CardID IS NULL THEN 0\n" +
+                            "       ELSE 1 END AS HasBalance\n" +
+                            "  FROM " + DiscountCard.Table + " AS dc\n" +
+                            "  LEFT JOIN " + CardBalance.Table + " AS cb\n" +
+                            "    ON cb.CardID = dc.CardID\n" +
+                            " INNER JOIN Persons.Users AS pu\n" +
+                            "         ON pu.UserID = dc.CardOwner\n" +
+                            " INNER JOIN Purchases.Vendors AS pv\n" +
+                            "         ON pv.VendorID = dc.VendorID\n";
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
@@ -136,7 +142,7 @@ namespace Purchases
                                 "             FROM Purchases.Receipts\n" +
                                 "            WHERE Purchases.Receipts.DiscountCard = @CardID ) \n" +
                                 "   UPDATE Purchases.DiscountCards\n" +
-                                "      SET Expired = 1\n" +
+                                "      SET Expired = GETDATE()\n" +
                                 "    WHERE CardID = @CardID\n" +
                                 "ELSE\n" +
                                 "   DELETE\n" +
@@ -165,18 +171,17 @@ namespace Purchases
         /// <param name="connection">Соединени с БД</param>
         /// <param name="message">Выходное сообщение об ошибке, если метод возвращает ложь</param>
         /// <returns>Метод возвращает идентификатор последней записи</returns>
-        public static int LastId( System.Data.SqlClient.SqlConnection connection, out string message ){
-            int last_id = -1;
+        public static Guid LastId( System.Data.SqlClient.SqlConnection connection, out string message ){
+            Guid last_id = new Guid(0,0,0, new byte [] {0,0,0,0,0,0,0,0});
             message = "";
             try{
                 connection.Open();
-                string sQuery = "SELECT MAX(CardID) AS LastID\n" +
+                string sQuery = "SELECT NEWID() AS LastID\n" +
                                 "  FROM " + DiscountCard.Table;
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sQuery);
                 cmd.Connection = connection;
                 object res = cmd.ExecuteScalar();
-                if (System.Convert.IsDBNull(res)) last_id = 0;
-                else last_id = (int)res;
+                if (!System.Convert.IsDBNull(res)) last_id = (Guid)res;
                 connection.Close();
             }catch(System.Exception ex ){
                 message = ex.Message;

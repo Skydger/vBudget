@@ -38,8 +38,8 @@ namespace vBudgetForm
             this.lblReceiptNumber.Text = this.manager.GetString("Receipt.Number");
             this.lblDiscountCard.Text = this.manager.GetString("Receipt.DiscountCard");
             this.lblSearch.Text = this.manager.GetString("Form.SearchLabel");
-            this.lblPositions.Text = this.manager.GetString("Receipt.Positions");
-            this.lblReceiptSum.Text = this.manager.GetString("Receipt.SubtotalPrice");
+            this.lblPositions.Text = string.Format(this.manager.GetString("Receipt.Positions"), 0);
+            this.lblReceiptSum.Text = string.Format(this.manager.GetString("Receipt.SubtotalPrice"), 0.0);
             this.btnOk.Text = this.manager.GetString("Form.Accept");
             this.btnCancel.Text = this.manager.GetString("Form.Cancel");
             return;
@@ -84,19 +84,21 @@ namespace vBudgetForm
             this.cbxDiscountCards.DisplayMember = "CardName";
             this.cbxDiscountCards.ValueMember = "CardID";
             this.cbxDiscountCards.SelectedValue = -1;
-            
 
             this.LoadReceiptContents();
             return;
         }
         protected void LoadReceiptContents(){
-            System.Data.SqlClient.SqlCommand cmd = Purchases.Commands.ReceiptContents((int)this.receipt["ReceiptID"]);
+            System.Data.SqlClient.SqlCommand cmd = Purchases.Commands.ReceiptContents((Guid)this.receipt["ReceiptID"]);
             cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
             this.contents = new System.Data.DataTable("ReceiptContents");
 
             sda.Fill(this.contents);
-            DataColumn ttlcol = new DataColumn("Всего", typeof(Decimal), "Amount * Price * (1.0 - Discount)");
+
+            string stn = this.manager.GetString("Form.Subtotal");
+
+            DataColumn ttlcol = new DataColumn(stn, typeof(Decimal), "Amount * Price * (1.0 - Discount)");
             this.contents.Columns.Add(ttlcol);
             string colname = "ContentID";
             this.contents.Columns[colname].AutoIncrement = true;
@@ -151,19 +153,17 @@ namespace vBudgetForm
             this.dgvReceiptContent.Columns[column_name].HeaderText = "ФИО получателя";
             this.dgvReceiptContent.Columns[column_name].Width = 100;
 
-
-
             this.dgvReceiptContent.Columns["Buyer"].ReadOnly = true;
             this.dgvReceiptContent.Columns["Buyer"].Visible = false;
             this.dgvReceiptContent.Columns["Receiver"].ReadOnly = true;
             this.dgvReceiptContent.Columns["Receiver"].Visible = false;
 
-            if (!System.Convert.IsDBNull(this.receipt["ReceiptID"]) &&
-                ( (int)this.receipt["ReceiptID"] > 0 ) ){
+            //if (!System.Convert.IsDBNull(this.receipt["ReceiptID"]) &&
+            //    ( (int)this.receipt["ReceiptID"] > 0 ) ){
                 this.Text = "Чек #" + this.receipt["ReceiptID"].ToString();
-            }
+            //}
             if (!System.Convert.IsDBNull(this.receipt["DiscountCard"])){
-                int dc = (int)this.receipt["DiscountCard"];
+                Guid dc = (Guid)this.receipt["DiscountCard"];
                 this.cbxDiscountCards.SelectedValue = dc;
             }
             if (!System.Convert.IsDBNull(this.receipt["Payed"])){
@@ -215,10 +215,11 @@ namespace vBudgetForm
                         //sdarc.InsertCommand = Purchases.Receipt.InsertCommand(this.receipt);
                         //sdarc.InsertCommand.Connection = this.cConnection;
                         //sdarc.InsertCommand.Transaction = tran;
-                        rcmd = Purchases.Receipt.InsertCommand(this.receipt);
-                        System.Data.SqlClient.SqlCommand idcmd = new System.Data.SqlClient.SqlCommand("SELECT MAX(ReceiptID) + 1 AS MaxID FROM Purchases.Receipts", this.cConnection, tran);
+                        System.Data.SqlClient.SqlCommand idcmd = new System.Data.SqlClient.SqlCommand("SELECT NEWID() AS MaxID FROM Purchases.Receipts", this.cConnection, tran);
     //                    int receipt_id = (int)idcmd.ExecuteScalar();
                         this.receipt["ReceiptID"] = idcmd.ExecuteScalar();
+                        rcmd = Purchases.Receipt.InsertCommand(this.receipt);
+
                         for (int k = 0; k < this.contents.Rows.Count; k++){
                             this.contents.Rows[k]["ReceiptID"] = this.receipt["ReceiptID"];
                         }
@@ -246,7 +247,11 @@ namespace vBudgetForm
                     sda.UpdateCommand = Purchases.ReceiptContent.UpdateCommand();
                     sda.UpdateCommand.Connection = this.cConnection;
                     sda.UpdateCommand.Transaction = tran;
+                    sda.DeleteCommand = Purchases.ReceiptContent.DeleteCommand();
+                    sda.DeleteCommand.Connection = this.cConnection;
+                    sda.DeleteCommand.Transaction = tran;
                     sda.Update(this.contents);
+                    //TODO Update discount card
                     tran.Commit();
                 }
                 this.cConnection.Close();
@@ -272,7 +277,7 @@ namespace vBudgetForm
             return;
         }
         private void ReceiptForm_Resize(object sender, EventArgs e){
-            this.scContent.Size = new Size(this.Width - 32, this.Height - 192 );
+            this.scContent.Size = new Size(this.Width - 32, this.Height - 212 );
             this.btnOk.Location = new Point(this.Width - 256, this.Height - 72);
             this.btnCancel.Location = new Point(this.Width - 94, this.Height - 72);
             this.RefreshElements();
@@ -320,30 +325,35 @@ namespace vBudgetForm
         }
 
         protected void RecalculateReceipt(){
+            this.last_position = 1;
             this.total_price = 0;
             this.total_discount = 0;
             int i = 0;
             decimal discount_cash = 0;
+            string stn = this.manager.GetString("Form.Subtotal");
+
             for( i = 0; i < this.dgvReceiptContent.Rows.Count-1; i++ ){
-                decimal total = (decimal)this.dgvReceiptContent.Rows[i].Cells["Всего"].Value;
+                decimal total = (decimal)this.dgvReceiptContent.Rows[i].Cells[stn].Value;
                 decimal summ = (decimal)this.dgvReceiptContent.Rows[i].Cells["Price"].Value;
                 summ = summ * (decimal)this.dgvReceiptContent.Rows[i].Cells["Amount"].Value;
                 discount_cash += total - summ;
 
                 total_price += total;
                 this.total_discount += (decimal)this.dgvReceiptContent.Rows[i].Cells["Discount"].Value;
+                this.last_position = (int)this.dgvReceiptContent.Rows[i].Cells["Position"].Value;
             }
             if (i > 0) this.total_discount = this.total_discount / i;
             int num = this.dgvReceiptContent.Rows.Count;
             DataGridViewRow dgvr = this.dgvReceiptContent.Rows[num - 1];
 //            dgvr.Cells["ProductID"].ReadOnly = true;
-            dgvr.Cells["ProductName"].Value = "Итого";
+            dgvr.Cells["ProductName"].Value = stn;
             dgvr.Cells["Discount"].Value = this.total_discount;
             dgvr.Cells["Price"].Value = discount_cash;
-            dgvr.Cells["Всего"].Value = this.total_price;
+            dgvr.Cells[stn].Value = this.total_price;
 
-            this.lblPositions.Text = "Всего позиций: " + i.ToString();
-            this.lblReceiptSum.Text = "На сумму: " + this.total_price.ToString("0.00");
+            this.lblPositions.Text = string.Format(this.manager.GetString("Receipt.Positions"), i);
+            this.lblReceiptSum.Text = string.Format(this.manager.GetString("Receipt.SubtotalPrice"), this.total_price);
+            return;
         }
 
         protected void AddProducts(){
@@ -364,6 +374,7 @@ namespace vBudgetForm
                     DataRow nrow = this.contents.NewRow();
                     int k = this.lbxProducts.SelectedIndices[i];
                     nrow["ReceiptID"] = this.receipt["ReceiptID"];
+                    nrow["Position"] = this.contents.Rows.Count + 1;
                     nrow["ProductID"] = this.products.Rows[k]["ProductID"];
                     nrow["ProductName"] = this.products.Rows[k]["ProductName"];
                     nrow["Buyer"] = pdfrm.BuyerId;
@@ -736,6 +747,71 @@ namespace vBudgetForm
         {
             this.CheckReceiptExistance();
             return;
+        }
+
+        private void dgvReceiptContent_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            this.last_position = 1;
+            foreach (System.Data.DataRow row in this.contents.Rows)
+            {
+                row["Position"] = this.last_position++;
+            }
+        }
+
+        private void cmsPositionsMenu_Opening(object sender, CancelEventArgs e)
+        {
+            if (this.dgvReceiptContent.SelectedRows.Count == 1)
+            {
+                if( this.dgvReceiptContent.SelectedRows[0].Index + 2 == this.dgvReceiptContent.RowCount )
+                    this.tsmiDownToOneLevel.Enabled = false;
+                else
+                    this.tsmiDownToOneLevel.Enabled = true;
+                if (this.dgvReceiptContent.SelectedRows[0].Index == 0)
+                    this.tsmiUpToOneLevel.Enabled = false;
+                else
+                    this.tsmiUpToOneLevel.Enabled = true;
+            }
+            else
+            {
+                this.tsmiUpToOneLevel.Enabled = false;
+                this.tsmiDownToOneLevel.Enabled = false;
+            }
+        }
+
+        private void tsmiUpToOneLevel_Click(object sender, EventArgs e)
+        {
+            if (this.dgvReceiptContent.SelectedRows.Count == 1)
+            {
+                int sel_index = this.dgvReceiptContent.SelectedRows[0].Index;
+                int prv_index = sel_index - 1;
+
+                DataTable cloned = this.contents.Clone();
+                cloned.Rows.Clear();
+                for(int pos = 0; pos < this.contents.Rows.Count; pos++)
+                {
+                    DataRow row = cloned.NewRow();
+                    if (pos == sel_index)
+                        row = this.contents.Rows[prv_index];
+                    else if (pos == prv_index)
+                        row = this.contents.Rows[sel_index];
+                    else
+                        row = this.contents.Rows[pos];
+                    cloned.Rows.Add(row);
+                }
+
+                
+                //r = this.contents.Rows[this.contents.Rows.Count - 1];
+                //this.contents.Rows.InsertAt(r, sel_index);
+                //this.contents.Rows.RemoveAt(this.contents.Rows.Count - 1);
+
+
+                this.contents = cloned;
+                //DataGridViewRow r = this.dgvReceiptContent.Rows[prev_index];
+                //this.dgvReceiptContent.Rows[prev_index] = this.dgvReceiptContent.Rows[sel_index];
+                //this.dgvReceiptContent.Rows[sel_index] = r;
+                //((DataRow)this.dgvReceiptContent.Rows[prev_index].Tag)["Position"] = sel_index + 1;
+                //((DataRow)this.dgvReceiptContent.Rows[sel_index].Tag)["Position"] = prev_index + 1;
+            }
         }
 
 

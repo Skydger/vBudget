@@ -147,6 +147,12 @@
   <data name="Exit.Message" xml:space="preserve">
     <value>Закончить работу с программой?</value>
   </data>
+  <data name="Form.Caution" xml:space="preserve">
+    <value>Внимание</value>
+  </data>
+  <data name="Form.ConfirmDeletion" xml:space="preserve">
+    <value>Внимание! Чек и его состав будут полностью удалены (операция необратима), продолжить?</value>
+  </data>
   <data name="Menu.A" xml:space="preserve">
     <value>Действия</value>
   </data>
@@ -162,6 +168,18 @@
   <data name="Menu.D" xml:space="preserve">
     <value>Справочники</value>
   </data>
+  <data name="Menu.D.DiscountCards" xml:space="preserve">
+    <value>Дисконтные карты</value>
+  </data>
+  <data name="Menu.D.Makers" xml:space="preserve">
+    <value>Изготовители</value>
+  </data>
+  <data name="Menu.D.Products" xml:space="preserve">
+    <value>Продукты</value>
+  </data>
+  <data name="Menu.D.Vendors" xml:space="preserve">
+    <value>Продавцы</value>
+  </data>
   <data name="Menu.F" xml:space="preserve">
     <value>Файл</value>
   </data>
@@ -173,6 +191,12 @@
   </data>
   <data name="Menu.S" xml:space="preserve">
     <value>Статистика</value>
+  </data>
+  <data name="Menu.S.OftenlyPurchases" xml:space="preserve">
+    <value>Часто покупаемые продукты</value>
+  </data>
+  <data name="Menu.S.ProductsPrices" xml:space="preserve">
+    <value>Цены на продукты</value>
   </data>
   <data name="Menu.V" xml:space="preserve">
     <value>Вид</value>

@@ -10,6 +10,8 @@ namespace Settings
 {
     public partial class DataBaseSettingsForm : Form
     {
+        private System.Resources.ResourceManager manager;
+
         public System.Collections.Specialized.StringCollection DataServers{
             get { return this.asDataServers; }
             set { this.asDataServers = value; }
@@ -39,6 +41,8 @@ namespace Settings
         public DataBaseSettingsForm()
         {
             this.InitializeComponent();
+            this.manager = new System.Resources.ResourceManager("Settings.SettingsResource", System.Reflection.Assembly.GetExecutingAssembly());
+
         }
         private void DataBaseSettingsForm_Load(object sender, EventArgs e){
             this.CheckSettings();
@@ -68,7 +72,6 @@ namespace Settings
             System.Threading.Thread.CurrentThread.CurrentCulture = nÒ;
             System.Threading.Thread.CurrentThread.CurrentUICulture = nÒ;
 
-            System.Resources.ResourceManager manager = new System.Resources.ResourceManager("Settings.SettingsResource", System.Reflection.Assembly.GetExecutingAssembly());
             this.Text = manager.GetString("Main.Name");
             this.tcSettingsControl.TabPages[0].Text = manager.GetString("Tab.CS.Name");
             this.tcSettingsControl.TabPages[1].Text = manager.GetString("Tab.IS.Name");
@@ -108,14 +111,11 @@ namespace Settings
         }
 
         private void cbIntegratedSecurity_CheckedChanged(object sender, EventArgs e){
-            //this.lblServer.Enabled = !this.cbIntegratedSecurity.Checked;
-            //this.cbServer.Enabled = !this.cbIntegratedSecurity.Checked;
             this.lblLogin.Enabled = !this.cbIntegratedSecurity.Checked;
             this.tbUser.Enabled = !this.cbIntegratedSecurity.Checked;
             this.lblPassword.Enabled = !this.cbIntegratedSecurity.Checked;
             this.tbPassword.Enabled = !this.cbIntegratedSecurity.Checked;
-            this.lblDataBase.Enabled = !this.cbIntegratedSecurity.Checked;
-            this.cbDataBases.Enabled = !this.cbIntegratedSecurity.Checked;
+            return;
         }
 
         private void cbServer_Validated(object sender, EventArgs e){
@@ -144,8 +144,9 @@ namespace Settings
             this.ChangeAuthType(true);
         }
 
-        private bool GetDatabase()
+        private bool GetDatabase(out string error)
         {
+            error = "";
             bool done = false;
             try
             {
@@ -164,33 +165,58 @@ namespace Settings
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 System.Data.SqlClient.SqlConnection conn = new System.Data.SqlClient.SqlConnection(sqlConnBuilder.ConnectionString);
                 cmd.Connection = conn;
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "sp_databases";
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "SELECT IS_SRVROLEMEMBER('dbcreator')";
                 conn.Open();
-                System.Data.SqlClient.SqlDataReader reader = cmd.ExecuteReader();
-                string sel_db = this.cbDataBases.Text;
-                this.cbDataBases.Items.Clear();
-                int sel = -1;
-                while (reader.Read())
+                bool proceed = false;
+                object esr = (int)cmd.ExecuteScalar();
+                conn.Close();
+                if (!System.Convert.IsDBNull(esr))
                 {
-                    string db_name = (string)reader["DATABASE_NAME"];
-                    int idx = this.cbDataBases.Items.Add(db_name);
-                    if (sel_db == db_name)
-                        sel = idx;
+                    int in_creator_role = (int)esr;
+                    proceed = (in_creator_role == 1);
                 }
-                this.cbDataBases.SelectedIndex = sel;
-                done = true;
+                if (proceed)
+                {
+                    cmd = new System.Data.SqlClient.SqlCommand();
+                    conn = new System.Data.SqlClient.SqlConnection(sqlConnBuilder.ConnectionString);
+                    cmd.Connection = conn;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "sp_databases";
+                    conn.Open();
+                    System.Data.SqlClient.SqlDataReader reader = cmd.ExecuteReader();
+                    string sel_db = this.cbDataBases.Text;
+                    this.cbDataBases.Items.Clear();
+                    int sel = -1;
+                    while (reader.Read())
+                    {
+                        string db_name = (string)reader["DATABASE_NAME"];
+                        int idx = this.cbDataBases.Items.Add(db_name);
+                        if (sel_db == db_name)
+                            sel = idx;
+                    }
+                    this.cbDataBases.SelectedIndex = sel;
+                    done = true;
+                }
+                else
+                {
+                    error = manager.GetString("Tab.CS.RoleError");
+                }
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(ex.Message, "Œ¯Ë·Í‡!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                error = ex.Message;
             }
             return done;
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            this.GetDatabase();
+            string error = "";
+            if (!this.GetDatabase(out error))
+            {
+                MessageBox.Show(error, manager.GetString("Main.Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             return;
         }
 

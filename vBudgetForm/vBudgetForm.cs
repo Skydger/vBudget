@@ -77,7 +77,7 @@ namespace vBudgetForm
             if (!System.Convert.IsDBNull(row["Comment"])) comment = (string)row["Comment"];
             if (!System.Convert.IsDBNull(row["Price"])) price = (decimal)row["Price"];
             if (!System.Convert.IsDBNull(row["Created"])) c_dtm = ((DateTime)row["Created"]);
-            lvi.SubItems.Add( ((int)row["ReceiptID"]).ToString());
+            lvi.SubItems.Add( ((Guid)row["ReceiptID"]).ToString());
             lvi.SubItems.Add(num);
             string dformat = "dd.MM.yyyy HH:mm";
             lvi.SubItems.Add(r_dtm.ToString(dformat));
@@ -150,9 +150,10 @@ namespace vBudgetForm
                 string colname = "ReceiptID";
                 if( !this.receipts.Columns.Contains( colname ) )
                     this.receipts.Columns.Add(colname);
-                this.receipts.Columns[colname].AutoIncrement = true;
-                this.receipts.Columns[colname].AutoIncrementSeed = -1;
-                this.receipts.Columns[colname].AutoIncrementStep = -1;
+                //this.receipts.Columns[colname].AutoIncrement = true;
+                //this.receipts.Columns[colname].AutoIncrementSeed = -1;
+                //this.receipts.Columns[colname].AutoIncrementStep = -1;
+                this.receipts.Columns[colname].DefaultValue = System.Guid.NewGuid();
 
                 this.CalculateTotal( true );
 //                this.receipts.Columns[colname].AutoIncrement = true;
@@ -201,9 +202,16 @@ namespace vBudgetForm
 
             // 'Digests' submenu
             this.tsmiDigests.Text = this.manager.GetString("Menu.D");
+
+            this.tsmiMakers.Text = this.manager.GetString("Menu.D.Makers");
+            this.tsmiProducts.Text = this.manager.GetString("Menu.D.Products");
+            this.tsmiVendors.Text = this.manager.GetString("Menu.D.Vendors");
+            this.tsmiDiscountCards.Text = this.manager.GetString("Menu.D.DiscountCards");
+
             // 'Statistics' submenu
             this.tsmiStatistics.Text = this.manager.GetString("Menu.S");
-
+            this.tsmiOftenlyBought.Text = this.manager.GetString("Menu.S.OftenlyPurchases");
+            this.tsmiProductPrices.Text = this.manager.GetString("Menu.S.ProductsPrices");
 
             if (this.TryConnect()){
 
@@ -782,11 +790,28 @@ namespace vBudgetForm
 
         private void tsmiDeleteReceipt_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Внимание! Чек и его состав будут полностью удалены (операция необратима), продолжить?",
-                                "Внимание", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            //TODO: multiple deletion
+            int row_num = -1;
+            if (this.lvReceipts.SelectedIndices.Count == 1)
+                row_num = this.lvReceipts.SelectedIndices[0];
+            if (this.lvReceipts.SelectedItems.Count == 1)
             {
-
+                System.Data.DataRow del_row = (System.Data.DataRow)this.lvReceipts.SelectedItems[0].Tag;
+                if (MessageBox.Show(this.manager.GetString("Form.ConfirmDeletion"),
+                                    this.manager.GetString("Form.Caution"),
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    this.cConnection.Open();
+                    System.Data.SqlClient.SqlCommand cmd = Purchases.Receipt.DeleteCommand(del_row);
+                    cmd.Connection = this.cConnection;
+                    cmd.ExecuteNonQuery();
+                    this.lvReceipts.Items.RemoveAt(row_num);
+                    this.receipts.Rows.Remove(del_row);
+                    this.cConnection.Close();
+                    this.CalculateTotal(false);
+                }
             }
+            return;
         }
 
 

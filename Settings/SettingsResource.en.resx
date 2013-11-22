@@ -123,6 +123,9 @@
   <data name="Main.Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Main.Error" xml:space="preserve">
+    <value>An error has been occured!</value>
+  </data>
   <data name="Main.Name" xml:space="preserve">
     <value>Settings</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="Tab.CS.Password" xml:space="preserve">
     <value>Password:</value>
+  </data>
+  <data name="Tab.CS.RoleError" xml:space="preserve">
+    <value>Error! Action is forbidden due to lack of access rights to respective server role!</value>
   </data>
   <data name="Tab.CS.Server" xml:space="preserve">
     <value>Server:</value>

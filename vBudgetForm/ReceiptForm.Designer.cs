@@ -14,6 +14,7 @@ namespace vBudgetForm
         private System.Data.DataTable vendors = null;
         private System.Data.DataTable cards = null;
         private bool isNew = false;
+        private int last_position;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -71,18 +72,26 @@ namespace vBudgetForm
             this.lblPositions = new System.Windows.Forms.Label();
             this.lblReceiptSum = new System.Windows.Forms.Label();
             this.btnAddDiscountCard = new System.Windows.Forms.Button();
+            this.msMainMenu = new System.Windows.Forms.MenuStrip();
+            this.tsmiActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiUpToOneLevel = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDownToOneLevel = new System.Windows.Forms.ToolStripMenuItem();
             this.scContent.Panel1.SuspendLayout();
             this.scContent.Panel2.SuspendLayout();
             this.scContent.SuspendLayout();
             this.cmsProductsMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvReceiptContent)).BeginInit();
             this.cmsPositionsMenu.SuspendLayout();
+            this.msMainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbxVendorTypes
             // 
             this.cbxVendorTypes.FormattingEnabled = true;
-            this.cbxVendorTypes.Location = new System.Drawing.Point(144, 6);
+            this.cbxVendorTypes.Location = new System.Drawing.Point(141, 27);
             this.cbxVendorTypes.Name = "cbxVendorTypes";
             this.cbxVendorTypes.Size = new System.Drawing.Size(147, 21);
             this.cbxVendorTypes.TabIndex = 1;
@@ -91,7 +100,7 @@ namespace vBudgetForm
             // lblVendorType
             // 
             this.lblVendorType.AutoSize = true;
-            this.lblVendorType.Location = new System.Drawing.Point(12, 9);
+            this.lblVendorType.Location = new System.Drawing.Point(9, 30);
             this.lblVendorType.Name = "lblVendorType";
             this.lblVendorType.Size = new System.Drawing.Size(126, 13);
             this.lblVendorType.TabIndex = 1;
@@ -100,7 +109,7 @@ namespace vBudgetForm
             // lblVendor
             // 
             this.lblVendor.AutoSize = true;
-            this.lblVendor.Location = new System.Drawing.Point(338, 9);
+            this.lblVendor.Location = new System.Drawing.Point(335, 30);
             this.lblVendor.Name = "lblVendor";
             this.lblVendor.Size = new System.Drawing.Size(60, 13);
             this.lblVendor.TabIndex = 3;
@@ -109,7 +118,7 @@ namespace vBudgetForm
             // cbxVendors
             // 
             this.cbxVendors.FormattingEnabled = true;
-            this.cbxVendors.Location = new System.Drawing.Point(417, 6);
+            this.cbxVendors.Location = new System.Drawing.Point(414, 27);
             this.cbxVendors.Name = "cbxVendors";
             this.cbxVendors.Size = new System.Drawing.Size(360, 21);
             this.cbxVendors.TabIndex = 16;
@@ -119,7 +128,7 @@ namespace vBudgetForm
             // 
             // btnNewVendor
             // 
-            this.btnNewVendor.Location = new System.Drawing.Point(783, 5);
+            this.btnNewVendor.Location = new System.Drawing.Point(780, 26);
             this.btnNewVendor.Name = "btnNewVendor";
             this.btnNewVendor.Size = new System.Drawing.Size(29, 23);
             this.btnNewVendor.TabIndex = 4;
@@ -130,7 +139,7 @@ namespace vBudgetForm
             // lblReceiptDate
             // 
             this.lblReceiptDate.AutoSize = true;
-            this.lblReceiptDate.Location = new System.Drawing.Point(12, 41);
+            this.lblReceiptDate.Location = new System.Drawing.Point(9, 62);
             this.lblReceiptDate.Name = "lblReceiptDate";
             this.lblReceiptDate.Size = new System.Drawing.Size(36, 13);
             this.lblReceiptDate.TabIndex = 5;
@@ -140,7 +149,7 @@ namespace vBudgetForm
             // 
             this.dtpPeceiptDate.CustomFormat = "dd.MM.yyyy HH:mm:ss";
             this.dtpPeceiptDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpPeceiptDate.Location = new System.Drawing.Point(144, 35);
+            this.dtpPeceiptDate.Location = new System.Drawing.Point(141, 56);
             this.dtpPeceiptDate.Name = "dtpPeceiptDate";
             this.dtpPeceiptDate.Size = new System.Drawing.Size(147, 20);
             this.dtpPeceiptDate.TabIndex = 6;
@@ -148,7 +157,7 @@ namespace vBudgetForm
             // 
             // tbxReceiptNumber
             // 
-            this.tbxReceiptNumber.Location = new System.Drawing.Point(144, 60);
+            this.tbxReceiptNumber.Location = new System.Drawing.Point(141, 81);
             this.tbxReceiptNumber.Name = "tbxReceiptNumber";
             this.tbxReceiptNumber.Size = new System.Drawing.Size(176, 20);
             this.tbxReceiptNumber.TabIndex = 8;
@@ -166,7 +175,7 @@ namespace vBudgetForm
             // 
             // scContent
             // 
-            this.scContent.Location = new System.Drawing.Point(12, 114);
+            this.scContent.Location = new System.Drawing.Point(12, 134);
             this.scContent.Name = "scContent";
             // 
             // scContent.Panel1
@@ -181,7 +190,7 @@ namespace vBudgetForm
             // scContent.Panel2
             // 
             this.scContent.Panel2.Controls.Add(this.dgvReceiptContent);
-            this.scContent.Size = new System.Drawing.Size(800, 284);
+            this.scContent.Size = new System.Drawing.Size(800, 264);
             this.scContent.SplitterDistance = 266;
             this.scContent.TabIndex = 10;
             this.scContent.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scContent_SplitterMoved);
@@ -288,17 +297,22 @@ namespace vBudgetForm
             this.dgvReceiptContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvReceiptContent.Location = new System.Drawing.Point(0, 0);
             this.dgvReceiptContent.Name = "dgvReceiptContent";
-            this.dgvReceiptContent.Size = new System.Drawing.Size(530, 284);
+            this.dgvReceiptContent.Size = new System.Drawing.Size(530, 264);
             this.dgvReceiptContent.TabIndex = 0;
             this.dgvReceiptContent.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dgvReceiptContent_RowPostPaint);
+            this.dgvReceiptContent.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvReceiptContent_UserDeletedRow);
             // 
             // cmsPositionsMenu
             // 
             this.cmsPositionsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiChangePosition,
-            this.tsmiChangeProduct});
+            this.tsmiChangeProduct,
+            this.toolStripMenuItem1,
+            this.tsmiUpToOneLevel,
+            this.tsmiDownToOneLevel});
             this.cmsPositionsMenu.Name = "cmsPositionsMenu";
-            this.cmsPositionsMenu.Size = new System.Drawing.Size(243, 48);
+            this.cmsPositionsMenu.Size = new System.Drawing.Size(243, 120);
+            this.cmsPositionsMenu.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPositionsMenu_Opening);
             // 
             // tsmiChangePosition
             // 
@@ -327,7 +341,7 @@ namespace vBudgetForm
             // lblComment
             // 
             this.lblComment.AutoSize = true;
-            this.lblComment.Location = new System.Drawing.Point(338, 39);
+            this.lblComment.Location = new System.Drawing.Point(335, 60);
             this.lblComment.Name = "lblComment";
             this.lblComment.Size = new System.Drawing.Size(73, 13);
             this.lblComment.TabIndex = 12;
@@ -335,7 +349,7 @@ namespace vBudgetForm
             // 
             // tbxComment
             // 
-            this.tbxComment.Location = new System.Drawing.Point(417, 38);
+            this.tbxComment.Location = new System.Drawing.Point(414, 59);
             this.tbxComment.MaxLength = 128;
             this.tbxComment.Multiline = true;
             this.tbxComment.Name = "tbxComment";
@@ -345,7 +359,7 @@ namespace vBudgetForm
             // lblReceiptNumber
             // 
             this.lblReceiptNumber.AutoSize = true;
-            this.lblReceiptNumber.Location = new System.Drawing.Point(13, 63);
+            this.lblReceiptNumber.Location = new System.Drawing.Point(10, 84);
             this.lblReceiptNumber.Name = "lblReceiptNumber";
             this.lblReceiptNumber.Size = new System.Drawing.Size(70, 13);
             this.lblReceiptNumber.TabIndex = 14;
@@ -354,7 +368,7 @@ namespace vBudgetForm
             // lblDiscountCard
             // 
             this.lblDiscountCard.AutoSize = true;
-            this.lblDiscountCard.Location = new System.Drawing.Point(13, 87);
+            this.lblDiscountCard.Location = new System.Drawing.Point(10, 108);
             this.lblDiscountCard.Name = "lblDiscountCard";
             this.lblDiscountCard.Size = new System.Drawing.Size(104, 13);
             this.lblDiscountCard.TabIndex = 16;
@@ -363,7 +377,7 @@ namespace vBudgetForm
             // cbxDiscountCards
             // 
             this.cbxDiscountCards.FormattingEnabled = true;
-            this.cbxDiscountCards.Location = new System.Drawing.Point(145, 84);
+            this.cbxDiscountCards.Location = new System.Drawing.Point(142, 105);
             this.cbxDiscountCards.Name = "cbxDiscountCards";
             this.cbxDiscountCards.Size = new System.Drawing.Size(175, 21);
             this.cbxDiscountCards.TabIndex = 15;
@@ -390,13 +404,62 @@ namespace vBudgetForm
             // 
             // btnAddDiscountCard
             // 
-            this.btnAddDiscountCard.Location = new System.Drawing.Point(326, 82);
+            this.btnAddDiscountCard.Location = new System.Drawing.Point(323, 103);
             this.btnAddDiscountCard.Name = "btnAddDiscountCard";
             this.btnAddDiscountCard.Size = new System.Drawing.Size(22, 23);
             this.btnAddDiscountCard.TabIndex = 19;
             this.btnAddDiscountCard.Text = "...";
             this.btnAddDiscountCard.UseVisualStyleBackColor = true;
             this.btnAddDiscountCard.Click += new System.EventHandler(this.btnAddDiscountCard_Click);
+            // 
+            // msMainMenu
+            // 
+            this.msMainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiActionsToolStripMenuItem});
+            this.msMainMenu.Location = new System.Drawing.Point(0, 0);
+            this.msMainMenu.Name = "msMainMenu";
+            this.msMainMenu.Size = new System.Drawing.Size(816, 24);
+            this.msMainMenu.TabIndex = 20;
+            this.msMainMenu.Text = "menuStrip1";
+            // 
+            // tsmiActionsToolStripMenuItem
+            // 
+            this.tsmiActionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiImport,
+            this.tsmiExport});
+            this.tsmiActionsToolStripMenuItem.Name = "tsmiActionsToolStripMenuItem";
+            this.tsmiActionsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.tsmiActionsToolStripMenuItem.Text = "Actions";
+            // 
+            // tsmiImport
+            // 
+            this.tsmiImport.Name = "tsmiImport";
+            this.tsmiImport.Size = new System.Drawing.Size(158, 22);
+            this.tsmiImport.Text = "Import receipt...";
+            // 
+            // tsmiExport
+            // 
+            this.tsmiExport.Name = "tsmiExport";
+            this.tsmiExport.Size = new System.Drawing.Size(158, 22);
+            this.tsmiExport.Text = "Export receipt...";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(239, 6);
+            // 
+            // tsmiUpToOneLevel
+            // 
+            this.tsmiUpToOneLevel.Name = "tsmiUpToOneLevel";
+            this.tsmiUpToOneLevel.Size = new System.Drawing.Size(242, 22);
+            this.tsmiUpToOneLevel.Text = "На уровень вверх";
+            this.tsmiUpToOneLevel.Click += new System.EventHandler(this.tsmiUpToOneLevel_Click);
+            // 
+            // tsmiDownToOneLevel
+            // 
+            this.tsmiDownToOneLevel.Name = "tsmiDownToOneLevel";
+            this.tsmiDownToOneLevel.Size = new System.Drawing.Size(242, 22);
+            this.tsmiDownToOneLevel.Text = "На уровень вниз";
             // 
             // ReceiptForm
             // 
@@ -405,25 +468,27 @@ namespace vBudgetForm
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(816, 438);
-            this.Controls.Add(this.btnAddDiscountCard);
+            this.Controls.Add(this.msMainMenu);
             this.Controls.Add(this.lblReceiptSum);
             this.Controls.Add(this.lblPositions);
+            this.Controls.Add(this.btnAddDiscountCard);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.scContent);
             this.Controls.Add(this.lblDiscountCard);
             this.Controls.Add(this.cbxDiscountCards);
             this.Controls.Add(this.lblReceiptNumber);
             this.Controls.Add(this.tbxComment);
             this.Controls.Add(this.lblComment);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.scContent);
             this.Controls.Add(this.btnOk);
+            this.Controls.Add(this.lblVendorType);
+            this.Controls.Add(this.cbxVendorTypes);
             this.Controls.Add(this.tbxReceiptNumber);
             this.Controls.Add(this.dtpPeceiptDate);
             this.Controls.Add(this.lblReceiptDate);
             this.Controls.Add(this.btnNewVendor);
             this.Controls.Add(this.lblVendor);
             this.Controls.Add(this.cbxVendors);
-            this.Controls.Add(this.lblVendorType);
-            this.Controls.Add(this.cbxVendorTypes);
+            this.MainMenuStrip = this.msMainMenu;
             this.Name = "ReceiptForm";
             this.Text = "Чек";
             this.Load += new System.EventHandler(this.ReceiptForm_Load);
@@ -435,6 +500,8 @@ namespace vBudgetForm
             this.cmsProductsMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvReceiptContent)).EndInit();
             this.cmsPositionsMenu.ResumeLayout(false);
+            this.msMainMenu.ResumeLayout(false);
+            this.msMainMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -476,5 +543,12 @@ namespace vBudgetForm
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.ToolStripMenuItem tsmiDeleteProduct;
         private System.Windows.Forms.ToolStripMenuItem tsmiNewBySelected;
+        private System.Windows.Forms.MenuStrip msMainMenu;
+        private System.Windows.Forms.ToolStripMenuItem tsmiActionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiImport;
+        private System.Windows.Forms.ToolStripMenuItem tsmiExport;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiUpToOneLevel;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDownToOneLevel;
     }
 }

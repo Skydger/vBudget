@@ -34,25 +34,32 @@ namespace Purchases
         public static System.Data.SqlClient.SqlCommand InsertCommand( System.Data.DataRow row ){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "INSERT INTO Purchases.Receipts\n" +
-                            "           (Payed, Price, Discount, DiscountCard, Comment, Vendor,\n" +
+                            "           (ReceiptID, Payed, Price, Discount, DiscountCard, Comment, Vendor,\n" +
                             "            Deleted, Number, Created, Updated)\n" +
-                            "VALUES (@Payed, @Price, @Discount, @DiscountCard, @Comment, @Vendor,\n" +
+                            "VALUES (@Receipt, @Payed, @Price, @Discount, @DiscountCard, @Comment, @Vendor,\n" +
                             "        @Deleted, @Number, @Created, @Updated);"; //\n" +
 //                            "SELECT @ReceiptID = SCOPE_IDENTITY()";
-            cmd.Parameters.AddWithValue("@Payed", row["Payed"]);
-            cmd.Parameters.AddWithValue("@Price", row["Price"]);
-            cmd.Parameters.AddWithValue("@Discount", row["Discount"]);
-            cmd.Parameters.AddWithValue("@DiscountCard", row["DiscountCard"]);
-            cmd.Parameters.AddWithValue("@Comment", row["Comment"]);
-            cmd.Parameters.AddWithValue("@Vendor", row["Vendor"]);
-            cmd.Parameters.AddWithValue("@Deleted", row["Deleted"]);
-            cmd.Parameters.AddWithValue("@Number", row["Number"]);
-            cmd.Parameters.AddWithValue("@Created", row["Created"]);
-            cmd.Parameters.AddWithValue("@Updated", row["Updated"]);
-            cmd.CommandTimeout = 0;
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.CommandText = sQuery;
-//            cmd = Receipt.AddParameters(cmd);
+            if (row != null)
+            {
+                cmd.Parameters.AddWithValue("@Receipt", row["ReceiptID"]);
+                cmd.Parameters.AddWithValue("@Payed", row["Payed"]);
+                cmd.Parameters.AddWithValue("@Price", row["Price"]);
+                cmd.Parameters.AddWithValue("@Discount", row["Discount"]);
+                cmd.Parameters.AddWithValue("@DiscountCard", row["DiscountCard"]);
+                cmd.Parameters.AddWithValue("@Comment", row["Comment"]);
+                cmd.Parameters.AddWithValue("@Vendor", row["Vendor"]);
+                cmd.Parameters.AddWithValue("@Deleted", row["Deleted"]);
+                cmd.Parameters.AddWithValue("@Number", row["Number"]);
+                cmd.Parameters.AddWithValue("@Created", row["Created"]);
+                cmd.Parameters.AddWithValue("@Updated", row["Updated"]);
+                cmd.CommandTimeout = 0;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = sQuery;
+            }
+            else
+            {
+                cmd = Receipt.AddParameters(cmd);
+            }
             return cmd;
         }
         public static System.Data.SqlClient.SqlCommand UpdateCommand( System.Data.DataRow row ){
@@ -62,21 +69,27 @@ namespace Purchases
                             "       DiscountCard = @DiscountCard, Comment = @Comment, Vendor = @Vendor,\n" +
                             "       Deleted = @Deleted, Number = @Number, Created = @Created, Updated = @Updated\n" +
                             " WHERE ReceiptID = @ReceiptID";
-            cmd.Parameters.AddWithValue("@ReceiptID", row["ReceiptID"]);
-            cmd.Parameters.AddWithValue("@Payed", row["Payed"]);
-            cmd.Parameters.AddWithValue("@Price", row["Price"]);
-            cmd.Parameters.AddWithValue("@Discount", row["Discount"]);
-            cmd.Parameters.AddWithValue("@DiscountCard", row["DiscountCard"]);
-            cmd.Parameters.AddWithValue("@Comment", row["Comment"]);
-            cmd.Parameters.AddWithValue("@Vendor", row["Vendor"]);
-            cmd.Parameters.AddWithValue("@Deleted", row["Deleted"]);
-            cmd.Parameters.AddWithValue("@Number", row["Number"]);
-            cmd.Parameters.AddWithValue("@Created", row["Created"]);
-            cmd.Parameters.AddWithValue("@Updated", row["Updated"]);
+            if (row != null)
+            {
+                cmd.Parameters.AddWithValue("@ReceiptID", row["ReceiptID"]);
+                cmd.Parameters.AddWithValue("@Payed", row["Payed"]);
+                cmd.Parameters.AddWithValue("@Price", row["Price"]);
+                cmd.Parameters.AddWithValue("@Discount", row["Discount"]);
+                cmd.Parameters.AddWithValue("@DiscountCard", row["DiscountCard"]);
+                cmd.Parameters.AddWithValue("@Comment", row["Comment"]);
+                cmd.Parameters.AddWithValue("@Vendor", row["Vendor"]);
+                cmd.Parameters.AddWithValue("@Deleted", row["Deleted"]);
+                cmd.Parameters.AddWithValue("@Number", row["Number"]);
+                cmd.Parameters.AddWithValue("@Created", row["Created"]);
+                cmd.Parameters.AddWithValue("@Updated", row["Updated"]);
+            }
+            else
+            {
+                cmd = Receipt.AddParameters(cmd);
+            }
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
-//            cmd = Receipt.AddParameters(cmd);
             return cmd;
         }
         public static System.Data.SqlClient.SqlCommand DeleteCommand(System.Data.DataRow row)

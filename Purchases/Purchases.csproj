@@ -33,6 +33,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CardBalance.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Criteria.cs" />
     <Compile Include="DiscountCard.cs" />

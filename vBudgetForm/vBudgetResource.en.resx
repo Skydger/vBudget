@@ -147,6 +147,12 @@
   <data name="Exit.Message" xml:space="preserve">
     <value>Do you wish to end your work?</value>
   </data>
+  <data name="Form.Caution" xml:space="preserve">
+    <value>Caution</value>
+  </data>
+  <data name="Form.ConfirmDeletion" xml:space="preserve">
+    <value>Attention! The receipt and all of its content will be deleted without possibilities to restore it! Please confirm this action.</value>
+  </data>
   <data name="Menu.A" xml:space="preserve">
     <value>Actions</value>
   </data>
@@ -162,6 +168,18 @@
   <data name="Menu.D" xml:space="preserve">
     <value>Digests</value>
   </data>
+  <data name="Menu.D.DiscountCards" xml:space="preserve">
+    <value>Discount cards</value>
+  </data>
+  <data name="Menu.D.Makers" xml:space="preserve">
+    <value>Makers</value>
+  </data>
+  <data name="Menu.D.Products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Menu.D.Vendors" xml:space="preserve">
+    <value>Vendors</value>
+  </data>
   <data name="Menu.F" xml:space="preserve">
     <value>File</value>
   </data>
@@ -173,6 +191,12 @@
   </data>
   <data name="Menu.S" xml:space="preserve">
     <value>Statistics</value>
+  </data>
+  <data name="Menu.S.OftenlyPurchases" xml:space="preserve">
+    <value>Oftenly purchases</value>
+  </data>
+  <data name="Menu.S.ProductsPrices" xml:space="preserve">
+    <value>Products prices</value>
   </data>
   <data name="Menu.V" xml:space="preserve">
     <value>View</value>

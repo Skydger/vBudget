@@ -29,6 +29,7 @@ namespace vBudgetForm
             this.lvDiscountCards.Columns.Add("Наименование организации", 120);
             this.lvDiscountCards.Columns.Add("Дата", 80);
             this.lvDiscountCards.Columns.Add("Действительна", 50);
+            this.lvDiscountCards.Columns.Add("Баланс", 50);
 
             System.Data.SqlClient.SqlCommand cmd = Purchases.DiscountCard.Select();
             cmd.Connection = this.cConnection;
@@ -45,6 +46,7 @@ namespace vBudgetForm
             lvi.Name = (position + 1).ToString();
             lvi.Text = (position + 1).ToString();
             string snm = "", nm = "", scnm = "";
+            decimal ov_balance = 0.0m;
             if (!System.Convert.IsDBNull(row["Surname"])) snm = (string)row["Surname"];
             if (!System.Convert.IsDBNull(row["Name"])) nm = (string)row["Name"];
             if (!System.Convert.IsDBNull(row["SecondName"])) scnm = (string)row["SecondName"];
@@ -62,9 +64,8 @@ namespace vBudgetForm
 
             string vendor = "";
             if (!System.Convert.IsDBNull(row["VendorName"])) vendor = (string)row["VendorName"];
-            DateTime cr_dtm = new DateTime(1900, 1, 1);
+            DateTime cr_dtm = new DateTime(1900, 1, 1), cr_exp;
             if (!System.Convert.IsDBNull(row["Since"])) cr_dtm = ((DateTime)row["Since"]);
-
 
             lvi.SubItems.Add(snm);
             lvi.SubItems.Add(card_name);
@@ -72,8 +73,25 @@ namespace vBudgetForm
             lvi.SubItems.Add(percent.ToString());
             lvi.SubItems.Add(vendor);
             lvi.SubItems.Add(cr_dtm.ToShortDateString());
-            lvi.SubItems.Add("");
+            if (!System.Convert.IsDBNull(row["Expired"]))
+            {
+                cr_exp = ((DateTime)row["Expired"]);
+                lvi.SubItems.Add(cr_exp.ToShortDateString());
+            }
+            else
+            {
+                lvi.SubItems.Add("");
+            }
 
+            if (!System.Convert.IsDBNull(row["OverallBalance"]))
+            {
+                ov_balance = (decimal)row["OverallBalance"];
+                lvi.SubItems.Add(ov_balance.ToString("0.00"));
+            }
+            else
+            {
+                lvi.SubItems.Add("");
+            }
             this.lvDiscountCards.Items.Add(lvi);
             return;
         }

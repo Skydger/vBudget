@@ -7,7 +7,8 @@ namespace Purchases
     public class ReceiptContent{
         // подготовка параметров для SqlCommand таблицы состава чека
         static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command){
-            command.Parameters.Add("@Receipt", System.Data.SqlDbType.Int, sizeof(int), "ReceiptID");
+            command.Parameters.Add("@Receipt", System.Data.SqlDbType.UniqueIdentifier, 0, "ReceiptID");
+            command.Parameters.Add("@Position", System.Data.SqlDbType.Int, sizeof(int), "Position");
             command.Parameters.Add("@Product", System.Data.SqlDbType.Int, sizeof(int), "ProductID");
             command.Parameters.Add("@Amount", System.Data.SqlDbType.Decimal, 0, "Amount");
             command.Parameters.Add("@Price", System.Data.SqlDbType.Decimal, 0, "Price");
@@ -20,9 +21,9 @@ namespace Purchases
 
         public static System.Data.SqlClient.SqlCommand UpdateCommand(){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-            string sQuery = "UPDATE Purchases.ReceiptContents SET ReceiptID = @Receipt, ProductID = @Product,\n" +
-                            "       Amount = @Amount, Price = @Price, Discount = @Dicount, Units = @Units,\n" +
-                            "       Buyer = @Buyer, Receiver = @Receiver\n" +
+            string sQuery = "UPDATE Purchases.ReceiptContents SET ReceiptID = @Receipt, Position = @Position,\n"+
+                            "       ProductID = @Product, Amount = @Amount, Price = @Price, Discount = @Dicount,\n"+
+                            "       Units = @Units, Buyer = @Buyer, Receiver = @Receiver\n" +
                             "WHERE ContentID = @ContentId";
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
@@ -35,9 +36,9 @@ namespace Purchases
         public static System.Data.SqlClient.SqlCommand InsertCommand(){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "INSERT INTO Purchases.ReceiptContents\n" +
-                            "           (ReceiptID, ProductID, Amount, Price, Discount, Units,\n" +
+                            "           (ReceiptID, Position, ProductID, Amount, Price, Discount, Units,\n" +
                             "            Buyer, Receiver)\n" +
-                            "VALUES (@Receipt, @Product, @Amount, @Price, @Dicount, @Units, @Buyer, @Receiver)";
+                            "VALUES (@Receipt, @Position, @Product, @Amount, @Price, @Dicount, @Units, @Buyer, @Receiver)";
             cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.Int, 0, "ContentID");
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
