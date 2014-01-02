@@ -18,10 +18,12 @@ namespace Purchases
 
         // подготовка параметров для SqlCommand таблицы чека
         static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command){
+            command.Parameters.Add("@Receipt", System.Data.SqlDbType.UniqueIdentifier, 0, "ReceiptID");
+            
             command.Parameters.Add("@Payed", System.Data.SqlDbType.DateTime, 0, "Payed");
             command.Parameters.Add("@Price", System.Data.SqlDbType.Decimal, 0, "Price");
             command.Parameters.Add("@Discount", System.Data.SqlDbType.Decimal, 0, "Discount");
-            command.Parameters.Add("@DiscountCard", System.Data.SqlDbType.Int, 0, "DiscountCard");
+            command.Parameters.Add("@DiscountCard", System.Data.SqlDbType.UniqueIdentifier, 0, "DiscountCard");
             command.Parameters.Add("@Comment", System.Data.SqlDbType.NVarChar, 0, "Comment");
             command.Parameters.Add("@Vendor", System.Data.SqlDbType.Int, 0, "Vendor");
             command.Parameters.Add("@Deleted", System.Data.SqlDbType.Int, 0, "Deleted");
@@ -30,6 +32,7 @@ namespace Purchases
             command.Parameters.Add("@Updated", System.Data.SqlDbType.DateTime, 0, "Updated");
             return command;
         }
+
 
         public static System.Data.SqlClient.SqlCommand InsertCommand( System.Data.DataRow row ){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
@@ -52,16 +55,17 @@ namespace Purchases
                 cmd.Parameters.AddWithValue("@Number", row["Number"]);
                 cmd.Parameters.AddWithValue("@Created", row["Created"]);
                 cmd.Parameters.AddWithValue("@Updated", row["Updated"]);
-                cmd.CommandTimeout = 0;
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = sQuery;
             }
             else
             {
                 cmd = Receipt.AddParameters(cmd);
             }
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
             return cmd;
         }
+
         public static System.Data.SqlClient.SqlCommand UpdateCommand( System.Data.DataRow row ){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "UPDATE Purchases.Receipts\n" +

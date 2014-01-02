@@ -23,14 +23,19 @@ namespace vBudgetForm
 
         private void AddProductForm_Load(object sender, EventArgs e){
             this.block = true;
-            if (System.Convert.IsDBNull(this.product["ProductID"]) || (((int)this.product["ProductID"]) < 0 )){
-                this.Text = "Новый продукт";
+            string error = "";
+            if (System.Convert.IsDBNull(this.product["ProductID"]) || (((Guid)this.product["ProductID"]) == Guid.Empty )){
                 this.isNew = true;
             }else{
-                this.Text = "Редактирование продукта #" + ((int)this.product["ProductID"]).ToString();
+                this.Text = "Редактирование продукта #" + ((Guid)this.product["ProductID"]).ToString();
                 this.isNew = false;
             }
 
+            if (this.isNew)
+            {
+                this.product["ProductID"] = Producer.Product.NewID(this.cConnection, (int)this.product["Category"], out error);
+                this.Text = "Новый продукт #" + ((Guid)this.product["ProductID"]).ToString();
+            }
             System.Data.SqlClient.SqlCommand cat_cmd = Producer.Categories.Select(-1);
             cat_cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter catda = new System.Data.SqlClient.SqlDataAdapter(cat_cmd);
@@ -107,7 +112,6 @@ namespace vBudgetForm
             if (!noerrors){
                 MessageBox.Show(error);
             }else{
-                if (this.isNew) this.product["ProductID"] = Producer.Product.LastId(this.cConnection, (int)this.product["Category"], out error);
                 if (error.Length > 0)
                     MessageBox.Show(error);
                 else

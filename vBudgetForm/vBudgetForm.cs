@@ -101,7 +101,7 @@ namespace vBudgetForm
             if (!System.Convert.IsDBNull(row["VendorName"])) vendor = (string)row["VendorName"];
             decimal price = 0;
             if (!System.Convert.IsDBNull(row["Price"])) price = (decimal)row["Price"];
-            lvi.SubItems.Add(((int)row["ReceiptID"]).ToString());
+            lvi.SubItems.Add(((Guid)row["ReceiptID"]).ToString());
             lvi.SubItems.Add(num);
 //            lvi.SubItems.Add(r_dtm.ToShortDateString() + " " + r_dtm.ToShortTimeString());
             string dformat = "dd.MM.yyyy HH:mm";
@@ -585,48 +585,73 @@ namespace vBudgetForm
                 string[] o_ids = new string[this.lvReceipts.SelectedItems.Count];
                 for (int i = 0; i < this.lvReceipts.SelectedItems.Count; i++){
                     ListViewItem lvi = this.lvReceipts.SelectedItems[i];
-                    int id = -1;
-                    string soid = lvi.SubItems[1].Text;
-                    if (System.Int32.TryParse(soid, out id)){
-                        o_ids[i] = string.Format("@ReceiptId{0}", id);
-                        command.Parameters.AddWithValue(o_ids[i], id);
-                    }
+                    //int id = -1;
+                    //string soid = lvi.SubItems[1].Text;
+                    //if (System.Int32.TryParse(soid, out id)){
+                    //    o_ids[i] = string.Format("@ReceiptId{0}", id);
+                    //    command.Parameters.AddWithValue(o_ids[i], id);
+                    //}
+                    System.Guid id = (System.Guid)((DataRow)lvi.Tag)["ReceiptID"];
+                    o_ids[i] = string.Format("@ReceiptId{0}", i);
+                    command.Parameters.AddWithValue(o_ids[i], id);
                 }
                 conditions += string.Format("r.ReceiptID IN( {0} )", string.Join(", ", o_ids));
-                command.CommandText = "SELECT * FROM Purchases.Receipts AS r\nWHERE " +
-                                      conditions +
-                                      "SELECT * FROM Purchases.ReceiptContents AS r\nWHERE " +
-                                      conditions +
-                                      "SELECT * FROM Producer.Products AS p WHERE p.ProductID IN(\n" +
-                                      "SELECT DISTINCT ProductID FROM Purchases.ReceiptContents AS r\n" +
-                                      "WHERE " +conditions + ")" +
-                                      // ProductTypes
-                                      "SELECT pt.* FROM Producer.ProductTypes AS pt\n" + 
+
+                                      // Receipts
+                command.CommandText = "SELECT * FROM Purchases.Receipts AS r\n" +
+                                      " WHERE " + conditions + "\n" +
+                                      // Receipts contents
+                                      "SELECT * FROM Purchases.ReceiptContents AS r\n" +
+                                      " WHERE " + conditions + "\n" +
+                                      // Products
+                                      "SELECT DISTINCT p.* FROM Producer.Products AS p\n" +
+                                      " WHERE p.ProductID IN(SELECT DISTINCT ProductID\n" + 
+                                      "                        FROM Purchases.ReceiptContents AS r\n" +
+                                      "                       WHERE " + conditions + ")\n" +
+                                      // Product types
+                                      "SELECT DISTINCT pt.* FROM Producer.ProductTypes AS pt\n" + 
                                       "  JOIN Producer.Products AS p ON\n" +
                                       "       p.Category = pt.Category AND\n" +
                                       "       p.Type = pt.TypeID\n" +
-                                      "WHERE p.ProductID IN(\n" +
-                                      "SELECT DISTINCT ProductID FROM Purchases.ReceiptContents AS r\n" +
-                                      "WHERE " + conditions + ")" +
-                                      "SELECT c.* FROM Producer.Categories AS c\n" +
+                                      " WHERE p.ProductID IN (SELECT DISTINCT ProductID\n" +
+                                      "                         FROM Purchases.ReceiptContents AS r\n" +
+                                      "                        WHERE " + conditions + ")\n" +
+                                      // Categories
+                                      "SELECT DISTINCT c.* FROM Producer.Categories AS c\n" +
                                       "  JOIN Producer.Products AS p ON\n" +
                                       "       p.Category = c.CategoryID\n" +
-                                      "WHERE p.ProductID IN(\n" +
-                                      "SELECT DISTINCT ProductID FROM Purchases.ReceiptContents AS r\n" +
-                                      "WHERE " + conditions + ")\n" +
-                                      "SELECT * FROM Purchases.Vendors\n" +
-                                      "WHERE VendorID IN (SELECT Vendor FROM Purchases.Receipts AS r\nWHERE " +
-                                      conditions + ")" +
-                                      "SELECT * FROM Purchases.DiscountCards\n" +
+                                      "WHERE p.ProductID IN (SELECT DISTINCT ProductID\n" +
+                                      "                        FROM Purchases.ReceiptContents AS r\n" +
+                                      "                       WHERE " + conditions + ")\n" +
+                                      // Vendors
+                                      "SELECT DISTINCT v.* FROM Purchases.Vendors AS v\n" +
+                                      " WHERE VendorID IN (SELECT Vendor\n" +
+                                      "                      FROM Purchases.Receipts AS r\n" +
+                                      "                     WHERE " + conditions + ")\n" +
+                                      // Discount cards
+                                      "SELECT dc.* FROM Purchases.DiscountCards AS dc\n" +
                                       "WHERE CardID IN (SELECT DiscountCard FROM Purchases.Receipts AS r\nWHERE " +
-                                      conditions + ")" +
+                                      conditions + ")\n" +
+                                      // Discount cards balance
+                                      "SELECT cb.* FROM Purchases.CardBalance AS cb\n" +
+                                      "WHERE CardID IN (SELECT DiscountCard FROM Purchases.Receipts AS r\n" +
+                                      "                  WHERE " + conditions + ")\n" +
                                       // Makers
-                                      "SELECT m.* FROM Producer.Makers AS m\n" + 
+                                      "SELECT DISTINCT m.* FROM Producer.Makers AS m\n" + 
                                       "  JOIN Producer.Products AS p ON\n" +
                                       "       p.Maker = m.MakerId\n" +
-                                      "WHERE p.ProductID IN(\n" +
-                                      "SELECT DISTINCT ProductID FROM Purchases.ReceiptContents AS r\n" +
-                                      "WHERE " + conditions + ")"
+                                      " WHERE p.ProductID IN(SELECT DISTINCT ProductID\n" +
+                                      "                        FROM Purchases.ReceiptContents AS r\n" +
+                                      "                       WHERE " + conditions + ")\n" +
+                                      // Users
+                                      "SELECT DISTINCT u.* FROM Persons.Users AS u\n" +
+                                      " WHERE u.UserID IN (SELECT DISTINCT Buyer AS userid\n" +
+                                      "                      FROM Purchases.ReceiptContents AS r\n" +
+                                      "                     WHERE " + conditions + "\n" +
+                                      "                     UNION\n" +
+                                      "                    SELECT DISTINCT Receiver AS userid\n" +
+                                      "                      FROM Purchases.ReceiptContents AS r\n" +
+                                      "                     WHERE " + conditions + ")\n"
                                       ;
                 command.Connection = this.cConnection;
                 System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
@@ -640,7 +665,9 @@ namespace vBudgetForm
                 rec_ds.Tables[4].TableName = "Categories";
                 rec_ds.Tables[5].TableName = "Vendors";
                 rec_ds.Tables[6].TableName = "DiscountCards";
-                rec_ds.Tables[7].TableName = "Makers";
+                rec_ds.Tables[7].TableName = "CardBalance";
+                rec_ds.Tables[8].TableName = "Makers";
+                rec_ds.Tables[9].TableName = "Users";
 
                 string xsd_file = "";
                 string xml_file = "";
@@ -679,7 +706,8 @@ namespace vBudgetForm
         bool ImportSaved(string filename, out string error){
             bool done = false;
             error = "";
-            try{
+            try
+            {
                 System.Data.SqlClient.SqlCommand command = new System.Data.SqlClient.SqlCommand();
                 command.CommandText = "SELECT * FROM Purchases.Receipts\n" +
                                       "SELECT * FROM Purchases.ReceiptContents\n" +
@@ -688,7 +716,9 @@ namespace vBudgetForm
                                       "SELECT * FROM Producer.Categories\n" +
                                       "SELECT * FROM Purchases.Vendors\n" +
                                       "SELECT * FROM Purchases.DiscountCards\n" +
-                                      "SELECT * FROM Producer.Makers\n"
+                                      "SELECT * FROM Purchases.CardBalance\n" +
+                                      "SELECT * FROM Producer.Makers\n" +
+                                      "SELECT * FROM Persons.Users\n"
                                       ;
                 command.Connection = this.cConnection;
                 System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
@@ -702,18 +732,25 @@ namespace vBudgetForm
                 dst_ds.Tables[4].TableName = "Categories";
                 dst_ds.Tables[5].TableName = "Vendors";
                 dst_ds.Tables[6].TableName = "DiscountCards";
-                dst_ds.Tables[7].TableName = "Makers";
+                dst_ds.Tables[7].TableName = "CardBalance";
+                dst_ds.Tables[8].TableName = "Makers";
+                dst_ds.Tables[9].TableName = "Users";
 
                 System.Data.DataSet rec_ds = new System.Data.DataSet(table);
                 string xsd_file = "";
                 string xml_file = "";
-                if (filename.EndsWith(".xsd", true, System.Globalization.CultureInfo.CurrentCulture)){
+                if (filename.EndsWith(".xsd", true, System.Globalization.CultureInfo.CurrentCulture))
+                {
                     xsd_file = filename;
-                    xml_file = filename.Substring(0, filename.Length - 4 ) + ".xml";
-                }else if (filename.EndsWith(".xml", true, System.Globalization.CultureInfo.CurrentCulture)){
+                    xml_file = filename.Substring(0, filename.Length - 4) + ".xml";
+                }
+                else if (filename.EndsWith(".xml", true, System.Globalization.CultureInfo.CurrentCulture))
+                {
                     xml_file = filename;
                     xsd_file = filename.Substring(0, filename.Length - 4) + ".xsd";
-                }else{
+                }
+                else
+                {
                     xml_file = filename + ".xml";
                     xsd_file = filename + ".xsd";
                 }
@@ -721,14 +758,120 @@ namespace vBudgetForm
                 rec_ds.ReadXml(xml_file);
 
                 dst_ds.Merge(rec_ds, true);
-//                dst_ds.
+                //                dst_ds.
                 System.Data.DataSet cng_ds = dst_ds.GetChanges(DataRowState.Added);
-                if (cng_ds != null){
+                if (cng_ds != null)
+                {
+                    this.cConnection.Open();
+                    System.Data.SqlClient.SqlTransaction tran = this.cConnection.BeginTransaction();
+                    sda = new System.Data.SqlClient.SqlDataAdapter();
 
+                    // Merging vendors
+                    sda.InsertCommand = Vault.Users.Insert();
+                    sda.InsertCommand.Connection = this.cConnection;
+                    sda.InsertCommand.Transaction = tran;
+                    sda.UpdateCommand = Vault.Users.Update();
+                    sda.UpdateCommand.Connection = this.cConnection;
+                    sda.UpdateCommand.Transaction = tran;
+                    sda.Update(cng_ds.Tables["Users"]);
+
+                    // Merging vendors
+                    sda.InsertCommand = Purchases.Vendor.Insert();
+                    sda.InsertCommand.Connection = this.cConnection;
+                    sda.InsertCommand.Transaction = tran;
+                    sda.UpdateCommand = Purchases.Vendor.Update();
+                    sda.UpdateCommand.Connection = this.cConnection;
+                    sda.UpdateCommand.Transaction = tran;
+                    sda.Update(cng_ds.Tables["Vendors"]);
+
+                    // Merging discount cards
+                    sda.InsertCommand = Purchases.DiscountCard.Insert();
+                    sda.InsertCommand.Connection = this.cConnection;
+                    sda.InsertCommand.Transaction = tran;
+                    sda.UpdateCommand = Purchases.DiscountCard.Update();
+                    sda.UpdateCommand.Connection = this.cConnection;
+                    sda.UpdateCommand.Transaction = tran;
+                    sda.Update(cng_ds.Tables["DiscountCards"]);
+
+                    // Merging discount cards balance
+                    sda.InsertCommand = Purchases.CardBalance.Insert();
+                    sda.InsertCommand.Connection = this.cConnection;
+                    sda.InsertCommand.Transaction = tran;
+                    sda.UpdateCommand = Purchases.CardBalance.Update();
+                    sda.UpdateCommand.Connection = this.cConnection;
+                    sda.UpdateCommand.Transaction = tran;
+                    sda.Update(cng_ds.Tables["CardBalance"]);
+
+                    // Merging makers
+                    sda.InsertCommand = Producer.Maker.Insert();
+                    sda.InsertCommand.Connection = this.cConnection;
+                    sda.InsertCommand.Transaction = tran;
+                    sda.UpdateCommand = Producer.Maker.Update();
+                    sda.UpdateCommand.Connection = this.cConnection;
+                    sda.UpdateCommand.Transaction = tran;
+                    sda.Update(cng_ds.Tables["Makers"]);
+
+                    // Merging categories
+                    sda.InsertCommand = Producer.Categories.Insert();
+                    sda.InsertCommand.Connection = this.cConnection;
+                    sda.InsertCommand.Transaction = tran;
+                    sda.UpdateCommand = Producer.Categories.Update();
+                    sda.UpdateCommand.Connection = this.cConnection;
+                    sda.UpdateCommand.Transaction = tran;
+                    sda.Update(cng_ds.Tables["Categories"]);
+
+                    // Merging products' types
+                    sda.InsertCommand = Producer.ProductTypes.Insert();
+                    sda.InsertCommand.Connection = this.cConnection;
+                    sda.InsertCommand.Transaction = tran;
+                    sda.UpdateCommand = Producer.ProductTypes.Update();
+                    sda.UpdateCommand.Connection = this.cConnection;
+                    sda.UpdateCommand.Transaction = tran;
+                    sda.Update(cng_ds.Tables["ProductTypes"]);
+
+                    // Merging products
+                    sda.InsertCommand = Producer.Product.Insert();
+                    sda.InsertCommand.Connection = this.cConnection;
+                    sda.InsertCommand.Transaction = tran;
+                    sda.UpdateCommand = Producer.Product.Update();
+                    sda.UpdateCommand.Connection = this.cConnection;
+                    sda.UpdateCommand.Transaction = tran;
+                    sda.Update(cng_ds.Tables["Products"]);
+
+                    // Merging receipts
+                    sda.InsertCommand = Purchases.Receipt.InsertCommand(null);  // null as we insert all new rows
+                    sda.InsertCommand.Connection = this.cConnection;
+                    sda.InsertCommand.Transaction = tran;
+                    sda.UpdateCommand = Purchases.Receipt.UpdateCommand(null);  // null as we update all rows
+                    sda.UpdateCommand.Connection = this.cConnection;
+                    sda.UpdateCommand.Transaction = tran;
+                    sda.Update(cng_ds.Tables["Receipts"]);
+
+                    // Merging receipts' contents
+                    sda.InsertCommand = Purchases.ReceiptContent.InsertCommand();
+                    sda.InsertCommand.Connection = this.cConnection;
+                    sda.InsertCommand.Transaction = tran;
+                    sda.UpdateCommand = Purchases.ReceiptContent.UpdateCommand();
+                    sda.UpdateCommand.Connection = this.cConnection;
+                    sda.UpdateCommand.Transaction = tran;
+                    sda.Update(cng_ds.Tables["ReceiptContents"]);
+
+                    tran.Commit();
+                    this.cConnection.Close();
+
+                    //this.receipts.Rows.Add(new_row);
+                    //this.AddNewRow(this.receipts.Rows.Count - 1, new_row);
+                    //this.CalculateTotal(false);
                 }
                 done = true;
-            }catch(Exception ex){
+            }
+            catch (Exception ex)
+            {
                 error = ex.Message;
+            }
+            finally
+            {
+                if (this.cConnection.State != ConnectionState.Closed) this.cConnection.Close();
             }
             return done;
         }

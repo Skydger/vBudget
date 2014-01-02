@@ -24,7 +24,7 @@ namespace Statistics
         ORDER BY 3 DESC
         */
 
-        public static System.Data.SqlClient.SqlCommand ProductPrices(int product){
+        public static System.Data.SqlClient.SqlCommand ProductPrices(Guid product){
             string sQuery = "SELECT DISTINCT v.VendorName, rc.Price, CAST(rc.Price AS VARCHAR(50)) + ' - ' + v.VendorName AS PricaAndVendor\n" +
                             "  FROM Purchases.ReceiptContents AS rc\n" +
                             " RIGHT JOIN Purchases.Receipts AS r\n" +

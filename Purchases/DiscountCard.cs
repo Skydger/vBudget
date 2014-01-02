@@ -37,6 +37,37 @@ namespace Purchases
             return cmd;
         }
 
+        static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command)
+        {
+            command.Parameters.Add("@CardOwner", System.Data.SqlDbType.Int, 0, "CardOwner");
+            command.Parameters.Add("@VendorID", System.Data.SqlDbType.Int, 0, "VendorID");
+            command.Parameters.Add("@CardName", System.Data.SqlDbType.NVarChar, 0, "CardName");
+            command.Parameters.Add("@CardNumber", System.Data.SqlDbType.NVarChar, 0, "CardNumber");
+            command.Parameters.Add("@DiscountPercent", System.Data.SqlDbType.Decimal, 0, "DiscountPercent");
+            command.Parameters.Add("@DiscountType", System.Data.SqlDbType.SmallInt, 0, "DiscountType");
+            command.Parameters.Add("@Since", System.Data.SqlDbType.DateTime, 0, "Since");
+            command.Parameters.Add("@Expired", System.Data.SqlDbType.DateTime, 0, "Expired");
+            return command;
+        }
+
+        public static System.Data.SqlClient.SqlCommand Insert()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "INSERT INTO " + DiscountCard.Table + "\n" +
+                            "            (CardOwner, VendorID, CardName,\n" +
+                            "             CardNumber, DiscountPercent, DiscountType,\n" +
+                            "             Since, Added, Expired)\n" +
+                            "     VALUES (@CardOwner, @VendorID, @CardName,\n" +
+                            "             @CardNumber, @DiscountPercent, @DiscountType,\n" +
+                            "             @Since, @Added, @Expired)";
+            cmd = DiscountCard.AddParameters(cmd);
+            cmd.Parameters.Add("@Added", System.Data.SqlDbType.DateTime, 0, "Added");
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
+
         /// <summary>
         /// Занесение новой записи в БД о дисконтной карте
         /// </summary>
@@ -79,6 +110,23 @@ namespace Purchases
                 if (connection.State == System.Data.ConnectionState.Open) connection.Close();
             }
             return done;
+        }
+
+        public static System.Data.SqlClient.SqlCommand Update()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "UPDATE " + DiscountCard.Table + "\n" +
+                            "   SET CardOwner = @CardOwner, VendorID = @VendorID, CardName = @CardName,\n" +
+                            "       CardNumber = @CardNumber, DiscountPercent = @DiscountPercent, DiscountType = @DiscountType,\n" +
+                            "       Since = @Since, Added = @Added, Expired = @Expired\n" +
+                            " WHERE CardID = @CardID";
+            cmd = DiscountCard.AddParameters(cmd);
+            cmd.Parameters.Add("@CardID", System.Data.SqlDbType.Int, 0, "CardID");
+            cmd.Parameters.Add("@Added", System.Data.SqlDbType.DateTime, 0, "Added");
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
         }
 
         /// <summary>

@@ -19,6 +19,39 @@ namespace Producer{
             return cmd;
         }
 
+        static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command)
+        {
+            command.Parameters.Add("@CategoryName", System.Data.SqlDbType.NVarChar, 0, "CategoryName");
+            return command;
+        }
+
+        public static System.Data.SqlClient.SqlCommand Insert()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "INSERT INTO " + Categories.Table + "\n" +
+                            "           (CategoryName)\n" +
+                            "VALUES (@CategoryName)";
+            cmd = Categories.AddParameters(cmd);
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
+        public static System.Data.SqlClient.SqlCommand Update()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "UPDATE " + Categories.Table + "\n" +
+                            "   SET CategoryName = @CategoryName\n" +
+                            " WHERE CategoryID = @CategoryID";
+            cmd = Categories.AddParameters(cmd);
+            cmd.Parameters.Add("@CategoryID", System.Data.SqlDbType.Int, 0, "CategoryID");
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
+
+
         // Занесение новой записи в БД
         public static bool Insert(System.Data.SqlClient.SqlConnection connection, System.Data.DataRow row, out string message){
             bool done = false;

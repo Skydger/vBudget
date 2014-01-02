@@ -32,7 +32,10 @@ namespace Producer
 
         public static System.Data.SqlClient.SqlCommand Insert(){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-            string sQuery = "INSERT INTO " + sTable  + "\n" +
+            string sQuery = "IF NOT EXISTS (SELECT Category, TypeId FROM " + sTable + "\n" +
+                            "                WHERE (Category = @Category AND TypeId = @Type) OR\n" +
+                            "                      (Category = @Category AND Name = @Name) )\n" +
+                            "INSERT INTO " + sTable  + "\n" +
                             "           (Category, TypeId, Name, Comment)\n" +
                             "VALUES (@Category, @Type, @Name, @Comment)";
             cmd = ProductTypes.AddParameters(cmd);

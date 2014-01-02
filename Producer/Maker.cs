@@ -38,6 +38,27 @@ namespace Producer
             return cmd;
         }
 
+        static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command)
+        {
+            command.Parameters.Add("@Name", System.Data.SqlDbType.NVarChar, 0, "Name");
+            command.Parameters.Add("@MakerCategory", System.Data.SqlDbType.Int, 0, "MakerCategory");
+            command.Parameters.Add("@Vendor", System.Data.SqlDbType.NVarChar, 0, "Vendor");
+            return command;
+        }
+
+        public static System.Data.SqlClient.SqlCommand Insert()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "INSERT INTO " + Maker.Table + "\n" +
+                            "           (Name, MakerCategory, Vendor)\n" +
+                            "VALUES (@Name, @MakerCategory, @Vendor)";
+            cmd = Maker.AddParameters(cmd);
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
+
         // Занесение новой записи в БД
         public static bool Insert(System.Data.SqlClient.SqlConnection connection, System.Data.DataRow row, out string message){
             bool done = false;
@@ -66,6 +87,20 @@ namespace Producer
             return done;
         }
 
+        public static System.Data.SqlClient.SqlCommand Update()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "UPDATE " + Maker.Table + "\n" +
+                                "   SET Name = @Name,\n" +
+                                "       MakerCategory = @MakerCategory,\n" +
+                                "       Vendor = @Vendor\n" +
+                                " WHERE MakerId = @MakerId";
+            cmd = Maker.AddParameters(cmd);
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
         /// <summary>
         /// Обновление записи
         /// </summary>
@@ -103,6 +138,7 @@ namespace Producer
             }
             return done;
         }
+
         /// <summary>
         /// Получение последнего идентификатора в таблице изготовителей
         /// </summary>

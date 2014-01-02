@@ -61,6 +61,30 @@ namespace Purchases
             return cmd;
         }
 
+        static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command)
+        {
+            command.Parameters.Add("@Card", System.Data.SqlDbType.UniqueIdentifier, 0, "CardID");
+            command.Parameters.Add("@OverallBalance", System.Data.SqlDbType.Decimal, 0, "OverallBalance");
+            command.Parameters.Add("@DiscountBalance", System.Data.SqlDbType.Decimal, 0, "DiscountBalance");
+            command.Parameters.Add("@LastReceipt", System.Data.SqlDbType.UniqueIdentifier, 0, "LastReceiptID");
+            command.Parameters.Add("@Points", System.Data.SqlDbType.Decimal, 0, "Points");
+            return command;
+        }
+
+        public static System.Data.SqlClient.SqlCommand Insert()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "INSERT INTO " + CardBalance.Table + "\n" +
+                            "            (CardID, OverallBalance, DiscountBalance,\n" +
+                            "             LastReceiptID, Points)\n" +
+                            "     VALUES (@Card, @OverallBalance, @DiscountBalance,\n" +
+                            "             @LastReceipt, @Points)\n";
+            cmd = CardBalance.AddParameters(cmd);
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
         /// <summary>
         /// Method to insert new row into the card balance table
         /// </summary>
@@ -80,11 +104,11 @@ namespace Purchases
                                 "            (CardID, OverallBalance, DiscountBalance,\n" +
                                 "             LastReceiptID, Points)\n" +
                                 "     VALUES (@Card, @OverallBalance, @DiscountBalance,\n" +
-                                "             @LastReceipt, @Points)\n" +
+                                "             @LastReceipt, @Points)\n";
                 cmd.Parameters.AddWithValue("@Card", row["CardID"]);
                 cmd.Parameters.AddWithValue("@OverallBalance", row["OverallBalance"]);
                 cmd.Parameters.AddWithValue("@DiscountBalance", row["DiscountBalance"]);
-                cmd.Parameters.AddWithValue("@LastReceiptID", row["LastReceipt"]);
+                cmd.Parameters.AddWithValue("@LastReceipt", row["LastReceiptID"]);
                 cmd.Parameters.AddWithValue("@Points", row["Points"]);
                 cmd.Connection = connection;
                 cmd.CommandTimeout = 0;
@@ -104,6 +128,21 @@ namespace Purchases
             }
             return done;
         }
+
+        public static System.Data.SqlClient.SqlCommand Update()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "UPDATE " + CardBalance.Table + "\n" +
+                            "   SET OverallBalance = @OverallBalance, DiscountBalance = @DiscountBalance,\n" +
+                            "       LastReceiptID = @LastReceipt, Points = @Points\n" +
+                            " WHERE CardID = @Card";
+            cmd = CardBalance.AddParameters(cmd);
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
+
         /// <summary>
         /// Method to update discount card's balance data
         /// </summary>

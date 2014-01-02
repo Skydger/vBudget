@@ -50,6 +50,37 @@ namespace Purchases
             return cmd;
         }
 
+        // подготовка параметров для SqlCommand таблицы продуктов
+        static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command)
+        {
+            command.Parameters.Add("@VendorName", System.Data.SqlDbType.NVarChar, 0, "VendorName");
+            command.Parameters.Add("@VendorType", System.Data.SqlDbType.Int, 0, "VendorType");
+            command.Parameters.Add("@Phones", System.Data.SqlDbType.NVarChar, 0, "Phones");
+            command.Parameters.Add("@Address", System.Data.SqlDbType.NVarChar, 0, "Address");
+            command.Parameters.Add("@Logo", System.Data.SqlDbType.VarBinary, 0, "Logo");
+            command.Parameters.Add("@INoTP", System.Data.SqlDbType.NVarChar, 0, "INoTP");
+            command.Parameters.Add("@Web", System.Data.SqlDbType.NVarChar, 0, "Web");
+            command.Parameters.Add("@Updated", System.Data.SqlDbType.DateTime, 0, "Updated");
+            command.Parameters.Add("@Deleted", System.Data.SqlDbType.Bit, 0, "Deleted");
+            return command;
+        }
+
+        public static System.Data.SqlClient.SqlCommand Insert()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "INSERT INTO " + Vendor.Table + "\n" +
+                            "            (VendorName, VendorType, Phones, Address, Logo,\n" +
+                            "             INoTP, Web, Created, Updated, Deleted)\n" +
+                            "     VALUES (@VendorName, @VendorType, @Phones, @Address, @Logo,\n" +
+                            "             @INoTP, @Web, @Created, @Updated, @Deleted)";
+            cmd = Vendor.AddParameters(cmd);
+            cmd.Parameters.Add("@Created", System.Data.SqlDbType.DateTime, 0, "Created");
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
+
         // Занесение новой записи в БД о продавце
         public static bool Insert(System.Data.SqlClient.SqlConnection connection, System.Data.DataRow row, out string message){
             bool done = false;
@@ -86,6 +117,22 @@ namespace Purchases
                 if (connection.State == System.Data.ConnectionState.Open) connection.Close();
             }
             return done;
+        }
+
+        public static System.Data.SqlClient.SqlCommand Update()
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string sQuery = "UPDATE " + Vendor.Table + "\n" +
+                            "   SET VendorName = @VendorName, VendorType = @VendorType, Phones = @Phones,\n" +
+                            "       Address = @Address, Logo = @Logo, INoTP = @INoTP, Web = @Web,\n" +
+                            "       Updated = @Updated, Deleted = @Deleted\n" +
+                            " WHERE VendorID = @VendorID";
+            cmd = Vendor.AddParameters(cmd);
+            cmd.Parameters.Add("@VendorID", System.Data.SqlDbType.DateTime, 0, "VendorID");
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
         }
 
         // Обновление записи в БД о продавце

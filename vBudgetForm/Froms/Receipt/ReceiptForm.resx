@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,46 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Main.Apply" xml:space="preserve">
-    <value>Применить</value>
-  </data>
-  <data name="Main.Cancel" xml:space="preserve">
-    <value>Отмена</value>
-  </data>
-  <data name="Main.Error" xml:space="preserve">
-    <value>Произошла ошибка!</value>
-  </data>
-  <data name="Main.Name" xml:space="preserve">
-    <value>Настройки</value>
-  </data>
-  <data name="Tab.CS.AuthType" xml:space="preserve">
-    <value>Авторизация SQL Server</value>
-  </data>
-  <data name="Tab.CS.DefaultDatabase" xml:space="preserve">
-    <value>База данных по умолчанию</value>
-  </data>
-  <data name="Tab.CS.IntegratedAuth" xml:space="preserve">
-    <value>Интегрированная авторизация (авторизация Windows)</value>
-  </data>
-  <data name="Tab.CS.Name" xml:space="preserve">
-    <value>Настройки соединения</value>
-  </data>
-  <data name="Tab.CS.Password" xml:space="preserve">
-    <value>Пароль:</value>
-  </data>
-  <data name="Tab.CS.RoleError" xml:space="preserve">
-    <value>Ошибка! Необходимая роль сервера для этой операции отсутствует!</value>
-  </data>
-  <data name="Tab.CS.Server" xml:space="preserve">
-    <value>Сервер БД:</value>
-  </data>
-  <data name="Tab.CS.User" xml:space="preserve">
-    <value>Пользователь:</value>
-  </data>
-  <data name="Tab.IS.Language" xml:space="preserve">
-    <value>Выберите язык</value>
-  </data>
-  <data name="Tab.IS.Name" xml:space="preserve">
-    <value>Настройки интерфейса</value>
-  </data>
+  <metadata name="cmsProductsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="cmsPositionsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>158, 17</value>
+  </metadata>
 </root>

@@ -7,6 +7,7 @@ namespace Purchases
     public class ReceiptContent{
         // подготовка параметров для SqlCommand таблицы состава чека
         static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command){
+            command.Parameters.Add("@ContentId", System.Data.SqlDbType.UniqueIdentifier, 0, "ContentID");
             command.Parameters.Add("@Receipt", System.Data.SqlDbType.UniqueIdentifier, 0, "ReceiptID");
             command.Parameters.Add("@Position", System.Data.SqlDbType.Int, sizeof(int), "Position");
             command.Parameters.Add("@Product", System.Data.SqlDbType.Int, sizeof(int), "ProductID");
@@ -28,7 +29,7 @@ namespace Purchases
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
-            cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.Int, 0, "ContentID");
+            cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.UniqueIdentifier, 0, "ContentID");
             cmd = ReceiptContent.AddParameters(cmd);
             return cmd;
         }
@@ -39,7 +40,7 @@ namespace Purchases
                             "           (ReceiptID, Position, ProductID, Amount, Price, Discount, Units,\n" +
                             "            Buyer, Receiver)\n" +
                             "VALUES (@Receipt, @Position, @Product, @Amount, @Price, @Dicount, @Units, @Buyer, @Receiver)";
-            cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.Int, 0, "ContentID");
+            //cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.UniqueIdentifier, 0, "ContentID");
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
@@ -124,5 +125,6 @@ namespace Purchases
 
             return done;
         }
+
     }
 }

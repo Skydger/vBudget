@@ -109,6 +109,7 @@ namespace Producer
 
         // подготовка параметров для SqlCommand таблицы продуктов
         static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command){
+            command.Parameters.Add("@ProductID", System.Data.SqlDbType.UniqueIdentifier, 0, "ProductID");
             command.Parameters.Add("@ProductName", System.Data.SqlDbType.NVarChar, 0, "ProductName");
             command.Parameters.Add("@Category", System.Data.SqlDbType.Int, 0, "Category");
             command.Parameters.Add("@Type", System.Data.SqlDbType.Int, 0, "Type");
@@ -116,15 +117,16 @@ namespace Producer
             command.Parameters.Add("@Barcode", System.Data.SqlDbType.NVarChar, 0, "Barcode");
             command.Parameters.Add("@Comment", System.Data.SqlDbType.NVarChar, 0, "Comment");
             command.Parameters.Add("@Updated", System.Data.SqlDbType.DateTime, 0, "Updated");
+            command.Parameters.Add("@Deleted", System.Data.SqlDbType.Bit, 0, "Deleted");
             return command;
         }
 
         public static System.Data.SqlClient.SqlCommand Insert(){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "INSERT INTO Producer.Products\n" +
-                            "           (ProductName, Category, Type, Maker, Barcode,\n" +
+                            "           (ProductID, ProductName, Category, Type, Maker, Barcode,\n" +
                             "            Comment, Created, Updated, Deleted)\n" +
-                            "VALUES (@ProductName, @Category, @Type, @Maker, @Barcode,\n" +
+                            "VALUES (@ProductID, @ProductName, @Category, @Type, @Maker, @Barcode,\n" +
                             "        @Comment, @Created, @Updated, @Deleted)";
             cmd = Product.AddParameters(cmd);
             cmd.Parameters.Add("@Created", System.Data.SqlDbType.DateTime, 0, "Created");
@@ -140,7 +142,6 @@ namespace Producer
                             "        Barcode = @Barcode, Comment = @Comment, Updated = @Updated, Deleted = @Deleted)\n" +
                             " WHERE ProductID = @ProductID";
             cmd = Product.AddParameters(cmd);
-            cmd.Parameters.Add("@ProductID", System.Data.SqlDbType.DateTime, 0, "ProductID");
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
@@ -154,11 +155,12 @@ namespace Producer
                 connection.Open();
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 string sQuery = "INSERT INTO " + sTable + "\n" +
-                                "           (ProductName, Category, Type, Maker, Barcode,\n" +
+                                "           (ProductID, ProductName, Category, Type, Maker, Barcode,\n" +
                                 "            Comment, Created, Updated, Deleted)\n" +
-                                "VALUES (@ProductName, @Category, @Type, @Maker, @Barcode,\n" +
+                                "VALUES (@ProductID, @ProductName, @Category, @Type, @Maker, @Barcode,\n" +
                                 "        @Comment, @Created, @Updated, @Deleted)";
 
+                cmd.Parameters.AddWithValue("@ProductID", row["ProductID"]);
                 cmd.Parameters.AddWithValue("@ProductName", row["ProductName"]);
                 cmd.Parameters.AddWithValue("@Category", row["Category"]);
                 cmd.Parameters.AddWithValue("@Type", row["Type"]);
@@ -219,20 +221,20 @@ namespace Producer
             return done;
         }
 
-        public static int LastId( System.Data.SqlClient.SqlConnection connection, int category_id, out string message ){
-            int last_id = -1;
+        public static Guid NewID( System.Data.SqlClient.SqlConnection connection, int category_id, out string message ){
+            Guid last_id = Guid.Empty;
             message = "";
             try{
                 if (category_id > 0){
                     connection.Open();
-                    string sQuery = "SELECT MAX(ProductID) AS LastID\n" +
+                    string sQuery = "SELECT NEWID() AS New_Id\n" +
                                     "  FROM " + sTable + "\n" +
                                     "WHERE Category = " + category_id.ToString();
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sQuery);
                     cmd.Connection = connection;
                     object res = cmd.ExecuteScalar();
-                    if (System.Convert.IsDBNull(res)) last_id = 0;
-                    else last_id = (int)res;
+                    if (System.Convert.IsDBNull(res)) last_id = Guid.Empty;
+                    else last_id = (Guid)res;
                     connection.Close();
                 }else
                     message = "Необходимо указать категорию!";
