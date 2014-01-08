@@ -117,8 +117,8 @@ namespace vBudgetForm
             this.cbxVendors.Size = new System.Drawing.Size(360, 21);
             this.cbxVendors.TabIndex = 16;
             this.cbxVendors.SelectedIndexChanged += new System.EventHandler(this.cbxVendors_SelectedIndexChanged);
-            this.cbxVendors.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cbxVendors_KeyUp);
             this.cbxVendors.TextChanged += new System.EventHandler(this.cbxVendors_TextChanged);
+            this.cbxVendors.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cbxVendors_KeyUp);
             // 
             // btnNewVendor
             // 
@@ -418,7 +418,7 @@ namespace vBudgetForm
             this.btnDown.Name = "btnDown";
             this.btnDown.Size = new System.Drawing.Size(30, 23);
             this.btnDown.TabIndex = 21;
-            this.btnDown.Text = "^";
+            this.btnDown.Text = "|";
             this.btnDown.UseVisualStyleBackColor = true;
             this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
             // 

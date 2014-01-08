@@ -10,7 +10,7 @@ namespace Purchases
             command.Parameters.Add("@ContentId", System.Data.SqlDbType.UniqueIdentifier, 0, "ContentID");
             command.Parameters.Add("@Receipt", System.Data.SqlDbType.UniqueIdentifier, 0, "ReceiptID");
             command.Parameters.Add("@Position", System.Data.SqlDbType.Int, sizeof(int), "Position");
-            command.Parameters.Add("@Product", System.Data.SqlDbType.Int, sizeof(int), "ProductID");
+            command.Parameters.Add("@Product", System.Data.SqlDbType.UniqueIdentifier, sizeof(int), "ProductID");
             command.Parameters.Add("@Amount", System.Data.SqlDbType.Decimal, 0, "Amount");
             command.Parameters.Add("@Price", System.Data.SqlDbType.Decimal, 0, "Price");
             command.Parameters.Add("@Dicount", System.Data.SqlDbType.Decimal, 0, "Discount");
@@ -29,7 +29,7 @@ namespace Purchases
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
-            cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.UniqueIdentifier, 0, "ContentID");
+            //cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.UniqueIdentifier, 0, "ContentID");
             cmd = ReceiptContent.AddParameters(cmd);
             return cmd;
         }

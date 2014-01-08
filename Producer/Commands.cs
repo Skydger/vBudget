@@ -15,14 +15,14 @@ namespace Producer
             cmd.CommandText = sQuery;
             return cmd;
         }
-        public static System.Data.SqlClient.SqlCommand Products(int category_id, int product_id ){
+        public static System.Data.SqlClient.SqlCommand Products(int category_id, Guid product_id ){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string whr = "";
             if (category_id >= 0){
                 whr += "\nWHERE Category = @Category";
                 cmd.Parameters.AddWithValue("@Category", category_id);
             }
-            if (product_id >= 0){
+            if (product_id != Guid.Empty){
                 whr += (whr.Length == 0 ? "\nWHERE " : "\n  AND ");
                 whr += "ProductID = @Product";
                 cmd.Parameters.AddWithValue("@Product", product_id);

@@ -120,82 +120,40 @@
   <data name="Form.Accept" xml:space="preserve">
     <value>Применить</value>
   </data>
+  <data name="Form.Barcode" xml:space="preserve">
+    <value>Штрих-код</value>
+  </data>
   <data name="Form.Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
-  <data name="Form.SearchLabel" xml:space="preserve">
-    <value>Поиск:</value>
+  <data name="Form.Category" xml:space="preserve">
+    <value>Категория</value>
   </data>
-  <data name="Form.Subtotal" xml:space="preserve">
-    <value>Итого</value>
+  <data name="Form.Comment" xml:space="preserve">
+    <value>Примечание</value>
   </data>
-  <data name="Form.Title" xml:space="preserve">
-    <value>Чек</value>
+  <data name="Form.Deleted" xml:space="preserve">
+    <value>Удалён</value>
   </data>
-  <data name="Form.Uncategorized" xml:space="preserve">
+  <data name="Form.Maker" xml:space="preserve">
+    <value>Производитель</value>
+  </data>
+  <data name="Form.NoCategory" xml:space="preserve">
     <value>[Без категории]</value>
   </data>
-  <data name="Product.Canceled" xml:space="preserve">
-    <value>Удаление отменено пользователем</value>
+  <data name="Form.NoMaker" xml:space="preserve">
+    <value>[Производитель не выбран]</value>
   </data>
-  <data name="Product.Deleted" xml:space="preserve">
-    <value>Продукт успешно удалён!</value>
+  <data name="Form.ProductName" xml:space="preserve">
+    <value>Название</value>
   </data>
-  <data name="Product.DeletionError" xml:space="preserve">
-    <value>Удаление прервано из-за ошибки</value>
+  <data name="Form.TitleEdit" xml:space="preserve">
+    <value>Редактирование продукта #{0}</value>
   </data>
-  <data name="Product.Error" xml:space="preserve">
-    <value>Ошибка</value>
+  <data name="Form.TitleNew" xml:space="preserve">
+    <value>Новый продукт #{0}</value>
   </data>
-  <data name="Product.Information" xml:space="preserve">
-    <value>Информация</value>
-  </data>
-  <data name="Receipt.Comment" xml:space="preserve">
-    <value>Примечание:</value>
-  </data>
-  <data name="Receipt.Date" xml:space="preserve">
-    <value>Дата:</value>
-  </data>
-  <data name="Receipt.DiscountCard" xml:space="preserve">
-    <value>Дисконтная карта:</value>
-  </data>
-  <data name="Receipt.Number" xml:space="preserve">
-    <value>Номер чека</value>
-  </data>
-  <data name="Receipt.Positions" xml:space="preserve">
-    <value>Всего позиций: {0}</value>
-  </data>
-  <data name="Receipt.SubtotalPrice" xml:space="preserve">
-    <value>На сумму: {0:C2}</value>
-  </data>
-  <data name="ReceiptContent.Amount" xml:space="preserve">
-    <value>Количество</value>
-  </data>
-  <data name="ReceiptContent.Buyer" xml:space="preserve">
-    <value>ФИО покупателя</value>
-  </data>
-  <data name="ReceiptContent.Discount" xml:space="preserve">
-    <value>Скидка, %</value>
-  </data>
-  <data name="ReceiptContent.Name" xml:space="preserve">
-    <value>Наименование позиции</value>
-  </data>
-  <data name="ReceiptContent.Price" xml:space="preserve">
-    <value>Цена</value>
-  </data>
-  <data name="ReceiptContent.ProductID" xml:space="preserve">
-    <value>ID продукта</value>
-  </data>
-  <data name="ReceiptContent.Receiver" xml:space="preserve">
-    <value>ФИО получателя</value>
-  </data>
-  <data name="ReceiptContent.Units" xml:space="preserve">
-    <value>Единицы измерения</value>
-  </data>
-  <data name="Vendor.Label" xml:space="preserve">
-    <value>Продавец:</value>
-  </data>
-  <data name="Vendor.Type" xml:space="preserve">
-    <value>Сфера товаров и услуг:</value>
+  <data name="Form.Type" xml:space="preserve">
+    <value>Тип</value>
   </data>
 </root>

@@ -10,7 +10,7 @@ namespace vBudgetForm
         private System.Data.DataTable categories = null;
         private System.Data.DataTable products = null;
         //private System.Data.DataRow product = null;
-        private int product_id = -1;
+        private System.Guid product_id = System.Guid.Empty;
 
         /// <summary>
         /// Clean up any resources being used.

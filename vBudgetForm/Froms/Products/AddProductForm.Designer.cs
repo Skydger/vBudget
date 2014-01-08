@@ -6,6 +6,7 @@ namespace vBudgetForm
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private System.Resources.ResourceManager manager = null;
         private System.Data.SqlClient.SqlConnection cConnection;
         private System.Data.DataTable categories = null;
         private System.Data.DataTable types_table = null;
@@ -56,7 +57,7 @@ namespace vBudgetForm
             // lblMaker
             // 
             this.lblMaker.AutoSize = true;
-            this.lblMaker.Location = new System.Drawing.Point(11, 38);
+            this.lblMaker.Location = new System.Drawing.Point(17, 38);
             this.lblMaker.Name = "lblMaker";
             this.lblMaker.Size = new System.Drawing.Size(89, 13);
             this.lblMaker.TabIndex = 0;
@@ -65,9 +66,9 @@ namespace vBudgetForm
             // cbxMakers
             // 
             this.cbxMakers.FormattingEnabled = true;
-            this.cbxMakers.Location = new System.Drawing.Point(106, 35);
+            this.cbxMakers.Location = new System.Drawing.Point(115, 35);
             this.cbxMakers.Name = "cbxMakers";
-            this.cbxMakers.Size = new System.Drawing.Size(489, 21);
+            this.cbxMakers.Size = new System.Drawing.Size(480, 21);
             this.cbxMakers.TabIndex = 1;
             // 
             // tbxComment
@@ -90,7 +91,7 @@ namespace vBudgetForm
             // 
             // tbxBarcode
             // 
-            this.tbxBarcode.Location = new System.Drawing.Point(106, 96);
+            this.tbxBarcode.Location = new System.Drawing.Point(115, 93);
             this.tbxBarcode.MaxLength = 32;
             this.tbxBarcode.Name = "tbxBarcode";
             this.tbxBarcode.Size = new System.Drawing.Size(150, 20);
@@ -98,10 +99,10 @@ namespace vBudgetForm
             // 
             // tbxProductName
             // 
-            this.tbxProductName.Location = new System.Drawing.Point(106, 70);
+            this.tbxProductName.Location = new System.Drawing.Point(115, 70);
             this.tbxProductName.MaxLength = 128;
             this.tbxProductName.Name = "tbxProductName";
-            this.tbxProductName.Size = new System.Drawing.Size(519, 20);
+            this.tbxProductName.Size = new System.Drawing.Size(510, 20);
             this.tbxProductName.TabIndex = 6;
             // 
             // lblProductName
@@ -137,16 +138,16 @@ namespace vBudgetForm
             // cbxCategories
             // 
             this.cbxCategories.FormattingEnabled = true;
-            this.cbxCategories.Location = new System.Drawing.Point(106, 6);
+            this.cbxCategories.Location = new System.Drawing.Point(115, 6);
             this.cbxCategories.Name = "cbxCategories";
-            this.cbxCategories.Size = new System.Drawing.Size(233, 21);
+            this.cbxCategories.Size = new System.Drawing.Size(237, 21);
             this.cbxCategories.TabIndex = 10;
             this.cbxCategories.SelectedIndexChanged += new System.EventHandler(this.cbxCategories_SelectedIndexChanged);
             // 
             // lblCategory
             // 
             this.lblCategory.AutoSize = true;
-            this.lblCategory.Location = new System.Drawing.Point(11, 9);
+            this.lblCategory.Location = new System.Drawing.Point(17, 9);
             this.lblCategory.Name = "lblCategory";
             this.lblCategory.Size = new System.Drawing.Size(63, 13);
             this.lblCategory.TabIndex = 9;
@@ -190,7 +191,7 @@ namespace vBudgetForm
             // 
             // btnAddCategory
             // 
-            this.btnAddCategory.Location = new System.Drawing.Point(345, 5);
+            this.btnAddCategory.Location = new System.Drawing.Point(358, 5);
             this.btnAddCategory.Name = "btnAddCategory";
             this.btnAddCategory.Size = new System.Drawing.Size(24, 24);
             this.btnAddCategory.TabIndex = 15;

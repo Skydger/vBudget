@@ -18,30 +18,45 @@ namespace vBudgetForm
             this.InitializeComponent();
             this.cConnection = inConnection;
             this.product = inProduct;
+            this.manager = new System.Resources.ResourceManager("vBudgetForm.AddProductFormResource", System.Reflection.Assembly.GetExecutingAssembly()); ;
             this.block = false;
         }
 
         private void AddProductForm_Load(object sender, EventArgs e){
             this.block = true;
             string error = "";
+            string title = "";
             if (System.Convert.IsDBNull(this.product["ProductID"]) || (((Guid)this.product["ProductID"]) == Guid.Empty )){
                 this.isNew = true;
             }else{
-                this.Text = "Редактирование продукта #" + ((Guid)this.product["ProductID"]).ToString();
+                title = string.Format(this.manager.GetString("Form.TitleEdit"), (Guid)this.product["ProductID"]);
                 this.isNew = false;
             }
 
             if (this.isNew)
             {
                 this.product["ProductID"] = Producer.Product.NewID(this.cConnection, (int)this.product["Category"], out error);
-                this.Text = "Новый продукт #" + ((Guid)this.product["ProductID"]).ToString();
+                title = string.Format(this.manager.GetString("Form.TitleNew"), (Guid)this.product["ProductID"]);
             }
+
+            this.Text = title;
+            this.lblCategory.Text = this.manager.GetString("Form.Category");
+            this.lblType.Text = this.manager.GetString("Form.Type");
+            this.lblMaker.Text = this.manager.GetString("Form.Maker");
+            this.lblProductName.Text = this.manager.GetString("Form.ProductName");
+            this.lblBarcode.Text = this.manager.GetString("Form.Barcode");
+            this.lblComment.Text = this.manager.GetString("Form.Comment");
+            this.cbDeleted.Text = this.manager.GetString("Form.Deleted");
+            this.btnAccept.Text = this.manager.GetString("Form.Accept");
+            this.btnCancel.Text = this.manager.GetString("Form.Cancel");
+
+
             System.Data.SqlClient.SqlCommand cat_cmd = Producer.Categories.Select(-1);
             cat_cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter catda = new System.Data.SqlClient.SqlDataAdapter(cat_cmd);
             this.categories = new System.Data.DataTable("Categories");
             catda.Fill(this.categories);
-            this.categories.Rows.Add(new object[] { -1, "<Без категории>" });
+            this.categories.Rows.Add(new object[] { -1, this.manager.GetString("Form.NoCategory") });
             this.cbxCategories.DataSource = this.categories;
             this.cbxCategories.DisplayMember = "CategoryName";
             this.cbxCategories.ValueMember = "CategoryID";
@@ -67,7 +82,7 @@ namespace vBudgetForm
             System.Data.SqlClient.SqlDataAdapter mkda = new System.Data.SqlClient.SqlDataAdapter(mk_cmd);
             this.makers = new System.Data.DataTable("Makers");
             mkda.Fill(this.makers);
-            this.makers.Rows.Add(new object[] { -1, "<Выберите производителя>" });
+            this.makers.Rows.Add(new object[] { -1, this.manager.GetString("Form.NoMaker") });
             this.cbxMakers.DataSource = this.makers;
             this.cbxMakers.DisplayMember = "Name";
             this.cbxMakers.ValueMember = "MakerId";
@@ -129,7 +144,7 @@ namespace vBudgetForm
                 if (this.cbxCategories.SelectedIndex >= 0){
                     cmd = Producer.ProductTypes.Select((int)this.cbxCategories.SelectedValue);
                 }else{
-                    cmd = Producer.Commands.Products(-1, -1);
+                    cmd = Producer.Commands.Products(-1, System.Guid.Empty);
                 }
                 cmd.Connection = this.cConnection;
                 System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);

@@ -10,20 +10,20 @@ namespace vBudgetForm
 {
     public partial class ChangePositionForm : Form
     {
-        public int NewProductID{
+        public Guid NewProductID{
             get { return this.product_id; }
         }
         public ChangePositionForm(System.Data.SqlClient.SqlConnection current_connection, object current_product){
             InitializeComponent();
             this.connection = current_connection;
-            this.product_id = (int)current_product;
+            this.product_id = (Guid)current_product;
         }
 
         private void ChangePositionForm_Load(object sender, EventArgs e)
         {
             System.Data.SqlClient.SqlDataAdapter sda = null;
 
-            System.Data.SqlClient.SqlCommand prdccmd = Producer.Commands.Products(-1, -1 );
+            System.Data.SqlClient.SqlCommand prdccmd = Producer.Commands.Products(-1, Guid.Empty );
             prdccmd.Connection = this.connection;
             sda = new System.Data.SqlClient.SqlDataAdapter(prdccmd);
             this.products = new System.Data.DataTable("Products");
@@ -56,9 +56,9 @@ namespace vBudgetForm
 
         private void btnAccept_Click(object sender, EventArgs e){
             if (!System.Convert.IsDBNull(this.cbxProducts.SelectedValue)
-                && (this.product_id != (int)this.cbxProducts.SelectedValue))
+                && (this.product_id != (Guid)this.cbxProducts.SelectedValue))
             {
-                this.product_id = (int)this.cbxProducts.SelectedValue;
+                this.product_id = (Guid)this.cbxProducts.SelectedValue;
                 this.DialogResult = DialogResult.OK;
             }else{
                 this.DialogResult = DialogResult.Cancel;

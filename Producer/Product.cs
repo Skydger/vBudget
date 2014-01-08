@@ -225,7 +225,7 @@ namespace Producer
             Guid last_id = Guid.Empty;
             message = "";
             try{
-                if (category_id > 0){
+                //if (category_id > 0){
                     connection.Open();
                     string sQuery = "SELECT NEWID() AS New_Id\n" +
                                     "  FROM " + sTable + "\n" +
@@ -236,8 +236,8 @@ namespace Producer
                     if (System.Convert.IsDBNull(res)) last_id = Guid.Empty;
                     else last_id = (Guid)res;
                     connection.Close();
-                }else
-                    message = "Необходимо указать категорию!";
+                //}else
+                //    message = "Необходимо указать категорию!";
             }catch(System.Exception ex ){
                 message = ex.Message;
             }

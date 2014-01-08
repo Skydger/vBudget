@@ -62,10 +62,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddProductForm.cs">
+    <Compile Include="Froms\Products\AddProductForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddProductForm.Designer.cs">
+    <Compile Include="Froms\Products\AddProductForm.Designer.cs">
       <DependentUpon>AddProductForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Froms\Receipt\ChangePositionForm.cs">
@@ -74,10 +74,10 @@
     <Compile Include="Froms\Receipt\ChangePositionForm.Designer.cs">
       <DependentUpon>ChangePositionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DeleteProductForm.cs">
+    <Compile Include="Froms\Products\DeleteProductForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DeleteProductForm.Designer.cs">
+    <Compile Include="Froms\Products\DeleteProductForm.Designer.cs">
       <DependentUpon>DeleteProductForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Froms\Digests\DiscountCardsListForm.cs">
@@ -128,15 +128,17 @@
     <Compile Include="Froms\Digests\ProductsListForm.Designer.cs">
       <DependentUpon>ProductsListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProductTypeForm.cs">
+    <Compile Include="Froms\Products\ProductTypeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProductTypeForm.Designer.cs">
+    <Compile Include="Froms\Products\ProductTypeForm.Designer.cs">
       <DependentUpon>ProductTypeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AddProductForm.resx">
+    <EmbeddedResource Include="AddProductFormResource.en.resx" />
+    <EmbeddedResource Include="AddProductFormResource.ru.resx" />
+    <EmbeddedResource Include="Froms\Products\AddProductForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AddProductForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -157,7 +159,7 @@
     <EmbeddedResource Include="vBudgetResource.ru.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="DeleteProductForm.resx">
+    <EmbeddedResource Include="Froms\Products\DeleteProductForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DeleteProductForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -193,7 +195,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>ProductsListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProductTypeForm.resx">
+    <EmbeddedResource Include="Froms\Products\ProductTypeForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ProductTypeForm.cs</DependentUpon>
     </EmbeddedResource>
