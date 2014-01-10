@@ -25,7 +25,7 @@ namespace Statistics
         */
 
         public static System.Data.SqlClient.SqlCommand ProductPrices(Guid product){
-            string sQuery = "SELECT DISTINCT v.VendorName, rc.Price, CAST(rc.Price AS VARCHAR(50)) + ' - ' + v.VendorName AS PricaAndVendor\n" +
+            string sQuery = "SELECT DISTINCT v.VendorName, rc.Price, CAST(rc.Price AS VARCHAR(50)) + ' - ' + v.VendorName AS PriceAndVendor\n" +
                             "  FROM Purchases.ReceiptContents AS rc\n" +
                             " RIGHT JOIN Purchases.Receipts AS r\n" +
                             "    ON rc.ReceiptID = r.ReceiptID\n" +
@@ -40,6 +40,25 @@ namespace Statistics
             cmd.CommandText = sQuery;
             return cmd;
         }
+        /// <summary>
+        /// Command to get specific product's ordered quantities
+        /// </summary>
+        /// <param name="product">Global identifier of product</param>
+        /// <returns>SqlCommand for future use</returns>
+        public static System.Data.SqlClient.SqlCommand ProductQuantities(Guid product)
+        {
+            string sQuery = "SELECT DISTINCT ProductID, Amount, CAST(Amount AS VARCHAR(255)) + ' ' + Units AS AmountUnits\n" +
+                            "  FROM Purchases.ReceiptContents AS rc\n" +
+                            " WHERE rc.ProductID = @product\n" +
+                            " ORDER BY Amount DESC";
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            cmd.Parameters.AddWithValue("@product", product);
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = sQuery;
+            return cmd;
+        }
+
         /// <summary>
         /// SqlCommand to gain units list used in receipts
         /// </summary>

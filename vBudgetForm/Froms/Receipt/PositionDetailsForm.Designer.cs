@@ -49,6 +49,8 @@ namespace vBudgetForm
             this.lblTotal = new System.Windows.Forms.Label();
             this.cbxPrices = new System.Windows.Forms.ComboBox();
             this.lblPrices = new System.Windows.Forms.Label();
+            this.lblQuantities = new System.Windows.Forms.Label();
+            this.cbxQuantities = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDiscount)).BeginInit();
@@ -80,7 +82,7 @@ namespace vBudgetForm
             this.nudAmount.DecimalPlaces = 3;
             this.nudAmount.Location = new System.Drawing.Point(109, 75);
             this.nudAmount.Maximum = new decimal(new int[] {
-            10000,
+            100000,
             0,
             0,
             0});
@@ -238,6 +240,25 @@ namespace vBudgetForm
             this.lblPrices.TabIndex = 18;
             this.lblPrices.Text = "Цены:";
             // 
+            // lblQuantities
+            // 
+            this.lblQuantities.AutoSize = true;
+            this.lblQuantities.Location = new System.Drawing.Point(229, 56);
+            this.lblQuantities.Name = "lblQuantities";
+            this.lblQuantities.Size = new System.Drawing.Size(89, 13);
+            this.lblQuantities.TabIndex = 20;
+            this.lblQuantities.Text = "Приобреталось:";
+            // 
+            // cbxQuantities
+            // 
+            this.cbxQuantities.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxQuantities.FormattingEnabled = true;
+            this.cbxQuantities.Location = new System.Drawing.Point(232, 74);
+            this.cbxQuantities.Name = "cbxQuantities";
+            this.cbxQuantities.Size = new System.Drawing.Size(86, 21);
+            this.cbxQuantities.TabIndex = 21;
+            this.cbxQuantities.SelectedIndexChanged += new System.EventHandler(this.cbxQuantities_SelectedIndexChanged);
+            // 
             // PositionDetailsForm
             // 
             this.AcceptButton = this.btnOk;
@@ -246,6 +267,8 @@ namespace vBudgetForm
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(538, 183);
             this.ControlBox = false;
+            this.Controls.Add(this.cbxQuantities);
+            this.Controls.Add(this.lblQuantities);
             this.Controls.Add(this.cbxPrices);
             this.Controls.Add(this.lblPrices);
             this.Controls.Add(this.lblTotal);
@@ -300,5 +323,7 @@ namespace vBudgetForm
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.ComboBox cbxPrices;
         private System.Windows.Forms.Label lblPrices;
+        private System.Windows.Forms.Label lblQuantities;
+        private System.Windows.Forms.ComboBox cbxQuantities;
     }
 }

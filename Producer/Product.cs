@@ -9,7 +9,7 @@ namespace Producer
         public enum OrderColumn { ProductID = 0, ProductName = 1, Category = 2, Type = 3, Maker = 4, Barcode = 5 }
         static private string sTable = "Producer.Products";
 
-        public static System.Data.SqlClient.SqlCommand Select(int category_id, int[] type_ids, int product_id, List<OrderColumn> order_by)
+        public static System.Data.SqlClient.SqlCommand Select(int category_id, int[] type_ids, Guid [] product_ids, List<OrderColumn> order_by)
         {
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sWhere = "", sOrder = "";
@@ -27,12 +27,31 @@ namespace Producer
                 sWhere += string.Format("p.Type IN ( {0} )", string.Join(", ", parameters));
 
             }
-            if ((category_id <= 0) && ( (type_ids == null) || (type_ids.Length == 0 )) ){
-                sWhere += "    WHERE p.Category IS NULL AND p.Type IS NULL\n";
-            }
-            if (product_id > 0){
-                sWhere += (sWhere.Length > 0 ? "      AND " : "    WHERE ");
-                sWhere += "p.ProductID = " + product_id.ToString() + "\n";
+            //if ((category_id <= 0) && ( (type_ids == null) || (type_ids.Length == 0 )) ){
+            //    sWhere += "    WHERE p.Category IS NULL AND p.Type IS NULL\n";
+            //}
+            if (product_ids != null && product_ids.Length > 0 )
+            {
+                int params_added = 0;
+                //sWhere += "p.ProductID = " + product_id.ToString() + "\n";
+                //sWhere += "p.ProductID = @Product\n";
+                //cmd.Parameters.AddWithValue("@Product", product_id );
+                List<string> parameters = new List<string>();
+                for (int i = 0; i < product_ids.Length; i++)
+                {
+                    if (product_ids[i] != Guid.Empty)
+                    {
+                        string param = string.Format("@Product{0}", i);
+                        parameters.Add(param);
+                        cmd.Parameters.AddWithValue(param, product_ids[i]);
+                        params_added++;
+                    }
+                }
+                if (params_added > 0)
+                {
+                    sWhere += (sWhere.Length > 0 ? "      AND " : "    WHERE ");
+                    sWhere += string.Format("p.ProductID IN ( {0} )", string.Join(", ", parameters.ToArray()));
+                }
             }
             if ( (order_by != null) && (order_by.Count > 0) )
             {

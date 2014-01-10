@@ -141,8 +141,19 @@ namespace vBudgetForm
                 //p_prices.Columns.Add(picol);
 
                 this.cbxPrices.DataSource = p_prices;
-                this.cbxPrices.DisplayMember = "PricaAndVendor";
+                this.cbxPrices.DisplayMember = "PriceAndVendor";
                 this.cbxPrices.ValueMember = "Price";
+
+                System.Data.DataTable qties = new System.Data.DataTable("ProductQuantities"); ;
+                cmd = Statistics.Products.ProductQuantities(this.product_id);
+                cmd.Connection = this.cConnection;
+                pda = new System.Data.SqlClient.SqlDataAdapter(cmd);
+                pda.Fill(qties);
+
+                this.cbxQuantities.DataSource = qties;
+                this.cbxQuantities.DisplayMember = "AmountUnits";
+                this.cbxQuantities.ValueMember = "Amount";
+
 
                 // Getting list of units
                 System.Data.DataTable punits = new System.Data.DataTable("UnitsList"); ;
@@ -192,6 +203,17 @@ namespace vBudgetForm
                 if( this.nudAmount.Value == 0 )
                     this.nudAmount.Value = 1;
             }
+        }
+
+        private void cbxQuantities_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!this.block_refresh && !System.Convert.IsDBNull(this.cbxQuantities.SelectedValue))
+            {
+                this.nudAmount.Value = (decimal)this.cbxQuantities.SelectedValue;
+                if (this.nudAmount.Value == 0)
+                    this.nudAmount.Value = 1;
+            }
+            return;
         }
     }
 }

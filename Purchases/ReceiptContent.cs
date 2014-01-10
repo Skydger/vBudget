@@ -37,9 +37,9 @@ namespace Purchases
         public static System.Data.SqlClient.SqlCommand InsertCommand(){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "INSERT INTO Purchases.ReceiptContents\n" +
-                            "           (ReceiptID, Position, ProductID, Amount, Price, Discount, Units,\n" +
+                            "           (ContentID, ReceiptID, Position, ProductID, Amount, Price, Discount, Units,\n" +
                             "            Buyer, Receiver)\n" +
-                            "VALUES (@Receipt, @Position, @Product, @Amount, @Price, @Dicount, @Units, @Buyer, @Receiver)";
+                            "VALUES (@ContentId, @Receipt, @Position, @Product, @Amount, @Price, @Dicount, @Units, @Buyer, @Receiver)";
             //cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.UniqueIdentifier, 0, "ContentID");
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;

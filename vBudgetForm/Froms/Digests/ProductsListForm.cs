@@ -117,7 +117,7 @@ namespace vBudgetForm
 //            if ( (cat_id > 0) || (type_id > 0)){
             List<Producer.Product.OrderColumn> ord = new List<Producer.Product.OrderColumn>();
             ord.Add(Producer.Product.OrderColumn.ProductName);
-            System.Data.SqlClient.SqlCommand prd_cmd = Producer.Product.Select(cat_id, type_id, -1, ord);
+            System.Data.SqlClient.SqlCommand prd_cmd = Producer.Product.Select(cat_id, type_id, null, ord);
                 prd_cmd.Connection = this.cConnection;
                 System.Data.SqlClient.SqlDataAdapter pda = new System.Data.SqlClient.SqlDataAdapter(prd_cmd);
                 this.products = new DataTable("Products");
@@ -312,7 +312,7 @@ namespace vBudgetForm
                     ){
                     List<Producer.Product.OrderColumn> ord = new List<Producer.Product.OrderColumn>();
                     ord.Add(Producer.Product.OrderColumn.ProductName);
-                    System.Data.SqlClient.SqlCommand command = Producer.Product.Select((int)row["Category"], null, -1, ord);
+                    System.Data.SqlClient.SqlCommand command = Producer.Product.Select((int)row["Category"], null, null, ord);
                     command.Connection = this.cConnection;
                     System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
                     System.Data.DataTable tbl = new System.Data.DataTable("Products");

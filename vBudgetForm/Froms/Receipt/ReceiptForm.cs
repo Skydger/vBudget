@@ -252,6 +252,9 @@ namespace vBudgetForm
             this.btnNewCategory.Location = new Point( this.lbxProducts.Size.Width - this.btnNewCategory.Size.Width,
                                                       this.btnNewCategory.Location.Y);
             this.cbxCategory.Size = new Size(this.btnNewCategory.Location.X - 6, this.cbxCategory.Size.Height);
+
+            this.btnUp.Location = new Point(this.lbxProducts.Size.Width + 2, this.lbxProducts.Location.Y);
+            this.btnDown.Location = new Point(this.lbxProducts.Size.Width + 2, this.lbxProducts.Location.Y + 29);
             return;
         }
         private void ReceiptForm_Resize(object sender, EventArgs e){
@@ -351,6 +354,12 @@ namespace vBudgetForm
                 for (int i = 0; i < icount; i++){
                     DataRow nrow = this.contents.NewRow();
                     int k = this.lbxProducts.SelectedIndices[i];
+
+                    this.cConnection.Open();
+                    System.Data.SqlClient.SqlCommand idcmd = new System.Data.SqlClient.SqlCommand("SELECT NEWID() AS ContentID FROM Purchases.ReceiptContents", this.cConnection);
+                    Guid rec_id = (Guid)idcmd.ExecuteScalar();
+                    nrow["ContentID"] = rec_id;
+                    this.cConnection.Close();
                     nrow["ReceiptID"] = this.receipt["ReceiptID"];
                     nrow["Position"] = this.contents.Rows.Count + 1;
                     nrow["ProductID"] = this.products.Rows[k]["ProductID"];
@@ -599,6 +608,52 @@ namespace vBudgetForm
             return;
         }
 
+        private void SearchPositions(bool all)
+        {
+            List<Guid> positions = new List<Guid>();
+            if (all && this.dgvReceiptContent.SelectedRows.Count == 1)
+            {
+                System.Data.DataRow position = ((DataRowView)this.dgvReceiptContent.SelectedRows[0].DataBoundItem).Row;
+                if ((position != null) && !System.Convert.IsDBNull(position["ProductID"]))
+                {
+                    positions.Add((Guid)position["ProductID"]);
+                }
+            }
+            else
+            {
+                foreach (System.Data.DataRow position in ((DataTable)this.dgvReceiptContent.DataSource).Rows)
+                {
+                    positions.Add((Guid)position["ProductID"]);
+                }
+            }
+            if (positions.Count > 0)
+            {
+                List<Producer.Product.OrderColumn> cols = new List<Producer.Product.OrderColumn>();
+                cols.Add(Producer.Product.OrderColumn.ProductName);
+                System.Data.SqlClient.SqlCommand command = Producer.Product.Select(-1, null, positions.ToArray(), cols);
+                command.Connection = this.cConnection;
+                System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
+                this.products = new DataTable("Products");
+                sda.Fill(this.products);
+                this.lbxProducts.DataSource = this.products;
+                this.lbxProducts.ValueMember = "ProductID";
+                this.lbxProducts.DisplayMember = "ProductName";
+            }
+            return;            
+        }
+
+        private void tsmiSearchSelectedPosition_Click(object sender, EventArgs e)
+        {
+            this.SearchPositions(false);
+            return;
+        }
+
+        private void tsmiSearchAllPositions_Click(object sender, EventArgs e)
+        {
+            this.SearchPositions(true);
+            return;
+        }
+
         private void tsmiDeleteProduct_Click(object sender, EventArgs e)
         {
             if ((this.lbxProducts.SelectedItem != null) &&
@@ -746,25 +801,101 @@ namespace vBudgetForm
             }
         }
 
+        private void ExchangeRows(int old_position, int new_position)
+        {
+            DataTable cloned = this.contents.Clone();
+
+            //DataTable cloned = new DataTable("ReceiptContents");
+            //System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            //this.contents.WriteXmlSchema(ms,true);
+            //ms.Position = 0;
+            //cloned.ReadXmlSchema(ms);
+            //ms.Close();
+
+            for (int i = 0; i < this.contents.Rows.Count; i++)
+            {
+                System.Data.DataRow o_row = this.contents.Rows[i];
+                System.Data.DataRow n_row = cloned.NewRow();
+                if (i != old_position && i != new_position)
+                {
+                }
+                else if (i == old_position)
+                {
+                    o_row = this.contents.Rows[new_position];
+                    //o_row["Position"] = old_position + 1;
+                }
+                else if (i == new_position)
+                {
+                    o_row = this.contents.Rows[old_position];
+                    //o_row["Position"] = new_position + 1;
+                }
+
+                for (int j = 0; j < this.contents.Columns.Count - 1; j++)
+                {
+                    n_row[j] = o_row[j];
+                    if( i == old_position)
+                        n_row["Position"] = old_position + 1;
+                    else if (i == new_position)
+                        n_row["Position"] = new_position + 1;
+                }
+                cloned.Rows.Add(n_row);
+            }
+            //for (int i = 0; i < this.contents.Rows.Count; i++)
+            //{
+            //    System.Data.DataRow o_row = this.contents.Rows[i];
+            //    for (int j = 0; j < cloned.Rows.Count; j++)
+            //    {
+            //        System.Data.DataRow n_row = cloned.Rows[j];
+            //        if (n_row["ContentID"] == o_row["ContentID"])
+            //        {
+            //            o_row["Position"] = n_row["Position"];
+            //            break;
+            //        }
+            //    }
+            //}
+
+            //cloned.Merge(this.contents, true);
+            //cloned.AcceptChanges();
+            this.contents.Merge(cloned, false);
+            //this.contents.
+            
+            //this.contents = null;
+            //this.contents = cloned;
+            //this.dgvReceiptContent.DataSource = cloned;
+            this.dgvReceiptContent.DataSource = this.contents;
+            //this.dgvReceiptContent.Sort(this.dgvReceiptContent.Columns["Position"], ListSortDirection.Ascending);
+
+            this.dgvReceiptContent.ClearSelection();
+            this.dgvReceiptContent.Rows[new_position].Selected = true;
+            this.dgvReceiptContent.CurrentCell = this.dgvReceiptContent.Rows[new_position].Cells[4];
+
+            return;
+        }
+
         private void btnUp_Click(object sender, EventArgs e)
         {
             //DataTable cloned = this.contents.Clone();
+
+            
             if (this.dgvReceiptContent.SelectedRows.Count == 1)
             {
-                //System.Data.DataRow prod = ((DataRowView)this.dgvReceiptContent.SelectedRows[0].DataBoundItem).Row;
                 int cur_index = this.dgvReceiptContent.SelectedRows[0].Index;
-                for (int i = 0; i <= cur_index; i++)
-                {
-                    if (i == cur_index - 1)
-                    {
-                        this.contents.Rows[cur_index]["Position"] = cur_index;
-                    }
-                    else if (i == cur_index)
-                    {
-                        this.contents.Rows[cur_index-1]["Position"] = cur_index+1;
-                    }
-                }
-                this.dgvReceiptContent.Sort(this.dgvReceiptContent.Columns["Position"], ListSortDirection.Ascending);
+                this.ExchangeRows(cur_index, cur_index - 1);
+
+                //System.Data.DataRow prod = ((DataRowView)this.dgvReceiptContent.SelectedRows[0].DataBoundItem).Row;
+                //int cur_index = this.dgvReceiptContent.SelectedRows[0].Index;
+                //for (int i = 0; i <= cur_index; i++)
+                //{
+                //    if (i == cur_index - 1)
+                //    {
+                //        this.contents.Rows[cur_index]["Position"] = cur_index;
+                //    }
+                //    else if (i == cur_index)
+                //    {
+                //        this.contents.Rows[cur_index-1]["Position"] = cur_index+1;
+                //    }
+                //}
+                //this.dgvReceiptContent.Sort(this.dgvReceiptContent.Columns["Position"], ListSortDirection.Ascending);
 /*
 
                 DataRow dr = (DataRow)this.contents.Rows[cur_index];
@@ -795,16 +926,44 @@ namespace vBudgetForm
         {
             if (this.dgvReceiptContent.SelectedRows.Count == 1)
             {
+
+                int cur_index = this.dgvReceiptContent.SelectedRows[0].Index;
+                this.ExchangeRows(cur_index, cur_index + 1);
+
                 //System.Data.DataRow prod = ((DataRowView)this.dgvReceiptContent.SelectedRows[0].DataBoundItem).Row;
-                int cur_ind = this.dgvReceiptContent.SelectedRows[0].Index;
-                if (cur_ind < this.dgvReceiptContent.Rows.Count)
+                //int cur_ind = this.dgvReceiptContent.SelectedRows[0].Index;
+                //if (cur_ind < this.dgvReceiptContent.Rows.Count)
+                //{
+                //    int prv_ind = cur_ind + 1;
+                //    this.contents.Rows[cur_ind]["Position"] = prv_ind + 1;
+                //    this.contents.Rows[prv_ind]["Position"] = cur_ind + 1;
+                //    this.contents.AcceptChanges();
+                //    //this.dgvReceiptContent.Sort(this.dgvReceiptContent.Columns["Position"], ListSortDirection.Ascending);
+                //}
+            }
+        }
+
+        private void dgvReceiptContent_SelectionChanged(object sender, EventArgs e)
+        {
+            if (this.dgvReceiptContent.SelectedRows.Count == 1)
+            {
+                this.btnUp.Enabled = true;
+                this.btnDown.Enabled = true;
+                if (this.dgvReceiptContent.SelectedRows[0].Index == 0)
                 {
-                    int prv_ind = cur_ind + 1;
-                    this.contents.Rows[cur_ind]["Position"] = prv_ind + 1;
-                    this.contents.Rows[prv_ind]["Position"] = cur_ind + 1;
-                    this.contents.AcceptChanges();
-                    //this.dgvReceiptContent.Sort(this.dgvReceiptContent.Columns["Position"], ListSortDirection.Ascending);
+                    this.btnUp.Enabled = false;
                 }
+                // Excluding last data row and subtotal row
+                else if ( (this.dgvReceiptContent.SelectedRows[0].Index == this.dgvReceiptContent.Rows.Count - 2) ||
+                          (this.dgvReceiptContent.SelectedRows[0].Index == this.dgvReceiptContent.Rows.Count - 1) )
+                {
+                    this.btnDown.Enabled = false;
+                }
+            }
+            else
+            {
+                this.btnUp.Enabled = false;
+                this.btnDown.Enabled = false;
             }
         }
 

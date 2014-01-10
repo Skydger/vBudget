@@ -174,11 +174,11 @@ namespace vBudgetForm
                 System.Data.SqlClient.SqlCommand cmd = null;
                 if (this.cbxCategory.SelectedIndex >= 0)
                 {
-                    cmd = Producer.Product.Select((int)this.cbxCategory.SelectedValue, null, -1, cols);
+                    cmd = Producer.Product.Select((int)this.cbxCategory.SelectedValue, null, null, cols);
                 }
                 else
                 {
-                    cmd = Producer.Product.Select(-1, null, -1, cols);
+                    cmd = Producer.Product.Select(-1, null, null, cols);
                 }
                 cmd.Connection = this.connection;
                 System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
