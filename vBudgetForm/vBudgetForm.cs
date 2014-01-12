@@ -193,10 +193,18 @@ namespace vBudgetForm
             this.tsmiFilters.Text = this.manager.GetString("Menu.V.Filters");
             this.tsmiSections.Text = this.manager.GetString("Menu.V.Sections");
             this.tsmiSort.Text = this.manager.GetString("Menu.V.SortBy");
+
+            // 'View' -> 'Sort by' submenu
+            this.tsmiByWeeks.Text = this.manager.GetString("Menu.V.Sort.ByWeeks");
+            this.tsmiByMonths.Text = this.manager.GetString("Menu.V.Sort.ByMonths");
+            this.tsmiByID.Text = this.manager.GetString("Menu.V.Sort.ByIdentifier");
+            this.tsmiByCreationDate.Text = this.manager.GetString("Menu.V.Sort.ByCreationDate");
+            this.tsmiByDays.Text = this.manager.GetString("Menu.V.Sort.ByDays");
             
             // 'Actions' submenu
             this.tsmiActions.Text = this.manager.GetString("Menu.A");
             this.tsmiNewReceipt.Text = this.manager.GetString("Menu.A.New");
+            this.tsmiNewClonedReceipt.Text = this.manager.GetString("Menu.A.NewCloned");
             this.tsmiPersons.Text = this.manager.GetString("Menu.A.Persons");
             this.tsmiDataExchange.Text = this.manager.GetString("Menu.A.Exchange");
 
@@ -212,6 +220,9 @@ namespace vBudgetForm
             this.tsmiStatistics.Text = this.manager.GetString("Menu.S");
             this.tsmiOftenlyBought.Text = this.manager.GetString("Menu.S.OftenlyPurchases");
             this.tsmiProductPrices.Text = this.manager.GetString("Menu.S.ProductsPrices");
+
+            // Context menu
+            this.tsmiAddClonedReceipt.Text = this.manager.GetString("Menu.A.NewCloned"); 
 
             if (this.TryConnect()){
 
@@ -230,7 +241,7 @@ namespace vBudgetForm
                 System.Data.DataRow new_row = this.receipts.NewRow();
                 new_row["Created"] = System.DateTime.Now;
                 new_row["Updated"] = System.DateTime.Now;
-                ReceiptForm rptf = new ReceiptForm(this.cConnection, ref new_row, true);
+                ReceiptForm rptf = new ReceiptForm(this.cConnection, ref new_row, ReceiptType.New);
                 if (rptf.ShowDialog() == DialogResult.OK)
                 {
                     this.receipts.Rows.Add(new_row);
@@ -251,7 +262,7 @@ namespace vBudgetForm
             if ( this.lvReceipts.SelectedItems.Count == 1 ){
                 System.Data.DataRow old_row = (System.Data.DataRow)this.lvReceipts.SelectedItems[0].Tag;
                 if( old_row != null ){
-                    ReceiptForm rptf = new ReceiptForm(this.cConnection, ref old_row, false);
+                    ReceiptForm rptf = new ReceiptForm(this.cConnection, ref old_row, ReceiptType.Existing);
                     if (rptf.ShowDialog() == DialogResult.OK)
                     {
                         this.lvReceipts.Items.Clear();
@@ -270,27 +281,6 @@ namespace vBudgetForm
                 {
                     MessageBox.Show("Ошибка получения чека!");
                 }
-/*
-                int idx = -1;
-                string snum = this.lvReceipts.Items[row_num].Text;
-                if( System.Int32.TryParse(snum, out idx) && (idx > 0) ){
-                    System.Data.DataRow old_row = this.receipts.Rows[idx - 1];
-                    ReceiptForm rptf = new ReceiptForm(this.cConnection, ref old_row, false);
-                    if (rptf.ShowDialog() == DialogResult.OK){
-                        this.lvReceipts.Items.Clear();
-                        int i = 0;
-                        foreach (System.Data.DataRow drw in this.receipts.Rows){
-                            this.AddNewRow(i++, drw);
-                        }
-                        this.lvReceipts.SelectedIndices.Add(row_num);
-    //                    this.receipts.Rows.Add(new_row);
-    //                    this.AddNewRow(this.receipts.Rows.Count, new_row);
-                        this.CalculateTotal(false);
-                    }
-                }else{
-                    MessageBox.Show("Ошибка получения чека!");
-                }
- */ 
             }
             return;
         }
@@ -375,6 +365,47 @@ namespace vBudgetForm
             this.tsslQueryResult.Text = string.Format(this.manager.GetString("Subtotal.Format"), count, total);
             return;
         }
+
+        private void tsmiByDays_Click(object sender, EventArgs e)
+        {
+            this.lvReceipts.Items.Clear();
+            this.lvReceipts.Groups.Clear();
+            int l_day = 0, l_month = 0, l_year = 0;
+            ListViewGroup lgv = null;
+            int i = 0;
+            decimal total = 0, sub_total = 0;
+            foreach (System.Data.DataRow drw in this.receipts.Rows)
+            {
+                System.DateTime dtm = (System.DateTime)drw["Payed"];
+                DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+                string m_name = dfi.GetMonthName(dtm.Month);
+                System.Globalization.Calendar cln = dfi.Calendar;
+                int mnum = cln.GetMonth(dtm);
+
+                if ((dtm.Year != l_year) || (dtm.Month != l_month) || (dtm.Day != l_day))
+                {
+                    if (lgv != null)
+                        this.AddSummaryRow(lgv, sub_total);
+                    lgv = new ListViewGroup();
+                    this.lvReceipts.Groups.Add(lgv);
+                    //string date = Effects.Dates.GetMonthName(dtm.Month) + ", " + dtm.Year.ToString();
+                    string date = string.Format("{0} {1}, {2}", dtm.Day, m_name, dtm.Year);
+                    lgv.Name = date;
+                    lgv.Header = date;
+                    l_day = dtm.Day;
+                    l_month = dtm.Month;
+                    l_year = dtm.Year;
+                    sub_total = 0;
+                }
+                this.AddNewRow(lgv, i++, drw);
+                total += (decimal)drw["Price"];
+                sub_total += (decimal)drw["Price"];
+            }
+            if (lgv != null)
+                this.AddSummaryRow(lgv, sub_total);
+            this.DisplaySubtotal(i, total); return;
+        }
+
         private void tsmiByWeeks_Click(object sender, EventArgs e){
             this.lvReceipts.Items.Clear();
             this.lvReceipts.Groups.Clear();
@@ -425,12 +456,19 @@ namespace vBudgetForm
             decimal total = 0, sub_total = 0;
             foreach (System.Data.DataRow drw in this.receipts.Rows){
                 System.DateTime dtm = (System.DateTime)drw["Payed"];
+
+                DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+                string m_name = dfi.GetMonthName(dtm.Month);
+                System.Globalization.Calendar cln = dfi.Calendar;
+                int mnum = cln.GetMonth(dtm);
+
                 if ((dtm.Year != l_year) || (dtm.Month != l_month)){
                     if( lgv != null )
                         this.AddSummaryRow(lgv, sub_total);
                     lgv = new ListViewGroup();
                     this.lvReceipts.Groups.Add(lgv);
-                    string date = Effects.Dates.GetMonthName( dtm.Month ) + ", " + dtm.Year.ToString();
+                    string date = string.Format("{0}, {1}", m_name, dtm.Year);
+
                     lgv.Name = date;
                     lgv.Header = date;
                     l_month = dtm.Month;
@@ -449,6 +487,47 @@ namespace vBudgetForm
 
         private void tsmiByID_Click(object sender, EventArgs e){
             this.lvReceipts.Groups.Clear();
+        }
+        // Sort by creation date
+        private void tsmiByCreationDate_Click(object sender, EventArgs e)
+        {
+            this.lvReceipts.Items.Clear();
+            this.lvReceipts.Groups.Clear();
+            int l_day = 0, l_month = 0, l_year = 0;
+            ListViewGroup lgv = null;
+            int i = 0;
+            decimal total = 0, sub_total = 0;
+            foreach (System.Data.DataRow drw in this.receipts.Rows)
+            {
+                System.DateTime dtm = (System.DateTime)drw["Created"];
+                DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
+                string m_name = dfi.GetMonthName(dtm.Month);
+                System.Globalization.Calendar cln = dfi.Calendar;
+                int mnum = cln.GetMonth(dtm);
+
+                if ((dtm.Year != l_year) || (dtm.Month != l_month) || (dtm.Day != l_day) )
+                {
+                    if (lgv != null)
+                        this.AddSummaryRow(lgv, sub_total);
+                    lgv = new ListViewGroup();
+                    this.lvReceipts.Groups.Add(lgv);
+                    //string date = Effects.Dates.GetMonthName(dtm.Month) + ", " + dtm.Year.ToString();
+                    string date = string.Format("{0} {1}, {2}", dtm.Day, m_name, dtm.Year);
+                    lgv.Name = date;
+                    lgv.Header = date;
+                    l_day = dtm.Day;
+                    l_month = dtm.Month;
+                    l_year = dtm.Year;
+                    sub_total = 0;
+                }
+                this.AddNewRow(lgv, i++, drw);
+                total += (decimal)drw["Price"];
+                sub_total += (decimal)drw["Price"];
+            }
+            if (lgv != null)
+                this.AddSummaryRow(lgv, sub_total);
+            this.DisplaySubtotal(i, total);
+            return;
         }
 
         private void tsmiByVendorFilter_Click(object sender, EventArgs e){
@@ -956,6 +1035,65 @@ namespace vBudgetForm
             }
             return;
         }
+
+
+        private void CreateClonedReceipt()
+        {
+            int row_num = -1;
+            if (this.lvReceipts.SelectedIndices.Count == 1)
+                row_num = this.lvReceipts.SelectedIndices[0];
+            if (this.lvReceipts.SelectedItems.Count == 1)
+            {
+                System.Data.DataRow org_rcpt = (System.Data.DataRow)this.lvReceipts.SelectedItems[0].Tag;
+                if (org_rcpt != null)
+                {
+                    System.Data.DataRow new_rcpt = this.receipts.NewRow();
+                    foreach (System.Data.DataColumn col in this.receipts.Columns)
+                    {
+                        new_rcpt[col] = org_rcpt[col];
+                    }
+                    new_rcpt["Created"] = System.DateTime.Now;
+                    new_rcpt["Updated"] = System.DateTime.Now;
+
+                    this.receipts.Rows.Add(new_rcpt);
+                    this.AddNewRow(this.receipts.Rows.Count - 1, new_rcpt);
+                    this.CalculateTotal(false);
+
+                    ReceiptForm rptf = new ReceiptForm(this.cConnection, ref new_rcpt, ReceiptType.Cloned);
+                    if (rptf.ShowDialog() == DialogResult.OK)
+                    {
+                        this.lvReceipts.Items.Clear();
+                        int i = 0;
+                        foreach (System.Data.DataRow drw in this.receipts.Rows)
+                        {
+                            this.AddNewRow(i++, drw);
+                        }
+                        this.lvReceipts.SelectedIndices.Add(row_num);
+
+                        this.CalculateTotal(false);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка получения чека!");
+                }
+            }
+            return;
+        }
+
+        private void tsmiNewClonedReceiptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CreateClonedReceipt();
+        }
+
+        private void tsmiAddClonedReceiptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CreateClonedReceipt();
+        }
+
+
+
+
 
 
     }

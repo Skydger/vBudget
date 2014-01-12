@@ -176,6 +176,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>vBudgetForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="vBudgetForm.ru-RU.resx">
+      <DependentUpon>vBudgetForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="vBudgetResource.ru.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>

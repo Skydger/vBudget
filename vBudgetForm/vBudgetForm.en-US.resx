@@ -124,4 +124,76 @@
   <data name="tsmiExit.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 22</value>
   </data>
+  <data name="tsmiFilters.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 22</value>
+  </data>
+  <data name="tsmiSort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 22</value>
+  </data>
+  <data name="tsmiSort.Text" xml:space="preserve">
+    <value>Сортировать по...</value>
+  </data>
+  <data name="tsmiByWeeks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>165, 22</value>
+  </data>
+  <data name="tsmiByWeeks.Text" xml:space="preserve">
+    <value>weeks</value>
+  </data>
+  <data name="tsmiByMonths.Size" type="System.Drawing.Size, System.Drawing">
+    <value>165, 22</value>
+  </data>
+  <data name="tsmiByMonths.Text" xml:space="preserve">
+    <value>months</value>
+  </data>
+  <data name="tsmiByID.Size" type="System.Drawing.Size, System.Drawing">
+    <value>165, 22</value>
+  </data>
+  <data name="tsmiByID.Text" xml:space="preserve">
+    <value>identifier</value>
+  </data>
+  <data name="tsmiByCreationDate.Text" xml:space="preserve">
+    <value>дате создания</value>
+  </data>
+  <data name="tsmiSections.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 22</value>
+  </data>
+  <data name="tsmiNewReceipt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 22</value>
+  </data>
+  <data name="tsmiNewClonedReceipt.Text" xml:space="preserve">
+    <value>Новый чек на основе выбранного</value>
+  </data>
+  <data name="tsmiPersons.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 22</value>
+  </data>
+  <data name="tsmiDataExchange.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 22</value>
+  </data>
+  <data name="cmsReceiptsMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 126</value>
+  </data>
+  <data name="tsmiAddReceipt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 22</value>
+  </data>
+  <data name="tsmiAddClonedReceipt.Text" xml:space="preserve">
+    <value>Новый чек на основе выбранного</value>
+  </data>
+  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>260, 6</value>
+  </data>
+  <data name="tsmiDeleteReceipt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 22</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>260, 6</value>
+  </data>
+  <data name="tsmiExportToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 22</value>
+  </data>
+  <data name="tsmiImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 22</value>
+  </data>
+  <data name="tsmiByDays.Text" xml:space="preserve">
+    <value>days</value>
+  </data>
 </root>

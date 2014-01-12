@@ -8,6 +8,8 @@ using System.Windows.Forms;
 
 namespace vBudgetForm
 {
+    public enum ReceiptType { New = 0, Existing = 1, Cloned = 2 };
+    
     public partial class ReceiptForm : Form{
         private bool block;
         private decimal total_price;
@@ -15,8 +17,9 @@ namespace vBudgetForm
         private System.Resources.ResourceManager manager;
         private int last_buyer;
         private int last_receiver;
+        private ReceiptType type;
 
-        public ReceiptForm(System.Data.SqlClient.SqlConnection inConnection, ref System.Data.DataRow inReceipt, bool created ){
+        public ReceiptForm(System.Data.SqlClient.SqlConnection inConnection, ref System.Data.DataRow inReceipt, ReceiptType rtype ){
             InitializeComponent();
             this.manager = new System.Resources.ResourceManager("vBudgetForm.ReceiptFormResource", System.Reflection.Assembly.GetExecutingAssembly());
 
@@ -24,7 +27,7 @@ namespace vBudgetForm
             this.total_discount = 0;
             this.cConnection = inConnection;
             this.receipt = inReceipt;
-            this.isNew = created;
+            this.type = rtype;
             this.last_buyer = -1;
             this.last_receiver = -1;
         }
@@ -90,20 +93,57 @@ namespace vBudgetForm
             return;
         }
         protected void LoadReceiptContents(){
-            if (this.isNew)
+
+            Guid receipt_id = Guid.Empty;
+            if (this.type == ReceiptType.New ||
+                this.type == ReceiptType.Cloned )
             {
                 this.cConnection.Open();
                 System.Data.SqlClient.SqlCommand idcmd = new System.Data.SqlClient.SqlCommand("SELECT NEWID() AS MaxID FROM Purchases.Receipts", this.cConnection);
                 Guid rec_id = (Guid)idcmd.ExecuteScalar();
+                if (this.type == ReceiptType.Cloned)
+                    receipt_id = (Guid)this.receipt["ReceiptID"];
+                else
+                    receipt_id = rec_id;
                 this.receipt["ReceiptID"] = rec_id;
                 this.cConnection.Close();
             }
-            System.Data.SqlClient.SqlCommand cmd = Purchases.Commands.ReceiptContents((Guid)this.receipt["ReceiptID"]);
+            System.Data.SqlClient.SqlCommand cmd = Purchases.Commands.ReceiptContents( receipt_id );
             cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
             this.contents = new System.Data.DataTable("ReceiptContents");
 
             sda.Fill(this.contents);
+
+            if (this.type == ReceiptType.Cloned)
+            {
+                System.Data.DataTable cloned = new DataTable("ReceiptContents");
+                cloned = this.contents.Clone();
+                for (int i = 0; i < this.contents.Rows.Count; i++)
+                {
+                    DataRow r = this.contents.Rows[i];
+                    DataRow nr = cloned.NewRow();
+                    for (int j = 0; j < this.contents.Columns.Count; j++)
+                    {
+                        DataColumn dc = this.contents.Columns[j];
+                        if (dc.ColumnName == "ContentID")
+                        {
+                            nr[dc.ColumnName] = Purchases.ReceiptContent.NewID(this.cConnection);
+                        }
+                        else if (dc.ColumnName == "ReceiptID")
+                        {
+                            nr[dc.ColumnName] = this.receipt["ReceiptID"];
+                        }
+                        else
+                        {
+                            nr[dc.ColumnName] = r[dc.ColumnName];
+                        }
+                    }
+                    cloned.Rows.Add(nr);
+                }
+                this.contents = null;
+                this.contents = cloned;
+             }
 
             string stn = this.manager.GetString("Form.Subtotal");
 
@@ -212,7 +252,8 @@ namespace vBudgetForm
                 this.cConnection.Open();
                 using ( tran = this.cConnection.BeginTransaction()){
                     System.Data.SqlClient.SqlCommand rcmd = new System.Data.SqlClient.SqlCommand();
-                    if (this.isNew){
+                    if (this.type == ReceiptType.New ||
+                        this.type == ReceiptType.Cloned ){
                         rcmd = Purchases.Receipt.InsertCommand(this.receipt);
                     }else{
                         rcmd = Purchases.Receipt.UpdateCommand(this.receipt);
@@ -355,11 +396,13 @@ namespace vBudgetForm
                     DataRow nrow = this.contents.NewRow();
                     int k = this.lbxProducts.SelectedIndices[i];
 
-                    this.cConnection.Open();
-                    System.Data.SqlClient.SqlCommand idcmd = new System.Data.SqlClient.SqlCommand("SELECT NEWID() AS ContentID FROM Purchases.ReceiptContents", this.cConnection);
-                    Guid rec_id = (Guid)idcmd.ExecuteScalar();
-                    nrow["ContentID"] = rec_id;
-                    this.cConnection.Close();
+                    //this.cConnection.Open();
+                    //System.Data.SqlClient.SqlCommand idcmd = new System.Data.SqlClient.SqlCommand("SELECT NEWID() AS ContentID FROM Purchases.ReceiptContents", this.cConnection);
+                    //Guid rec_id = (Guid)idcmd.ExecuteScalar();
+                    //this.cConnection.Close();
+
+                    nrow["ContentID"] = Purchases.ReceiptContent.NewID(this.cConnection);
+
                     nrow["ReceiptID"] = this.receipt["ReceiptID"];
                     nrow["Position"] = this.contents.Rows.Count + 1;
                     nrow["ProductID"] = this.products.Rows[k]["ProductID"];
@@ -721,7 +764,7 @@ namespace vBudgetForm
         }
         protected void CheckReceiptExistance()
         {
-            if (this.isNew && !this.block)
+            if ( this.type == ReceiptType.New && !this.block)
             {
                 DateTime dt = this.dtpPeceiptDate.Value;
                 string num = this.tbxReceiptNumber.Text;
@@ -805,13 +848,6 @@ namespace vBudgetForm
         {
             DataTable cloned = this.contents.Clone();
 
-            //DataTable cloned = new DataTable("ReceiptContents");
-            //System.IO.MemoryStream ms = new System.IO.MemoryStream();
-            //this.contents.WriteXmlSchema(ms,true);
-            //ms.Position = 0;
-            //cloned.ReadXmlSchema(ms);
-            //ms.Close();
-
             for (int i = 0; i < this.contents.Rows.Count; i++)
             {
                 System.Data.DataRow o_row = this.contents.Rows[i];
@@ -822,12 +858,12 @@ namespace vBudgetForm
                 else if (i == old_position)
                 {
                     o_row = this.contents.Rows[new_position];
-                    //o_row["Position"] = old_position + 1;
+                    o_row["Position"] = old_position + 1;
                 }
                 else if (i == new_position)
                 {
                     o_row = this.contents.Rows[old_position];
-                    //o_row["Position"] = new_position + 1;
+                    o_row["Position"] = new_position + 1;
                 }
 
                 for (int j = 0; j < this.contents.Columns.Count - 1; j++)
@@ -840,86 +876,34 @@ namespace vBudgetForm
                 }
                 cloned.Rows.Add(n_row);
             }
-            //for (int i = 0; i < this.contents.Rows.Count; i++)
-            //{
-            //    System.Data.DataRow o_row = this.contents.Rows[i];
-            //    for (int j = 0; j < cloned.Rows.Count; j++)
-            //    {
-            //        System.Data.DataRow n_row = cloned.Rows[j];
-            //        if (n_row["ContentID"] == o_row["ContentID"])
-            //        {
-            //            o_row["Position"] = n_row["Position"];
-            //            break;
-            //        }
-            //    }
-            //}
+            cloned.AcceptChanges();
+            foreach (System.Data.DataRow row in cloned.Rows)
+            {
+                row.SetModified();
+            }
 
-            //cloned.Merge(this.contents, true);
-            //cloned.AcceptChanges();
-            this.contents.Merge(cloned, false);
-            //this.contents.
-            
-            //this.contents = null;
-            //this.contents = cloned;
-            //this.dgvReceiptContent.DataSource = cloned;
-            this.dgvReceiptContent.DataSource = this.contents;
-            //this.dgvReceiptContent.Sort(this.dgvReceiptContent.Columns["Position"], ListSortDirection.Ascending);
+            this.contents = null;
+            this.contents = cloned;
+            this.dgvReceiptContent.DataSource = cloned;
 
             this.dgvReceiptContent.ClearSelection();
             this.dgvReceiptContent.Rows[new_position].Selected = true;
             this.dgvReceiptContent.CurrentCell = this.dgvReceiptContent.Rows[new_position].Cells[4];
+
+            this.RecalculateReceipt();
 
             return;
         }
 
         private void btnUp_Click(object sender, EventArgs e)
         {
-            //DataTable cloned = this.contents.Clone();
-
-            
             if (this.dgvReceiptContent.SelectedRows.Count == 1)
             {
                 int cur_index = this.dgvReceiptContent.SelectedRows[0].Index;
                 this.ExchangeRows(cur_index, cur_index - 1);
 
-                //System.Data.DataRow prod = ((DataRowView)this.dgvReceiptContent.SelectedRows[0].DataBoundItem).Row;
-                //int cur_index = this.dgvReceiptContent.SelectedRows[0].Index;
-                //for (int i = 0; i <= cur_index; i++)
-                //{
-                //    if (i == cur_index - 1)
-                //    {
-                //        this.contents.Rows[cur_index]["Position"] = cur_index;
-                //    }
-                //    else if (i == cur_index)
-                //    {
-                //        this.contents.Rows[cur_index-1]["Position"] = cur_index+1;
-                //    }
-                //}
-                //this.dgvReceiptContent.Sort(this.dgvReceiptContent.Columns["Position"], ListSortDirection.Ascending);
-/*
-
-                DataRow dr = (DataRow)this.contents.Rows[cur_index];
-                int prv_index = cur_index - 1;
-                int cur_ind = (int)dr["Position"];
-
-                if (prv_index >= 0)
-                {
-                    int prv_ind = cur_ind - 1;
-
-
-                    
-                    this.contents.Rows[prv_index]["Position"] = cur_index + 1;
-                    this.contents.Rows[cur_index]["Position"] = prv_index + 1;
-                    
-                    this.dgvReceiptContent.Sort(this.dgvReceiptContent.Columns["Position"], ListSortDirection.Ascending);
-                    this.dgvReceiptContent.Rows[prv_index].Selected = true;
-                    this.contents.AcceptChanges();
-                    //this.dgvReceiptContent.Rows[cur_index - 1].Selected = false;
-                    //this.dgvReceiptContent.Rows[cur_index].Selected = false;
-                }
- */ 
             }
-
+            return;
         }
 
         private void btnDown_Click(object sender, EventArgs e)
@@ -929,17 +913,6 @@ namespace vBudgetForm
 
                 int cur_index = this.dgvReceiptContent.SelectedRows[0].Index;
                 this.ExchangeRows(cur_index, cur_index + 1);
-
-                //System.Data.DataRow prod = ((DataRowView)this.dgvReceiptContent.SelectedRows[0].DataBoundItem).Row;
-                //int cur_ind = this.dgvReceiptContent.SelectedRows[0].Index;
-                //if (cur_ind < this.dgvReceiptContent.Rows.Count)
-                //{
-                //    int prv_ind = cur_ind + 1;
-                //    this.contents.Rows[cur_ind]["Position"] = prv_ind + 1;
-                //    this.contents.Rows[prv_ind]["Position"] = cur_ind + 1;
-                //    this.contents.AcceptChanges();
-                //    //this.dgvReceiptContent.Sort(this.dgvReceiptContent.Columns["Position"], ListSortDirection.Ascending);
-                //}
             }
         }
 

@@ -126,5 +126,14 @@ namespace Purchases
             return done;
         }
 
+        public static Guid NewID(System.Data.SqlClient.SqlConnection connection)
+        {
+            Guid ret = Guid.Empty;
+            connection.Open();
+            System.Data.SqlClient.SqlCommand idcmd = new System.Data.SqlClient.SqlCommand("SELECT NEWID() AS ContentID FROM Purchases.ReceiptContents", connection);
+            ret = (Guid)idcmd.ExecuteScalar();
+            connection.Close();
+            return ret;
+        }
     }
 }

@@ -13,7 +13,6 @@ namespace vBudgetForm
         private System.Data.DataTable contents = null;
         private System.Data.DataTable vendors = null;
         private System.Data.DataTable cards = null;
-        private bool isNew = false;
         private int last_position;
 
         /// <summary>

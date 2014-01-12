@@ -162,6 +162,9 @@
   <data name="Menu.A.New" xml:space="preserve">
     <value>Новый чек</value>
   </data>
+  <data name="Menu.A.NewCloned" xml:space="preserve">
+    <value>Новый чек на основе выбранного</value>
+  </data>
   <data name="Menu.A.Persons" xml:space="preserve">
     <value>Пользователи</value>
   </data>
@@ -206,6 +209,21 @@
   </data>
   <data name="Menu.V.Sections" xml:space="preserve">
     <value>Разделы</value>
+  </data>
+  <data name="Menu.V.Sort.ByCreationDate" xml:space="preserve">
+    <value>датам создания</value>
+  </data>
+  <data name="Menu.V.Sort.ByDays" xml:space="preserve">
+    <value>дням</value>
+  </data>
+  <data name="Menu.V.Sort.ByIdentifier" xml:space="preserve">
+    <value>идентификатору</value>
+  </data>
+  <data name="Menu.V.Sort.ByMonths" xml:space="preserve">
+    <value>месяцам</value>
+  </data>
+  <data name="Menu.V.Sort.ByWeeks" xml:space="preserve">
+    <value>неделям</value>
   </data>
   <data name="Menu.V.SortBy" xml:space="preserve">
     <value>Сортировка по...</value>
