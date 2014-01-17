@@ -96,7 +96,7 @@ namespace vBudgetForm
 
             Guid receipt_id = Guid.Empty;
             if (this.type == ReceiptType.New ||
-                this.type == ReceiptType.Cloned )
+                this.type == ReceiptType.Cloned)
             {
                 this.cConnection.Open();
                 System.Data.SqlClient.SqlCommand idcmd = new System.Data.SqlClient.SqlCommand("SELECT NEWID() AS MaxID FROM Purchases.Receipts", this.cConnection);
@@ -107,6 +107,10 @@ namespace vBudgetForm
                     receipt_id = rec_id;
                 this.receipt["ReceiptID"] = rec_id;
                 this.cConnection.Close();
+            }
+            else
+            {
+                receipt_id = (Guid)this.receipt["ReceiptID"];
             }
             System.Data.SqlClient.SqlCommand cmd = Purchases.Commands.ReceiptContents( receipt_id );
             cmd.Connection = this.cConnection;
