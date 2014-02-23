@@ -9,6 +9,7 @@ namespace vBudgetForm
         private System.Data.SqlClient.SqlConnection cConnection = null;
         private bool bBlockContent = false;
         private System.Data.DataTable categories = null;
+        private System.Data.DataTable products = null;
         private System.Data.DataTable prices = null;
 
         /// <summary>
@@ -56,6 +57,7 @@ namespace vBudgetForm
             this.cbxProducts.Name = "cbxProducts";
             this.cbxProducts.Size = new System.Drawing.Size(285, 21);
             this.cbxProducts.TabIndex = 1;
+            this.cbxProducts.SelectedIndexChanged += new System.EventHandler(this.cbxProducts_SelectedIndexChanged);
             // 
             // cbxCategories
             // 
@@ -64,6 +66,7 @@ namespace vBudgetForm
             this.cbxCategories.Name = "cbxCategories";
             this.cbxCategories.Size = new System.Drawing.Size(285, 21);
             this.cbxCategories.TabIndex = 3;
+            this.cbxCategories.SelectedIndexChanged += new System.EventHandler(this.cbxCategories_SelectedIndexChanged);
             // 
             // lblCategory
             // 

@@ -53,6 +53,7 @@ namespace Purchases
         // подготовка параметров для SqlCommand таблицы продуктов
         static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command)
         {
+            command.Parameters.Add("@VendorID", System.Data.SqlDbType.UniqueIdentifier, 0, "VendorID");
             command.Parameters.Add("@VendorName", System.Data.SqlDbType.NVarChar, 0, "VendorName");
             command.Parameters.Add("@VendorType", System.Data.SqlDbType.Int, 0, "VendorType");
             command.Parameters.Add("@Phones", System.Data.SqlDbType.NVarChar, 0, "Phones");
@@ -69,9 +70,9 @@ namespace Purchases
         {
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "INSERT INTO " + Vendor.Table + "\n" +
-                            "            (VendorName, VendorType, Phones, Address, Logo,\n" +
+                            "            (VendorID, VendorName, VendorType, Phones, Address, Logo,\n" +
                             "             INoTP, Web, Created, Updated, Deleted)\n" +
-                            "     VALUES (@VendorName, @VendorType, @Phones, @Address, @Logo,\n" +
+                            "     VALUES (@VendorID, @VendorName, @VendorType, @Phones, @Address, @Logo,\n" +
                             "             @INoTP, @Web, @Created, @Updated, @Deleted)";
             cmd = Vendor.AddParameters(cmd);
             cmd.Parameters.Add("@Created", System.Data.SqlDbType.DateTime, 0, "Created");
@@ -89,11 +90,11 @@ namespace Purchases
                 connection.Open();
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 string sQuery = "INSERT INTO " + Vendor.Table + "\n" +
-                                "            (VendorName, VendorType, Phones, Address, Logo,\n" +
+                                "            (VendorID, VendorName, VendorType, Phones, Address, Logo,\n" +
                                 "             INoTP, Web, Created, Updated, Deleted)\n" +
-                                "     VALUES (@VendorName, @VendorType, @Phones, @Address, @Logo,\n" +
+                                "     VALUES (@VendorID, @VendorName, @VendorType, @Phones, @Address, @Logo,\n" +
                                 "             @INoTP, @Web, @Created, @Updated, @Deleted)";
-
+                cmd.Parameters.AddWithValue("@VendorID", row["VendorID"]);
                 cmd.Parameters.AddWithValue("@VendorName", row["VendorName"]);
                 cmd.Parameters.AddWithValue("@VendorType", row["VendorType"]);
                 cmd.Parameters.AddWithValue("@Phones", row["Phones"]);
@@ -128,7 +129,7 @@ namespace Purchases
                             "       Updated = @Updated, Deleted = @Deleted\n" +
                             " WHERE VendorID = @VendorID";
             cmd = Vendor.AddParameters(cmd);
-            cmd.Parameters.Add("@VendorID", System.Data.SqlDbType.DateTime, 0, "VendorID");
+            cmd.Parameters.Add("@VendorID", System.Data.SqlDbType.UniqueIdentifier, 0, "VendorID");
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
@@ -175,26 +176,31 @@ namespace Purchases
             return done;
         }
 
-        // Получить последний занесённый ID
-        public static int LastId( System.Data.SqlClient.SqlConnection connection, out string message ){
-            int last_id = -1;
+        /// <summary>
+        /// Get new identifier for vendor
+        /// </summary>
+        /// <param name="connection">SqlConnection object</param>
+        /// <param name="message">Error message if error occurs</param>
+        /// <returns>Returns empty identifier if error occurs, the new identifier otherwise</returns>
+        public static Guid NewId( System.Data.SqlClient.SqlConnection connection, out string message ){
+            Guid new_id = Guid.Empty;
             message = "";
             try{
                 connection.Open();
-                string sQuery = "SELECT MAX(VendorID) AS LastID\n" +
+                string sQuery = "SELECT NEWID() AS NewVendorID\n" +
                                 "  FROM " + Vendor.Table;
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sQuery);
                 cmd.Connection = connection;
                 object res = cmd.ExecuteScalar();
-                if (System.Convert.IsDBNull(res)) last_id = 0;
-                else last_id = (int)res;
+                if (!System.Convert.IsDBNull(res))
+                    new_id = (Guid)res;
                 connection.Close();
             }catch(System.Exception ex ){
                 message = ex.Message;
             }finally{
                 if (connection.State == System.Data.ConnectionState.Open) connection.Close();
             }
-            return last_id;
+            return new_id;
         }
 
 

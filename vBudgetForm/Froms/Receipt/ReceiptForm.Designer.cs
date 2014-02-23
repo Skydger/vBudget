@@ -50,6 +50,8 @@ namespace vBudgetForm
             this.scContent = new System.Windows.Forms.SplitContainer();
             this.lblSearch = new System.Windows.Forms.Label();
             this.tbxSearchProduct = new System.Windows.Forms.TextBox();
+            this.btnDown = new System.Windows.Forms.Button();
+            this.btnUp = new System.Windows.Forms.Button();
             this.btnNewCategory = new System.Windows.Forms.Button();
             this.btnAddProduct = new System.Windows.Forms.Button();
             this.lbxProducts = new System.Windows.Forms.ListBox();
@@ -62,8 +64,10 @@ namespace vBudgetForm
             this.dgvReceiptContent = new System.Windows.Forms.DataGridView();
             this.cmsPositionsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiChangePosition = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiSearchSelectedPosition = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiChangeProduct = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSeparatorI = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiSearchSelectedPosition = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSearchAllPositions = new System.Windows.Forms.ToolStripMenuItem();
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblComment = new System.Windows.Forms.Label();
             this.tbxComment = new System.Windows.Forms.TextBox();
@@ -71,12 +75,8 @@ namespace vBudgetForm
             this.lblDiscountCard = new System.Windows.Forms.Label();
             this.cbxDiscountCards = new System.Windows.Forms.ComboBox();
             this.lblPositions = new System.Windows.Forms.Label();
-            this.lblReceiptSum = new System.Windows.Forms.Label();
             this.btnAddDiscountCard = new System.Windows.Forms.Button();
-            this.btnUp = new System.Windows.Forms.Button();
-            this.btnDown = new System.Windows.Forms.Button();
-            this.tsmiSeparatorI = new System.Windows.Forms.ToolStripSeparator();
-            this.tsmiSearchAllPositions = new System.Windows.Forms.ToolStripMenuItem();
+            this.llblReceiptSum = new System.Windows.Forms.LinkLabel();
             this.scContent.Panel1.SuspendLayout();
             this.scContent.Panel2.SuspendLayout();
             this.scContent.SuspendLayout();
@@ -211,6 +211,26 @@ namespace vBudgetForm
             this.tbxSearchProduct.TabIndex = 5;
             this.tbxSearchProduct.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxSearchProduct_KeyUp);
             // 
+            // btnDown
+            // 
+            this.btnDown.Image = ((System.Drawing.Image)(resources.GetObject("btnDown.Image")));
+            this.btnDown.Location = new System.Drawing.Point(246, 85);
+            this.btnDown.Name = "btnDown";
+            this.btnDown.Size = new System.Drawing.Size(18, 23);
+            this.btnDown.TabIndex = 21;
+            this.btnDown.UseVisualStyleBackColor = true;
+            this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
+            // 
+            // btnUp
+            // 
+            this.btnUp.Image = ((System.Drawing.Image)(resources.GetObject("btnUp.Image")));
+            this.btnUp.Location = new System.Drawing.Point(246, 56);
+            this.btnUp.Name = "btnUp";
+            this.btnUp.Size = new System.Drawing.Size(18, 23);
+            this.btnUp.TabIndex = 20;
+            this.btnUp.UseVisualStyleBackColor = true;
+            this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
+            // 
             // btnNewCategory
             // 
             this.btnNewCategory.Location = new System.Drawing.Point(225, 3);
@@ -320,6 +340,18 @@ namespace vBudgetForm
             this.tsmiChangePosition.Text = "Изменить позицию";
             this.tsmiChangePosition.Click += new System.EventHandler(this.tsmiChangePosition_Click);
             // 
+            // tsmiChangeProduct
+            // 
+            this.tsmiChangeProduct.Name = "tsmiChangeProduct";
+            this.tsmiChangeProduct.Size = new System.Drawing.Size(242, 22);
+            this.tsmiChangeProduct.Text = "Заменить другим продуктом...";
+            this.tsmiChangeProduct.Click += new System.EventHandler(this.tsmiChangeProduct_Click);
+            // 
+            // tsmiSeparatorI
+            // 
+            this.tsmiSeparatorI.Name = "tsmiSeparatorI";
+            this.tsmiSeparatorI.Size = new System.Drawing.Size(239, 6);
+            // 
             // tsmiSearchSelectedPosition
             // 
             this.tsmiSearchSelectedPosition.Name = "tsmiSearchSelectedPosition";
@@ -327,12 +359,12 @@ namespace vBudgetForm
             this.tsmiSearchSelectedPosition.Text = "Найти выбранный продукт";
             this.tsmiSearchSelectedPosition.Click += new System.EventHandler(this.tsmiSearchSelectedPosition_Click);
             // 
-            // tsmiChangeProduct
+            // tsmiSearchAllPositions
             // 
-            this.tsmiChangeProduct.Name = "tsmiChangeProduct";
-            this.tsmiChangeProduct.Size = new System.Drawing.Size(242, 22);
-            this.tsmiChangeProduct.Text = "Заменить другим продуктом...";
-            this.tsmiChangeProduct.Click += new System.EventHandler(this.tsmiChangeProduct_Click);
+            this.tsmiSearchAllPositions.Name = "tsmiSearchAllPositions";
+            this.tsmiSearchAllPositions.Size = new System.Drawing.Size(242, 22);
+            this.tsmiSearchAllPositions.Text = "Найти все продукты чека";
+            this.tsmiSearchAllPositions.Click += new System.EventHandler(this.tsmiSearchAllPositions_Click);
             // 
             // btnCancel
             // 
@@ -398,16 +430,6 @@ namespace vBudgetForm
             this.lblPositions.TabIndex = 17;
             this.lblPositions.Text = "Всего позиций: ";
             // 
-            // lblReceiptSum
-            // 
-            this.lblReceiptSum.AutoSize = true;
-            this.lblReceiptSum.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblReceiptSum.Location = new System.Drawing.Point(13, 419);
-            this.lblReceiptSum.Name = "lblReceiptSum";
-            this.lblReceiptSum.Size = new System.Drawing.Size(86, 16);
-            this.lblReceiptSum.TabIndex = 18;
-            this.lblReceiptSum.Text = "На сумму: ";
-            // 
             // btnAddDiscountCard
             // 
             this.btnAddDiscountCard.Location = new System.Drawing.Point(326, 82);
@@ -418,37 +440,16 @@ namespace vBudgetForm
             this.btnAddDiscountCard.UseVisualStyleBackColor = true;
             this.btnAddDiscountCard.Click += new System.EventHandler(this.btnAddDiscountCard_Click);
             // 
-            // btnUp
+            // llblReceiptSum
             // 
-            this.btnUp.Image = ((System.Drawing.Image)(resources.GetObject("btnUp.Image")));
-            this.btnUp.Location = new System.Drawing.Point(246, 56);
-            this.btnUp.Name = "btnUp";
-            this.btnUp.Size = new System.Drawing.Size(18, 23);
-            this.btnUp.TabIndex = 20;
-            this.btnUp.UseVisualStyleBackColor = true;
-            this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
-            // 
-            // btnDown
-            // 
-            this.btnDown.Image = ((System.Drawing.Image)(resources.GetObject("btnDown.Image")));
-            this.btnDown.Location = new System.Drawing.Point(246, 85);
-            this.btnDown.Name = "btnDown";
-            this.btnDown.Size = new System.Drawing.Size(18, 23);
-            this.btnDown.TabIndex = 21;
-            this.btnDown.UseVisualStyleBackColor = true;
-            this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
-            // 
-            // tsmiSeparatorI
-            // 
-            this.tsmiSeparatorI.Name = "tsmiSeparatorI";
-            this.tsmiSeparatorI.Size = new System.Drawing.Size(239, 6);
-            // 
-            // tsmiSearchAllPositions
-            // 
-            this.tsmiSearchAllPositions.Name = "tsmiSearchAllPositions";
-            this.tsmiSearchAllPositions.Size = new System.Drawing.Size(242, 22);
-            this.tsmiSearchAllPositions.Text = "Найти все продукты чека";
-            this.tsmiSearchAllPositions.Click += new System.EventHandler(this.tsmiSearchAllPositions_Click);
+            this.llblReceiptSum.AutoSize = true;
+            this.llblReceiptSum.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.llblReceiptSum.Location = new System.Drawing.Point(15, 419);
+            this.llblReceiptSum.Name = "llblReceiptSum";
+            this.llblReceiptSum.Size = new System.Drawing.Size(82, 16);
+            this.llblReceiptSum.TabIndex = 20;
+            this.llblReceiptSum.TabStop = true;
+            this.llblReceiptSum.Text = "На сумму:";
             // 
             // ReceiptForm
             // 
@@ -457,8 +458,8 @@ namespace vBudgetForm
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(816, 438);
+            this.Controls.Add(this.llblReceiptSum);
             this.Controls.Add(this.btnAddDiscountCard);
-            this.Controls.Add(this.lblReceiptSum);
             this.Controls.Add(this.lblPositions);
             this.Controls.Add(this.lblDiscountCard);
             this.Controls.Add(this.cbxDiscountCards);
@@ -519,7 +520,6 @@ namespace vBudgetForm
         private System.Windows.Forms.Label lblDiscountCard;
         private System.Windows.Forms.ComboBox cbxDiscountCards;
         private System.Windows.Forms.Label lblPositions;
-        private System.Windows.Forms.Label lblReceiptSum;
         private System.Windows.Forms.ContextMenuStrip cmsPositionsMenu;
         private System.Windows.Forms.ToolStripMenuItem tsmiChangePosition;
         private System.Windows.Forms.Button btnAddDiscountCard;
@@ -533,5 +533,6 @@ namespace vBudgetForm
         private System.Windows.Forms.ToolStripMenuItem tsmiSearchSelectedPosition;
         private System.Windows.Forms.ToolStripSeparator tsmiSeparatorI;
         private System.Windows.Forms.ToolStripMenuItem tsmiSearchAllPositions;
+        private System.Windows.Forms.LinkLabel llblReceiptSum;
     }
 }

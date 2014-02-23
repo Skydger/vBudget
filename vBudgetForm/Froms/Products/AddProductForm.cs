@@ -35,7 +35,7 @@ namespace vBudgetForm
 
             if (this.isNew)
             {
-                this.product["ProductID"] = Producer.Product.NewID(this.cConnection, (int)this.product["Category"], out error);
+                this.product["ProductID"] = Producer.Product.NewID(this.cConnection, (Guid)this.product["Category"], out error);
                 title = string.Format(this.manager.GetString("Form.TitleNew"), (Guid)this.product["ProductID"]);
             }
 
@@ -51,12 +51,12 @@ namespace vBudgetForm
             this.btnCancel.Text = this.manager.GetString("Form.Cancel");
 
 
-            System.Data.SqlClient.SqlCommand cat_cmd = Producer.Categories.Select(-1);
+            System.Data.SqlClient.SqlCommand cat_cmd = Producer.Categories.Select(Guid.Empty);
             cat_cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter catda = new System.Data.SqlClient.SqlDataAdapter(cat_cmd);
             this.categories = new System.Data.DataTable("Categories");
             catda.Fill(this.categories);
-            this.categories.Rows.Add(new object[] { -1, this.manager.GetString("Form.NoCategory") });
+            this.categories.Rows.Add(new object[] { Guid.Empty, this.manager.GetString("Form.NoCategory") });
             this.cbxCategories.DataSource = this.categories;
             this.cbxCategories.DisplayMember = "CategoryName";
             this.cbxCategories.ValueMember = "CategoryID";
@@ -64,7 +64,7 @@ namespace vBudgetForm
             if (!System.Convert.IsDBNull(this.product["Category"])){
                 this.cbxCategories.SelectedValue = this.product["Category"];
 
-                System.Data.SqlClient.SqlCommand tp_cmd = Producer.ProductTypes.Select((int)this.cbxCategories.SelectedValue);
+                System.Data.SqlClient.SqlCommand tp_cmd = Producer.ProductTypes.Select((Guid)this.cbxCategories.SelectedValue);
                 tp_cmd.Connection = this.cConnection;
                 System.Data.SqlClient.SqlDataAdapter tpda = new System.Data.SqlClient.SqlDataAdapter(tp_cmd);
                 this.types_table = new System.Data.DataTable("Types");
@@ -77,7 +77,7 @@ namespace vBudgetForm
                 this.cbxCategories.SelectedValue = -1;
             }
 
-            System.Data.SqlClient.SqlCommand mk_cmd = Producer.Maker.Select(-1);
+            System.Data.SqlClient.SqlCommand mk_cmd = Producer.Maker.Select(Guid.Empty);
             mk_cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter mkda = new System.Data.SqlClient.SqlDataAdapter(mk_cmd);
             this.makers = new System.Data.DataTable("Makers");
@@ -142,9 +142,9 @@ namespace vBudgetForm
             if (!this.block){
                 System.Data.SqlClient.SqlCommand cmd = null;
                 if (this.cbxCategories.SelectedIndex >= 0){
-                    cmd = Producer.ProductTypes.Select((int)this.cbxCategories.SelectedValue);
+                    cmd = Producer.ProductTypes.Select((Guid)this.cbxCategories.SelectedValue);
                 }else{
-                    cmd = Producer.Commands.Products(-1, System.Guid.Empty);
+                    cmd = Producer.Commands.Products(Guid.Empty, System.Guid.Empty);
                 }
                 cmd.Connection = this.cConnection;
                 System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);

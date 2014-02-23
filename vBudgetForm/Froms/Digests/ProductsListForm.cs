@@ -32,19 +32,19 @@ namespace vBudgetForm
 
         private void ProductsListForm_Load(object sender, EventArgs e){
             this.bBlockContent = true;
-            System.Data.SqlClient.SqlCommand cat_cmd = Producer.Categories.Select(-1);
+            System.Data.SqlClient.SqlCommand cat_cmd = Producer.Categories.Select(Guid.Empty);
             cat_cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter catda = new System.Data.SqlClient.SqlDataAdapter(cat_cmd);
             this.categories = new System.Data.DataTable("Categories");
             catda.Fill(this.categories);
-            this.categories.Rows.Add(new object[] { -1, "<Без категории>" });
+            this.categories.Rows.Add(new object[] { Guid.Empty, "<Без категории>" });
             this.cbxCategories.DataSource = this.categories;
             this.cbxCategories.DisplayMember = "CategoryName";
             this.cbxCategories.ValueMember = "CategoryID";
             this.cbxCategories.SelectedValue = -1;
 
 
-            System.Data.SqlClient.SqlCommand tp_cmd = Producer.ProductTypes.Select(-1);
+            System.Data.SqlClient.SqlCommand tp_cmd = Producer.ProductTypes.Select(Guid.Empty);
             tp_cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter tpda = new System.Data.SqlClient.SqlDataAdapter(tp_cmd);
             this.types_table = new System.Data.DataTable("Types");
@@ -61,7 +61,7 @@ namespace vBudgetForm
             this.lvProducts.Columns.Add("Штрих-код", 50);
             this.lvProducts.Columns.Add("Создан", 50);
             this.lvProducts.Columns.Add("Комментарий", 100);
-            this.RefreshProductList( -1, null );
+            this.RefreshProductList( Guid.Empty, null );
             return;
         }
 
@@ -93,26 +93,11 @@ namespace vBudgetForm
             if (!System.Convert.IsDBNull(row["Comment"])) p_comment = ((string)row["Comment"]);
             lvi.SubItems.Add(p_comment);
 
-/*
-            DateTime r_dtm = new DateTime(1900, 1, 1);
-            if (!System.Convert.IsDBNull(row["Payed"])) r_dtm = ((DateTime)row["Payed"]);
-            string num = "";
-            if (!System.Convert.IsDBNull(row["Number"])) num = (string)row["Number"];
-            string vendor = "";
-            if (!System.Convert.IsDBNull(row["VendorName"])) vendor = (string)row["VendorName"];
-            decimal price = 0;
-            if (!System.Convert.IsDBNull(row["Price"])) price = (decimal)row["Price"];
-            lvi.SubItems.Add(((int)row["ReceiptID"]).ToString());
-            lvi.SubItems.Add(num);
-            lvi.SubItems.Add(r_dtm.ToShortDateString() + " " + r_dtm.ToShortTimeString());
-            lvi.SubItems.Add(vendor);
-            lvi.SubItems.Add(price.ToString("0.00"));
- */
             this.lvProducts.Items.Add(lvi);
             return;
         }
 
-        private void RefreshProductList(int cat_id, int [] type_id){
+        private void RefreshProductList(Guid cat_id, int [] type_id){
             this.lvProducts.Items.Clear();
 //            if ( (cat_id > 0) || (type_id > 0)){
             List<Producer.Product.OrderColumn> ord = new List<Producer.Product.OrderColumn>();
@@ -140,7 +125,7 @@ namespace vBudgetForm
 
         private void cbxCategories_SelectedIndexChanged(object sender, EventArgs e){
             if (!this.bBlockContent && !System.Convert.IsDBNull( this.cbxCategories.SelectedValue )){
-                int cat_id = (int)this.cbxCategories.SelectedValue;
+                Guid cat_id = (Guid)this.cbxCategories.SelectedValue;
                 System.Data.SqlClient.SqlCommand tp_cmd = Producer.ProductTypes.Select(cat_id);
                 tp_cmd.Connection = this.cConnection;
                 System.Data.SqlClient.SqlDataAdapter tpda = new System.Data.SqlClient.SqlDataAdapter(tp_cmd);
@@ -199,7 +184,7 @@ namespace vBudgetForm
                     if (( cnt > 0 ) &&
                          (MessageBox.Show("Найдены товары (" + cnt.ToString() + "), содержащие выбранный продукт, переназначить (это действие нельзы отменить)?", "Внимание!", MessageBoxButtons.YesNo, MessageBoxIcon.Hand) == DialogResult.Yes)
                         ){
-                        System.Data.SqlClient.SqlCommand command = Producer.ProductTypes.Select((int)row["Category"] );
+                        System.Data.SqlClient.SqlCommand command = Producer.ProductTypes.Select((Guid)row["Category"] );
                         command.Connection = this.cConnection;
                         System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
                         System.Data.DataTable tbl = new System.Data.DataTable("ProductTypes");
@@ -243,7 +228,7 @@ namespace vBudgetForm
                     type_ids[tpsz] = (int)this.types_table.Rows[i]["TypeId"];
                 }
             }
-            int cat_id = (int)this.cbxCategories.SelectedValue;
+            Guid cat_id = (Guid)this.cbxCategories.SelectedValue;
             this.RefreshProductList(cat_id, type_ids);
             return;
         }
@@ -277,7 +262,7 @@ namespace vBudgetForm
                 AddProductForm ptf = new AddProductForm(this.cConnection, ref row);
                 if (ptf.ShowDialog() == DialogResult.OK){
 //                    this.types_table.Rows.Add(new_type);
-                    this.RefreshProductList((int)row["Category"], new int[] { (int)row["Type"] });
+                    this.RefreshProductList((Guid)row["Category"], new int[] { (int)row["Type"] });
                 }
             }
             return;
@@ -312,7 +297,7 @@ namespace vBudgetForm
                     ){
                     List<Producer.Product.OrderColumn> ord = new List<Producer.Product.OrderColumn>();
                     ord.Add(Producer.Product.OrderColumn.ProductName);
-                    System.Data.SqlClient.SqlCommand command = Producer.Product.Select((int)row["Category"], null, null, ord);
+                    System.Data.SqlClient.SqlCommand command = Producer.Product.Select((Guid)row["Category"], null, null, ord);
                     command.Connection = this.cConnection;
                     System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
                     System.Data.DataTable tbl = new System.Data.DataTable("Products");

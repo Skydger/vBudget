@@ -6,12 +6,13 @@ namespace Producer
 {
     public class Maker{
         private static string Table = "Producer.Makers";
-        public static System.Data.SqlClient.SqlCommand Select(int maker_category){
+        public static System.Data.SqlClient.SqlCommand Select(Guid maker_category){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sWhere = "";
-            if( maker_category > 0 ){
+            if( maker_category != Guid.Empty ){
                 sWhere += (sWhere.Length > 0 ? "      AND " : "    WHERE ");
-                sWhere += "MakerCategory = " + maker_category.ToString() + "\n";
+                sWhere += "MakerCategory = @MakerCategory\n";
+                cmd.Parameters.AddWithValue("@MakerCategory", maker_category);
             }
 /*
             if ( (type_ids != null) && (type_ids.Length > 0 ) ){

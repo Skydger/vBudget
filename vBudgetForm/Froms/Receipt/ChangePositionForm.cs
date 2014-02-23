@@ -23,7 +23,7 @@ namespace vBudgetForm
         {
             System.Data.SqlClient.SqlDataAdapter sda = null;
 
-            System.Data.SqlClient.SqlCommand prdccmd = Producer.Commands.Products(-1, Guid.Empty );
+            System.Data.SqlClient.SqlCommand prdccmd = Producer.Commands.Products(Guid.Empty, Guid.Empty);
             prdccmd.Connection = this.connection;
             sda = new System.Data.SqlClient.SqlDataAdapter(prdccmd);
             this.products = new System.Data.DataTable("Products");
@@ -33,7 +33,7 @@ namespace vBudgetForm
             this.cbxProducts.ValueMember = "ProductID";
             this.cbxProducts.SelectedValue = this.product_id;
 
-            prdccmd = Producer.Commands.Products( -1, this.product_id );
+            prdccmd = Producer.Commands.Products(Guid.Empty, this.product_id);
             prdccmd.Connection = this.connection;
             sda = new System.Data.SqlClient.SqlDataAdapter(prdccmd);
             System.Data.DataTable prods = new System.Data.DataTable("Product");

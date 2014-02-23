@@ -21,12 +21,12 @@ namespace vBudgetForm
 
 
         private void EditMakerForm_Load(object sender, EventArgs e){
-            System.Data.SqlClient.SqlCommand cat_cmd = Producer.Categories.Select(-1);
+            System.Data.SqlClient.SqlCommand cat_cmd = Producer.Categories.Select(Guid.Empty);
             cat_cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter catda = new System.Data.SqlClient.SqlDataAdapter(cat_cmd);
             this.categories = new System.Data.DataTable("Categories");
             catda.Fill(this.categories);
-            this.categories.Rows.Add(new object[] { -1, "<Без категории>" });
+            this.categories.Rows.Add(new object[] { Guid.Empty, "<Без категории>" });
             this.cbxCategories.DataSource = this.categories;
             this.cbxCategories.DisplayMember = "CategoryName";
             this.cbxCategories.ValueMember = "CategoryID";
@@ -38,7 +38,7 @@ namespace vBudgetForm
             System.Data.SqlClient.SqlDataAdapter vda = new System.Data.SqlClient.SqlDataAdapter(cmd);
             this.vendors = new System.Data.DataTable("Vendors");
             vda.Fill(this.vendors);
-            this.vendors.Rows.Add(new object[] { -1, "<Неизвестен>" });
+            this.vendors.Rows.Add(new object[] { Guid.Empty, "<Неизвестен>" });
             this.cbxVendors.DataSource = this.vendors;
             this.cbxVendors.DisplayMember = "VendorName";
             this.cbxVendors.ValueMember = "VendorID";

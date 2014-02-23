@@ -167,11 +167,11 @@ namespace vBudgetForm
             try
             {
                 if( this.lbxObjects.SelectedItems.Count > 0 ){
-                    List<int> ids = new List<int>();
+                    List<Guid> ids = new List<Guid>();
                     //foreach( ListViewItem obj in this.lbxObjects.SelectedItems ){
                     foreach( DataRowView obj in this.lbxObjects.SelectedItems ){
                         if (!System.Convert.IsDBNull(obj["VendorID"]))
-                            ids.Add((int)obj["VendorID"]);
+                            ids.Add((Guid)obj["VendorID"]);
                     }
                     System.Data.SqlClient.SqlCommand mnth = Statistics.Purchases.ByVendorsPerMonth(ids);
                     mnth.Connection = this.connection;

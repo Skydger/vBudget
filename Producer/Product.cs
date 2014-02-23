@@ -9,13 +9,15 @@ namespace Producer
         public enum OrderColumn { ProductID = 0, ProductName = 1, Category = 2, Type = 3, Maker = 4, Barcode = 5 }
         static private string sTable = "Producer.Products";
 
-        public static System.Data.SqlClient.SqlCommand Select(int category_id, int[] type_ids, Guid [] product_ids, List<OrderColumn> order_by)
+        public static System.Data.SqlClient.SqlCommand Select(Guid category_id, int[] type_ids, Guid[] product_ids, List<OrderColumn> order_by)
         {
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sWhere = "", sOrder = "";
-            if( category_id > 0 ){
+            if (category_id != Guid.Empty)
+            {
                 sWhere += (sWhere.Length > 0 ? "      AND " : "    WHERE ");
-                sWhere += "p.Category = " + category_id.ToString() + "\n";
+                sWhere += "p.Category = @Category\n";
+                cmd.Parameters.AddWithValue("@Category", category_id);
             }
             if ( (type_ids != null) && (type_ids.Length > 0 ) ){
                 sWhere += (sWhere.Length > 0 ? "      AND " : "    WHERE ");
@@ -240,7 +242,7 @@ namespace Producer
             return done;
         }
 
-        public static Guid NewID( System.Data.SqlClient.SqlConnection connection, int category_id, out string message ){
+        public static Guid NewID( System.Data.SqlClient.SqlConnection connection, Guid category_id, out string message ){
             Guid last_id = Guid.Empty;
             message = "";
             try{
@@ -248,8 +250,9 @@ namespace Producer
                     connection.Open();
                     string sQuery = "SELECT NEWID() AS New_Id\n" +
                                     "  FROM " + sTable + "\n" +
-                                    "WHERE Category = " + category_id.ToString();
+                                    "WHERE Category = @Category";
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sQuery);
+                    cmd.Parameters.AddWithValue("@Category", category_id);
                     cmd.Connection = connection;
                     object res = cmd.ExecuteScalar();
                     if (System.Convert.IsDBNull(res)) last_id = Guid.Empty;

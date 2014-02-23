@@ -8,10 +8,17 @@ namespace Producer{
         static private string Table = "Producer.Categories";
 
         // выборка категорий продуктов
-        public static System.Data.SqlClient.SqlCommand Select( int category_id ){
+        public static System.Data.SqlClient.SqlCommand Select( Guid category_id ){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string where = "";
+            if (category_id != Guid.Empty)
+            {
+                where = " WHERE CategoryID = @CategoryID\n";
+                cmd.Parameters.AddWithValue("@CategoryID", category_id);
+            }
             string sQuery = "SELECT CategoryID, CategoryName\n" +
                             "  FROM " + Categories.Table + "\n" +
+                            where +
                             "ORDER BY CategoryName";
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
@@ -44,7 +51,7 @@ namespace Producer{
                             "   SET CategoryName = @CategoryName\n" +
                             " WHERE CategoryID = @CategoryID";
             cmd = Categories.AddParameters(cmd);
-            cmd.Parameters.Add("@CategoryID", System.Data.SqlDbType.Int, 0, "CategoryID");
+            cmd.Parameters.Add("@CategoryID", System.Data.SqlDbType.UniqueIdentifier, 0, "CategoryID");
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
@@ -105,26 +112,54 @@ namespace Producer{
             }
             return done;
         }
-
-        public static int LastId( System.Data.SqlClient.SqlConnection connection, out string message ){
-            int last_id = -1;
+        public static bool Delete(System.Data.SqlClient.SqlConnection connection, System.Data.DataRow row, out string message)
+        {
+            bool done = false;
+            message = "";
+            try
+            {
+                connection.Open();
+                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+                string sQuery = "DELETE FROM " + Categories.Table + "\n" +
+                                " WHERE CategoryID = @CategoryID";
+                cmd.Parameters.AddWithValue("@CategoryID", row["CategoryID"]);
+                cmd.Connection = connection;
+                cmd.CommandTimeout = 0;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = sQuery;
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                done = true;
+            }
+            catch (System.Exception ex)
+            {
+                message = ex.Message;
+            }
+            finally
+            {
+                if (connection.State == System.Data.ConnectionState.Open) connection.Close();
+            }
+            return done;
+        }
+        public static Guid NewId( System.Data.SqlClient.SqlConnection connection, out string message ){
+            Guid new_id = Guid.Empty;
             message = "";
             try{
                 connection.Open();
-                string sQuery = "SELECT MAX(CategoryID) AS LastID\n" +
+                string sQuery = "SELECT NEWID() AS NewCategoryID\n" +
                                 "  FROM " + Categories.Table;
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sQuery);
                 cmd.Connection = connection;
                 object res = cmd.ExecuteScalar();
-                if (System.Convert.IsDBNull(res)) last_id = 0;
-                else last_id = (int)res;
+                if (!System.Convert.IsDBNull(res))
+                    new_id = (Guid)res;
                 connection.Close();
             }catch(System.Exception ex ){
                 message = ex.Message;
             }finally{
                 if (connection.State == System.Data.ConnectionState.Open) connection.Close();
             }
-            return last_id;
+            return new_id;
         }
         public static bool Exists(System.Data.SqlClient.SqlConnection connection, string category_name, out bool exists, out string message)
         {
@@ -156,6 +191,49 @@ namespace Producer{
                 if (connection.State == System.Data.ConnectionState.Open) connection.Close();
             }
             return ret;
+        }
+        public static bool Exists(System.Data.SqlClient.SqlConnection connection,
+                          System.Data.DataRow row,
+                          out int products,
+                          out int receipts,
+                          out string message)
+        {
+            bool done = false;
+            products = 0;
+            receipts = 0;
+            message = "";
+            try
+            {
+                connection.Open();
+                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+                string sQuery = "SELECT COUNT(DISTINCT p.ProductID) AS prod_amount,\n" +
+                                "       COUNT(DISTINCT rc.ReceiptID) AS rec_amount\n" +
+                                "  FROM Producer.Products AS p\n" +
+                                "  LEFT JOIN Purchases.ReceiptContents AS rc\n" +
+                                "    ON rc.ProductID = p.ProductID\n" +
+                                " WHERE p.Category = @Category";
+                cmd.Parameters.AddWithValue("@Category", row["CategoryID"]);
+                cmd.Connection = connection;
+                cmd.CommandTimeout = 0;
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = sQuery;
+                System.Data.SqlClient.SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    products = (int)dr[0];
+                    receipts = (int)dr[1];
+                }
+                done = true;
+            }
+            catch (System.Exception ex)
+            {
+                message = ex.Message;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return done;
         }
     }
 }

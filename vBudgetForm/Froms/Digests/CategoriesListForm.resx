@@ -117,56 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tsmiFileI.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 6</value>
-  </data>
-  <data name="tsmiByDays.Text" xml:space="preserve">
-    <value>дням</value>
-  </data>
-  <data name="tsmiByWeeks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 22</value>
-  </data>
-  <data name="tsmiByWeeks.Text" xml:space="preserve">
-    <value>неделям</value>
-  </data>
-  <data name="tsmiByMonths.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 22</value>
-  </data>
-  <data name="tsmiByMonths.Text" xml:space="preserve">
-    <value>месяцам</value>
-  </data>
-  <data name="tsmiByID.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 22</value>
-  </data>
-  <data name="tsmiByID.Text" xml:space="preserve">
-    <value>идентификатору</value>
-  </data>
-  <data name="tsmiNewClonedReceipt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 22</value>
-  </data>
-  <data name="tsmiMakers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiCategories.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiCategories.Text" xml:space="preserve">
-    <value>Категории продуктов</value>
-  </data>
-  <data name="tsmiProducts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiVendors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiDiscountCards.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiAddClonedReceipt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
-  </data>
-  <data name="cmsReceiptsMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>141, 126</value>
-  </data>
+  <metadata name="msMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="cmsCategoriesAndTypes.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>116, 17</value>
+  </metadata>
 </root>

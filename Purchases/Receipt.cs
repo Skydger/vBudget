@@ -7,7 +7,7 @@ namespace Purchases
     public class Receipt{
         //private int iReceiptId;
         //private string sNumber;
-        //private DateTime dtPayed;
+        //private DateTime dtPaid;
         //private decimal dPrice;
         //private decimal dDiscount;
         //private int iDiscountCard;
@@ -20,7 +20,7 @@ namespace Purchases
         static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command){
             command.Parameters.Add("@Receipt", System.Data.SqlDbType.UniqueIdentifier, 0, "ReceiptID");
             
-            command.Parameters.Add("@Payed", System.Data.SqlDbType.DateTime, 0, "Payed");
+            command.Parameters.Add("@Paid", System.Data.SqlDbType.DateTime, 0, "Paid");
             command.Parameters.Add("@Price", System.Data.SqlDbType.Decimal, 0, "Price");
             command.Parameters.Add("@Discount", System.Data.SqlDbType.Decimal, 0, "Discount");
             command.Parameters.Add("@DiscountCard", System.Data.SqlDbType.UniqueIdentifier, 0, "DiscountCard");
@@ -37,15 +37,15 @@ namespace Purchases
         public static System.Data.SqlClient.SqlCommand InsertCommand( System.Data.DataRow row ){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "INSERT INTO Purchases.Receipts\n" +
-                            "           (ReceiptID, Payed, Price, Discount, DiscountCard, Comment, Vendor,\n" +
+                            "           (ReceiptID, Paid, Price, Discount, DiscountCard, Comment, Vendor,\n" +
                             "            Deleted, Number, Created, Updated)\n" +
-                            "VALUES (@Receipt, @Payed, @Price, @Discount, @DiscountCard, @Comment, @Vendor,\n" +
+                            "VALUES (@Receipt, @Paid, @Price, @Discount, @DiscountCard, @Comment, @Vendor,\n" +
                             "        @Deleted, @Number, @Created, @Updated);"; //\n" +
 //                            "SELECT @ReceiptID = SCOPE_IDENTITY()";
             if (row != null)
             {
                 cmd.Parameters.AddWithValue("@Receipt", row["ReceiptID"]);
-                cmd.Parameters.AddWithValue("@Payed", row["Payed"]);
+                cmd.Parameters.AddWithValue("@Paid", row["Paid"]);
                 cmd.Parameters.AddWithValue("@Price", row["Price"]);
                 cmd.Parameters.AddWithValue("@Discount", row["Discount"]);
                 cmd.Parameters.AddWithValue("@DiscountCard", row["DiscountCard"]);
@@ -69,14 +69,14 @@ namespace Purchases
         public static System.Data.SqlClient.SqlCommand UpdateCommand( System.Data.DataRow row ){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "UPDATE Purchases.Receipts\n" +
-                            "   SET Payed = @Payed, Price = @Price, Discount = @Discount,\n" +
+                            "   SET Paid = @Paid, Price = @Price, Discount = @Discount,\n" +
                             "       DiscountCard = @DiscountCard, Comment = @Comment, Vendor = @Vendor,\n" +
                             "       Deleted = @Deleted, Number = @Number, Created = @Created, Updated = @Updated\n" +
                             " WHERE ReceiptID = @ReceiptID";
             if (row != null)
             {
                 cmd.Parameters.AddWithValue("@ReceiptID", row["ReceiptID"]);
-                cmd.Parameters.AddWithValue("@Payed", row["Payed"]);
+                cmd.Parameters.AddWithValue("@Paid", row["Paid"]);
                 cmd.Parameters.AddWithValue("@Price", row["Price"]);
                 cmd.Parameters.AddWithValue("@Discount", row["Discount"]);
                 cmd.Parameters.AddWithValue("@DiscountCard", row["DiscountCard"]);
@@ -108,7 +108,7 @@ namespace Purchases
             return cmd;
         }
 
-        public static System.Data.SqlClient.SqlCommand Exists(DateTime payed, string number, int vendor, int d_card, out bool ok, out string error)
+        public static System.Data.SqlClient.SqlCommand Exists(DateTime paid, string number, Guid vendor, int d_card, out bool ok, out string error)
         {
             ok = true;
             error = "";
@@ -123,15 +123,15 @@ namespace Purchases
                                "               FROM Purchases.ReceiptContents\n" +
                                "              GROUP BY ReceiptID ) AS contents\n" +
                                "    ON contents.ReceiptID = r.ReceiptID\n" +
-                               " WHERE (CAST(r.Payed AS DATE) = CAST(@Payed AS DATE) AND\n" +
-                               "        DATEPART(hour, r.Payed) = DATEPART(hour, @Payed) AND\n" +
-                               "        DATEPART(minute, r.Payed) = DATEPART(minute, @Payed) AND\n" +
+                               " WHERE (CAST(r.Paid AS DATE) = CAST(@Paid AS DATE) AND\n" +
+                               "        DATEPART(hour, r.Paid) = DATEPART(hour, @Paid) AND\n" +
+                               "        DATEPART(minute, r.Paid) = DATEPART(minute, @Paid) AND\n" +
                                "        r.Number like @Number AND\n" +
                                "        r.Vendor = @Vendor)";/* OR\n" +
-                               "       (Payed = @Payed AND Number like @Number) OR\n" +
+                               "       (Paid = @Paid AND Number like @Number) OR\n" +
                                "       (Vendor = @Vendor AND Number like @Number) OR\n" +
-                               "       (Vendor = @Vendor AND Payed = @Payed)";*/
-                cmd.Parameters.AddWithValue("@Payed", payed);
+                               "       (Vendor = @Vendor AND Paid = @Paid)";*/
+                cmd.Parameters.AddWithValue("@Paid", paid);
                 cmd.Parameters.AddWithValue("@Number", string.Format("{0}", number) );
                 cmd.Parameters.AddWithValue("@Vendor", vendor);
                 cmd.CommandTimeout = 0;

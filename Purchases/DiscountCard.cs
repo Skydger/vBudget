@@ -40,7 +40,7 @@ namespace Purchases
         static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command)
         {
             command.Parameters.Add("@CardOwner", System.Data.SqlDbType.Int, 0, "CardOwner");
-            command.Parameters.Add("@VendorID", System.Data.SqlDbType.Int, 0, "VendorID");
+            command.Parameters.Add("@VendorID", System.Data.SqlDbType.UniqueIdentifier, 0, "VendorID");
             command.Parameters.Add("@CardName", System.Data.SqlDbType.NVarChar, 0, "CardName");
             command.Parameters.Add("@CardNumber", System.Data.SqlDbType.NVarChar, 0, "CardNumber");
             command.Parameters.Add("@DiscountPercent", System.Data.SqlDbType.Decimal, 0, "DiscountPercent");

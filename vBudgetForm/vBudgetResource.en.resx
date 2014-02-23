@@ -126,7 +126,7 @@
   <data name="Columns.Number" xml:space="preserve">
     <value>Receipt Number</value>
   </data>
-  <data name="Columns.Payed" xml:space="preserve">
+  <data name="Columns.Paid" xml:space="preserve">
     <value>Pay date</value>
   </data>
   <data name="Columns.Price" xml:space="preserve">
@@ -170,6 +170,9 @@
   </data>
   <data name="Menu.D" xml:space="preserve">
     <value>Digests</value>
+  </data>
+  <data name="Menu.D.Categories" xml:space="preserve">
+    <value>Products' categories</value>
   </data>
   <data name="Menu.D.DiscountCards" xml:space="preserve">
     <value>Discount cards</value>

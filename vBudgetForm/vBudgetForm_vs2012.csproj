@@ -72,6 +72,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AddProductFormResource.ru.resx</DependentUpon>
     </Compile>
+    <Compile Include="Froms\Digests\CategoriesListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\Digests\CategoriesListForm.Designer.cs">
+      <DependentUpon>CategoriesListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Froms\Products\AddProductForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,6 +159,9 @@
     <EmbeddedResource Include="AddProductFormResource.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AddProductFormResource.ru.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\Digests\CategoriesListForm.resx">
+      <DependentUpon>CategoriesListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Froms\Products\AddProductForm.resx">
       <SubType>Designer</SubType>

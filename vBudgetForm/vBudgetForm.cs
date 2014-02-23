@@ -67,7 +67,7 @@ namespace vBudgetForm
             lvi.Text = (row_num + 1).ToString();
             DateTime r_dtm = new DateTime(1900, 1, 1 );
             DateTime c_dtm = new DateTime(1900, 1, 1);
-            if (!System.Convert.IsDBNull(row["Payed"])) r_dtm = ((DateTime)row["Payed"]);
+            if (!System.Convert.IsDBNull(row["Paid"])) r_dtm = ((DateTime)row["Paid"]);
             string num = "";
             if (!System.Convert.IsDBNull(row["Number"])) num = (string)row["Number"];
             string vendor = "";
@@ -94,7 +94,7 @@ namespace vBudgetForm
             lvi.Name = (row_num + 1).ToString();
             lvi.Text = (row_num + 1).ToString();
             DateTime r_dtm = new DateTime(1900, 1, 1);
-            if (!System.Convert.IsDBNull(row["Payed"])) r_dtm = ((DateTime)row["Payed"]);
+            if (!System.Convert.IsDBNull(row["Paid"])) r_dtm = ((DateTime)row["Paid"]);
             string num = "";
             if (!System.Convert.IsDBNull(row["Number"])) num = (string)row["Number"];
             string vendor = "";
@@ -177,7 +177,7 @@ namespace vBudgetForm
             this.lvReceipts.Columns.Add("¹", 50);
             this.lvReceipts.Columns.Add("ID", 70);
             this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Number"), 100);
-            this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Payed"), 100);
+            this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Paid"), 100);
             this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Vendor"), 200);
             this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Price"), 100);
             this.lvReceipts.Columns.Add(this.manager.GetString("Columns.Comment"), 150);
@@ -213,6 +213,7 @@ namespace vBudgetForm
 
             this.tsmiMakers.Text = this.manager.GetString("Menu.D.Makers");
             this.tsmiProducts.Text = this.manager.GetString("Menu.D.Products");
+            this.tsmiCategories.Text = this.manager.GetString("Menu.D.Categories");
             this.tsmiVendors.Text = this.manager.GetString("Menu.D.Vendors");
             this.tsmiDiscountCards.Text = this.manager.GetString("Menu.D.DiscountCards");
 
@@ -284,7 +285,19 @@ namespace vBudgetForm
             }
             return;
         }
+        /// <summary>
+        /// Products' categories list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiCategories_Click(object sender, EventArgs e)
+        {
+            CaregoriesListForm clfrm = new CaregoriesListForm(this.cConnection);
+            if (clfrm.ShowDialog() == DialogResult.OK)
+            {
+            }
 
+        }
         private void tsmiProducts_Click(object sender, EventArgs e){
 
 //            AddProductForm apf = new AddProductForm( this.cConnection );
@@ -376,7 +389,7 @@ namespace vBudgetForm
             decimal total = 0, sub_total = 0;
             foreach (System.Data.DataRow drw in this.receipts.Rows)
             {
-                System.DateTime dtm = (System.DateTime)drw["Payed"];
+                System.DateTime dtm = (System.DateTime)drw["Paid"];
                 DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
                 string m_name = dfi.GetMonthName(dtm.Month);
                 System.Globalization.Calendar cln = dfi.Calendar;
@@ -415,7 +428,7 @@ namespace vBudgetForm
             decimal total = 0, sub_total = 0;
             string lcl_week = this.manager.GetString("Misc.Week");
             foreach (System.Data.DataRow drw in this.receipts.Rows){
-                System.DateTime dtm = (System.DateTime)drw["Payed"];
+                System.DateTime dtm = (System.DateTime)drw["Paid"];
 
                 DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
                 string m_name = dfi.GetMonthName(dtm.Month);
@@ -455,7 +468,7 @@ namespace vBudgetForm
             int i = 0;
             decimal total = 0, sub_total = 0;
             foreach (System.Data.DataRow drw in this.receipts.Rows){
-                System.DateTime dtm = (System.DateTime)drw["Payed"];
+                System.DateTime dtm = (System.DateTime)drw["Paid"];
 
                 DateTimeFormatInfo dfi = DateTimeFormatInfo.CurrentInfo;
                 string m_name = dfi.GetMonthName(dtm.Month);
@@ -1090,6 +1103,8 @@ namespace vBudgetForm
         {
             this.CreateClonedReceipt();
         }
+
+
 
 
 

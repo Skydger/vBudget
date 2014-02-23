@@ -7,15 +7,15 @@ namespace Purchases
     public class Commands{
         public static System.Data.SqlClient.SqlCommand Receipts(){
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-                string sQuery = "SELECT r.ReceiptID, r.Payed, r.Price, r.Discount, r.DiscountCard,\n" +
+                string sQuery = "SELECT r.ReceiptID, r.Paid, r.Price, r.Discount, r.DiscountCard,\n" +
                                 "       r.Comment, r.Vendor, r.Deleted, r.Number,\n" +
                                 "       r.Created, r.Updated,\n" +
                                 "       v.VendorName\n" +
-//                                "       MONTH(r.Payed)
+//                                "       MONTH(r.Paid)
                                 "FROM Purchases.Receipts AS r\n" +
                                 "LEFT JOIN Purchases.Vendors AS v\n"+
                                 "       ON v.VendorID = r.Vendor\n" +
-                                "ORDER BY r.Payed, r.ReceiptID";
+                                "ORDER BY r.Paid, r.ReceiptID";
                 cmd.CommandTimeout = 0;
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.CommandText = sQuery;
@@ -23,16 +23,14 @@ namespace Purchases
         }
 
         /// <summary>
-        /// Метод возвращает команду для выборки чеков
+        /// This method returns SqlCommand object for receipts list
         /// </summary>
-        /// <param name="subject">Предмет</param>
-        /// <param name="averages">Выходной массив статистики</param>
-        /// <param name="error">Выходной параметр строки ошибки, если метод возвращает false</param>
-        /// <returns>Возвращает true в случае успеха, false - в случае ошибки.</returns>
+        /// <param name="criteria">Options for receipts to select</param>
+        /// <returns></returns>
         public static System.Data.SqlClient.SqlCommand Receipts(Purchases.Criteria criteria ){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string joins = "", conditions = "", orders = "", tp = "";
-            orders = "ORDER BY r.Payed, r.ReceiptID";
+            orders = "ORDER BY r.Paid, r.ReceiptID";
             if (criteria != null){
                 if (criteria.Top > 0){
                     tp = "TOP " + criteria.Top.ToString();
@@ -74,7 +72,7 @@ namespace Purchases
                     conditions += (conditions.Length == 0 ? "WHERE " : "\nAND ");
                     switch( criteria.DateFilter ){
                         case DateFilterType.Between:
-                            conditions += "r.Payed BETWEEN @StartDate AND @EndDate";
+                            conditions += "r.Paid BETWEEN @StartDate AND @EndDate";
                             cmd.Parameters.AddWithValue("@StartDate", criteria.Dates[0]);
                             cmd.Parameters.AddWithValue("@EndDate", criteria.Dates[1]);
                             break;
@@ -83,22 +81,22 @@ namespace Purchases
                         case DateFilterType.Less:
                         case DateFilterType.LessOrEqual:
                         case DateFilterType.Equal:
-                            conditions += "r.Payed " + sign + " @TargetDate";
+                            conditions += "r.Paid " + sign + " @TargetDate";
                             cmd.Parameters.AddWithValue("@TargetDate", criteria.Dates[0]);
                             break;
                         case DateFilterType.Exact:
                         default:
                             string[] parameters = new string[criteria.Dates.Length];
                             for (int i = 0; i < criteria.Dates.Length; i++){
-                                parameters[i] = string.Format("@Payed{0}", criteria.Dates[i].ToShortDateString() );
+                                parameters[i] = string.Format("@Paid{0}", criteria.Dates[i].ToShortDateString() );
                                 cmd.Parameters.AddWithValue(parameters[i], criteria.Dates[i].ToShortDateString());
                             }
-                            conditions += string.Format("r.Payed IN( {0} )", string.Join(", ", parameters));
+                            conditions += string.Format("r.Paid IN( {0} )", string.Join(", ", parameters));
                             break;
                     }
                 }
             }
-            string sQuery = "SELECT " + tp + " r.ReceiptID, r.Payed, r.Price, r.Discount, r.DiscountCard,\n" +
+            string sQuery = "SELECT " + tp + " r.ReceiptID, r.Paid, r.Price, r.Discount, r.DiscountCard,\n" +
                             "       r.Comment, r.Vendor, r.Deleted, r.Number,\n" +
                             "       r.Created, r.Updated,\n" +
                             "       v.VendorName, v.VendorType\n" +

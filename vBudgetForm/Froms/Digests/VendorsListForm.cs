@@ -36,8 +36,8 @@ namespace vBudgetForm
             ListViewItem lvi = new ListViewItem();
             lvi.Name = (position + 1).ToString();
             lvi.Text = (position + 1).ToString();
-            int vid = 0;
-            if (!System.Convert.IsDBNull(row["VendorID"])) vid = (int)row["VendorID"];
+            Guid vid = Guid.Empty;
+            if (!System.Convert.IsDBNull(row["VendorID"])) vid = (Guid)row["VendorID"];
             string vendor = "";
             if (!System.Convert.IsDBNull(row["VendorName"])) vendor = (string)row["VendorName"];
             string vtype = "";

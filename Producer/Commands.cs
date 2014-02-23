@@ -15,10 +15,10 @@ namespace Producer
             cmd.CommandText = sQuery;
             return cmd;
         }
-        public static System.Data.SqlClient.SqlCommand Products(int category_id, Guid product_id ){
+        public static System.Data.SqlClient.SqlCommand Products(Guid category_id, Guid product_id ){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string whr = "";
-            if (category_id >= 0){
+            if (category_id != Guid.Empty){
                 whr += "\nWHERE Category = @Category";
                 cmd.Parameters.AddWithValue("@Category", category_id);
             }

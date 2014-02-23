@@ -17,7 +17,7 @@ namespace vBudgetForm
         }
 
         private void EditCategoryForm_Load(object sender, EventArgs e){
-            if( System.Convert.IsDBNull(this.product_category["CategoryID"]) || (((int)this.product_category["CategoryID"]) < 0 ) ){
+            if( System.Convert.IsDBNull(this.product_category["CategoryID"]) || (((Guid)this.product_category["CategoryID"]) == Guid.Empty ) ){
                 this.Text = "Добавление новой категории";
                 this.isNewCategory = true;
             }else{
@@ -37,7 +37,19 @@ namespace vBudgetForm
                 if (Producer.Categories.Exists(this.cConnection, this.tbxCategoryName.Text, out exists, out error))
                 {
                     if (!exists)
-                        noerrors = Producer.Categories.Insert(this.cConnection, this.product_category, out error);
+                    {
+                        Guid cid = Producer.Categories.NewId(this.cConnection, out error);
+                        if (cid != Guid.Empty)
+                        {
+                            this.product_category["CategoryID"] = cid;
+                            noerrors = Producer.Categories.Insert(this.cConnection, this.product_category, out error);
+                        }
+                        else
+                        {
+                            noerrors = false;
+                            MessageBox.Show(error);
+                        }
+                    }
                     else
                     {
                         noerrors = false;
@@ -51,10 +63,10 @@ namespace vBudgetForm
             if (!noerrors){
                 MessageBox.Show(error, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }else{
-                if (this.isNewCategory) this.product_category["CategoryID"] = Producer.Categories.LastId(this.cConnection, out error);
-                if (error.Length > 0)
-                    MessageBox.Show(error);
-                else
+                //if (this.isNewCategory) 
+                //if (error.Length > 0)
+                //    MessageBox.Show(error);
+                //else
                     this.DialogResult = DialogResult.OK;
             }
             return;

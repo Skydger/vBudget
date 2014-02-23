@@ -17,7 +17,7 @@ namespace vBudgetForm
         }
 
         private void VendorForm_Load(object sender, EventArgs e){
-            if (System.Convert.IsDBNull(this.vendor["VendorID"]) || (((int)this.vendor["VendorID"]) < 0)){
+            if (System.Convert.IsDBNull(this.vendor["VendorID"]) || (((Guid)this.vendor["VendorID"]) == Guid.Empty)){
                 this.Text = "Добавление нового продавца";
 
                 System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(vBudgetForm));
@@ -98,10 +98,15 @@ namespace vBudgetForm
             bool noerrors = true;
             if (this.isNewVendor){
                 this.vendor["Created"] = System.DateTime.Now;
-                noerrors = Purchases.Vendor.Insert(this.cConnection, this.vendor, out error);
-                if (noerrors){
-                    this.vendor["VendorID"] = Purchases.Vendor.LastId(this.cConnection, out error);
-                    noerrors = error.Length == 0;
+                Guid nvid = Purchases.Vendor.NewId(this.cConnection, out error);
+                if (nvid != Guid.Empty)
+                {
+                    this.vendor["VendorID"] = nvid;
+                    noerrors = Purchases.Vendor.Insert(this.cConnection, this.vendor, out error);
+                    if (noerrors)
+                    {
+                        noerrors = error.Length == 0;
+                    }
                 }
             }else{
 //                noerrors = Purchases.Vendor.Update(this.cConnection, this.vendor, this.image, out error);

@@ -130,6 +130,9 @@
   <data name="tsmiFile.Text" xml:space="preserve">
     <value>Файл</value>
   </data>
+  <data name="&gt;&gt;tsmiAddClonedReceiptToolStripMenuItem.Name" xml:space="preserve">
+    <value>tsmiAddClonedReceiptToolStripMenuItem</value>
+  </data>
   <data name="tsmiVendors.Text" xml:space="preserve">
     <value>Продавцы</value>
   </data>
@@ -169,6 +172,9 @@
   <data name="tsmiBalance.Size" type="System.Drawing.Size, System.Drawing">
     <value>123, 22</value>
   </data>
+  <data name="tsmiFilters.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
+  </data>
   <data name="tsmiSettings.Size" type="System.Drawing.Size, System.Drawing">
     <value>134, 22</value>
   </data>
@@ -181,26 +187,32 @@
   <data name="&gt;&gt;ssMainStatus.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="tsTools.Text" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
   <data name="&gt;&gt;tsmiMakers.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsmiAddClonedReceiptToolStripMenuItem.Name" xml:space="preserve">
-    <value>tsmiAddClonedReceiptToolStripMenuItem</value>
+  <data name="tsmiOftenlyBought.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 22</value>
   </data>
   <data name="lvReceipts.Size" type="System.Drawing.Size, System.Drawing">
     <value>772, 352</value>
   </data>
-  <data name="tsmiAddReceipt.Text" xml:space="preserve">
-    <value>Новый чек</value>
+  <data name="&gt;&gt;tsmiByLastMonth.Name" xml:space="preserve">
+    <value>tsmiByLastMonth</value>
+  </data>
+  <data name="&gt;&gt;tsmiDigests.Name" xml:space="preserve">
+    <value>tsmiDigests</value>
+  </data>
+  <data name="tsmiByVendorFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 22</value>
   </data>
   <data name="&gt;&gt;tsmiByCreationDate.Name" xml:space="preserve">
     <value>tsmiByCreationDate</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tsmiByLastThreeMonths.Text" xml:space="preserve">
+    <value>За последние 3 месяца</value>
   </data>
   <data name="tsmiSort.Text" xml:space="preserve">
     <value>Сортировка</value>
@@ -210,6 +222,9 @@
   </data>
   <data name="&gt;&gt;ssMainStatus.Name" xml:space="preserve">
     <value>ssMainStatus</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>772, 423</value>
   </data>
   <data name="&gt;&gt;tsTools.Name" xml:space="preserve">
     <value>tsTools</value>
@@ -226,6 +241,9 @@
   <data name="&gt;&gt;ssMainStatus.Type" xml:space="preserve">
     <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="tsmiByWeeks.Text" xml:space="preserve">
+    <value>По неделям</value>
+  </data>
   <data name="&gt;&gt;lvReceipts.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
@@ -238,14 +256,20 @@
   <data name="tsmiByID.Text" xml:space="preserve">
     <value>По идентификатору</value>
   </data>
+  <data name="&gt;&gt;tsmiNewReceipt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="tsmiByDays.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 22</value>
   </data>
+  <data name="tsmiFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 20</value>
+  </data>
+  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 6</value>
+  </data>
   <data name="&gt;&gt;tsmiSections.Name" xml:space="preserve">
     <value>tsmiSections</value>
-  </data>
-  <data name="tsmiStatistics.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 20</value>
   </data>
   <data name="&gt;&gt;tsmiProductPrices.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -265,14 +289,8 @@
   <data name="&gt;&gt;tsmiTopPurchases.Name" xml:space="preserve">
     <value>tsmiTopPurchases</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>vBudgetForm</value>
-  </data>
   <data name="&gt;&gt;tsmiFileII.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="tsmiVendors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 22</value>
   </data>
   <data name="&gt;&gt;tsmiNewClonedReceipt.Name" xml:space="preserve">
     <value>tsmiNewClonedReceipt</value>
@@ -305,26 +323,26 @@
   <data name="tsTools.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;tsmiActions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="tsmiNewReceipt.Text" xml:space="preserve">
     <value>Новый чек</value>
   </data>
   <data name="&gt;&gt;tsmiBalance.Name" xml:space="preserve">
     <value>tsmiBalance</value>
   </data>
+  <data name="tsmiCategories.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 22</value>
+  </data>
+  <data name="tsmiByLastWeek.Text" xml:space="preserve">
+    <value>За последнюю неделю</value>
+  </data>
   <data name="&gt;&gt;tsmiAddClonedReceipt.Name" xml:space="preserve">
     <value>tsmiAddClonedReceipt</value>
   </data>
-  <data name="&gt;&gt;tsmiDataExchange.Name" xml:space="preserve">
-    <value>tsmiDataExchange</value>
+  <data name="&gt;&gt;tsmiNewClonedReceipt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tsmiByVendorFilter.Name" xml:space="preserve">
     <value>tsmiByVendorFilter</value>
-  </data>
-  <data name="tsmiSort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
   </data>
   <data name="&gt;&gt;tsmiExportToolStripMenuItem.Name" xml:space="preserve">
     <value>tsmiExportToolStripMenuItem</value>
@@ -338,14 +356,17 @@
   <data name="&gt;&gt;cConnection.Name" xml:space="preserve">
     <value>cConnection</value>
   </data>
-  <data name="tsmiByDatesSection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 22</value>
+  <data name="tsmiNewClonedReceiptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 22</value>
   </data>
   <data name="tsmiByLastQuarter.Text" xml:space="preserve">
     <value>За последний квартал</value>
   </data>
   <data name="&gt;&gt;tsmiPersons.Name" xml:space="preserve">
     <value>tsmiPersons</value>
+  </data>
+  <data name="&gt;&gt;tsmiCategories.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tsmiStatistics.Text" xml:space="preserve">
     <value>Статистика</value>
@@ -404,11 +425,11 @@
   <data name="&gt;&gt;tsmiByWeeks.Name" xml:space="preserve">
     <value>tsmiByWeeks</value>
   </data>
+  <data name="tsmiBalance.Text" xml:space="preserve">
+    <value>Платежи</value>
+  </data>
   <data name="tsmiProducts.Size" type="System.Drawing.Size, System.Drawing">
     <value>178, 22</value>
-  </data>
-  <data name="&gt;&gt;tsmiReceipts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tsmiReceipts.Text" xml:space="preserve">
     <value>Чеки</value>
@@ -418,6 +439,9 @@
   </data>
   <data name="&gt;&gt;tsmiAddClonedReceiptToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tsmiExit.Text" xml:space="preserve">
+    <value>Выход</value>
   </data>
   <data name="&gt;&gt;tsslConnectionState.Name" xml:space="preserve">
     <value>tsslConnectionState</value>
@@ -433,9 +457,6 @@
   </data>
   <data name="tsmiExit.Size" type="System.Drawing.Size, System.Drawing">
     <value>134, 22</value>
-  </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 6</value>
   </data>
   <data name="&gt;&gt;tsmiDeleteReceipt.Name" xml:space="preserve">
     <value>tsmiDeleteReceipt</value>
@@ -455,14 +476,11 @@
   <data name="&gt;&gt;tsmiDigests.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lvReceipts.Name" xml:space="preserve">
-    <value>lvReceipts</value>
-  </data>
   <data name="tsmiSettings.Text" xml:space="preserve">
     <value>Настройки</value>
   </data>
-  <data name="tsmiOftenlyBought.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 22</value>
+  <data name="ssMainStatus.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;tsmiFileII.Name" xml:space="preserve">
     <value>tsmiFileII</value>
@@ -536,14 +554,14 @@
   <data name="&gt;&gt;cConnection.Type" xml:space="preserve">
     <value>System.Data.SqlClient.SqlConnection, System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsTools.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="tsslConnectionState.Text" xml:space="preserve">
+    <value>                                                                     </value>
   </data>
-  <data name="&gt;&gt;msMainMenu.Name" xml:space="preserve">
-    <value>msMainMenu</value>
+  <data name="&gt;&gt;tsmiOftenlyBought.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tsslQueryResult.Text" xml:space="preserve">
-    <value>                                                         </value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
   </data>
   <data name="&gt;&gt;tsslConnectionState.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -582,29 +600,23 @@
   <data name="&gt;&gt;tsslQueryResult.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tsmiByVendorFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 22</value>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>vBudgetForm</value>
   </data>
-  <data name="tsmiReceipts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 22</value>
-  </data>
-  <data name="tsmiByLastWeek.Text" xml:space="preserve">
-    <value>За последнюю неделю</value>
-  </data>
-  <data name="tsmiTopPurchases.Text" xml:space="preserve">
-    <value>Топ-23 покупок</value>
+  <data name="&gt;&gt;tsmiReceipts.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;msMainMenu.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="&gt;&gt;tsmiViewSection.Name" xml:space="preserve">
+    <value>tsmiViewSection</value>
+  </data>
   <data name="tsmiByCategoryFilter.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 22</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="tsmiByWeeks.Text" xml:space="preserve">
-    <value>По неделям</value>
+  <data name="tsmiByDatesSection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 22</value>
   </data>
   <data name="&gt;&gt;tsmiSettings.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -612,8 +624,8 @@
   <data name="tsTools.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 24</value>
   </data>
-  <data name="tsmiFilters.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ssMainStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>772, 22</value>
@@ -621,11 +633,8 @@
   <data name="tsmiSections.Size" type="System.Drawing.Size, System.Drawing">
     <value>140, 22</value>
   </data>
-  <data name="tsslConnectionState.Text" xml:space="preserve">
-    <value>                                                                     </value>
-  </data>
-  <data name="&gt;&gt;tsmiByCreationDate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="tsmiVendors.Size" type="System.Drawing.Size, System.Drawing">
+    <value>178, 22</value>
   </data>
   <data name="&gt;&gt;tsmiOftenlyBought.Name" xml:space="preserve">
     <value>tsmiOftenlyBought</value>
@@ -638,9 +647,6 @@
   </data>
   <data name="tsmiNewReceipt.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 22</value>
-  </data>
-  <data name="tsmiAddReceipt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 22</value>
   </data>
   <data name="&gt;&gt;tsmiExit.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -663,8 +669,8 @@
   <data name="&gt;&gt;tsmiByMonths.Name" xml:space="preserve">
     <value>tsmiByMonths</value>
   </data>
-  <data name="tsmiNewClonedReceiptToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>263, 22</value>
+  <data name="&gt;&gt;tsmiByCreationDate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tsmiFileII.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 6</value>
@@ -702,17 +708,17 @@
   <data name="&gt;&gt;tsmiByDays.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsmiOftenlyBought.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;tsmiDataExchange.Name" xml:space="preserve">
+    <value>tsmiDataExchange</value>
   </data>
-  <data name="tsmiByLastThreeMonths.Text" xml:space="preserve">
-    <value>За последние 3 месяца</value>
+  <data name="tsslQueryResult.Text" xml:space="preserve">
+    <value>                                                         </value>
   </data>
-  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 6</value>
+  <data name="tsmiSort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
   </data>
-  <data name="tsmiByDatesSection.Text" xml:space="preserve">
-    <value>По дате</value>
+  <data name="tsmiAddReceipt.Text" xml:space="preserve">
+    <value>Новый чек</value>
   </data>
   <data name="&gt;&gt;tsmiByID.Name" xml:space="preserve">
     <value>tsmiByID</value>
@@ -735,20 +741,20 @@
   <data name="tsmiNewClonedReceipt.Size" type="System.Drawing.Size, System.Drawing">
     <value>263, 22</value>
   </data>
-  <data name="&gt;&gt;tsmiDigests.Name" xml:space="preserve">
-    <value>tsmiDigests</value>
+  <data name="tsmiStatistics.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 20</value>
   </data>
   <data name="tsmiByLastWeek.Size" type="System.Drawing.Size, System.Drawing">
     <value>201, 22</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>772, 423</value>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 6</value>
   </data>
   <data name="tsmiSections.Text" xml:space="preserve">
     <value>Разделы</value>
   </data>
-  <data name="&gt;&gt;tsmiNewClonedReceipt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="tsTools.Text" xml:space="preserve">
+    <value>toolStrip1</value>
   </data>
   <data name="&gt;&gt;tsmiFileI.Name" xml:space="preserve">
     <value>tsmiFileI</value>
@@ -756,23 +762,26 @@
   <data name="&gt;&gt;tsmiImport.Name" xml:space="preserve">
     <value>tsmiImport</value>
   </data>
-  <data name="tsmiExit.Text" xml:space="preserve">
-    <value>Выход</value>
+  <data name="&gt;&gt;tsmiActions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tsmiByLastMonth.Text" xml:space="preserve">
     <value>За последний месяц</value>
   </data>
-  <data name="&gt;&gt;tsmiNewReceipt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;tsmiCategories.Name" xml:space="preserve">
+    <value>tsmiCategories</value>
   </data>
-  <data name="&gt;&gt;tsmiViewSection.Name" xml:space="preserve">
-    <value>tsmiViewSection</value>
+  <data name="tsmiTopPurchases.Text" xml:space="preserve">
+    <value>Топ-23 покупок</value>
   </data>
-  <data name="tsmiFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 20</value>
+  <data name="&gt;&gt;tsTools.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+  <data name="&gt;&gt;msMainMenu.Name" xml:space="preserve">
+    <value>msMainMenu</value>
+  </data>
+  <data name="&gt;&gt;lvReceipts.Name" xml:space="preserve">
+    <value>lvReceipts</value>
   </data>
   <data name="&gt;&gt;tsmiFilters.Name" xml:space="preserve">
     <value>tsmiFilters</value>
@@ -786,17 +795,17 @@
   <data name="tsmiByLastMonth.Size" type="System.Drawing.Size, System.Drawing">
     <value>201, 22</value>
   </data>
-  <data name="ssMainStatus.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="tsmiByDatesSection.Text" xml:space="preserve">
+    <value>По дате</value>
   </data>
-  <data name="tsmiBalance.Text" xml:space="preserve">
-    <value>Платежи</value>
+  <data name="tsmiReceipts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 22</value>
   </data>
   <data name="&gt;&gt;tsmiClearFilter.Name" xml:space="preserve">
     <value>tsmiClearFilter</value>
   </data>
-  <data name="&gt;&gt;tsmiByLastMonth.Name" xml:space="preserve">
-    <value>tsmiByLastMonth</value>
+  <data name="tsmiAddReceipt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 22</value>
   </data>
   <data name="tsmiProducts.Text" xml:space="preserve">
     <value>Продукты</value>

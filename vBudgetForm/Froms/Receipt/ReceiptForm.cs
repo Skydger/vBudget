@@ -42,7 +42,7 @@ namespace vBudgetForm
             this.lblDiscountCard.Text = this.manager.GetString("Receipt.DiscountCard");
             this.lblSearch.Text = this.manager.GetString("Form.SearchLabel");
             this.lblPositions.Text = string.Format(this.manager.GetString("Receipt.Positions"), 0);
-            this.lblReceiptSum.Text = string.Format(this.manager.GetString("Receipt.SubtotalPrice"), 0.0);
+            this.llblReceiptSum.Text = string.Format(this.manager.GetString("Receipt.SubtotalPrice"), 0.0);
             this.btnOk.Text = this.manager.GetString("Form.Accept");
             this.btnCancel.Text = this.manager.GetString("Form.Cancel");
             return;
@@ -71,12 +71,12 @@ namespace vBudgetForm
             this.categories = new System.Data.DataTable("Categories");
             sda.Fill(this.categories);
             string uncat = this.manager.GetString("Form.Uncategorized");
-            this.categories.Rows.Add(new object[] { -1, uncat });
+            this.categories.Rows.Add(new object[] { Guid.Empty, uncat });
 
             this.cbxCategory.DataSource = this.categories;
             this.cbxCategory.DisplayMember = "CategoryName";
             this.cbxCategory.ValueMember = "CategoryID";
-            this.cbxCategory.SelectedValue = -1;
+            this.cbxCategory.SelectedValue = Guid.Empty;
             this.block = false;
 
             cmd = Purchases.DiscountCard.Select();
@@ -214,12 +214,12 @@ namespace vBudgetForm
                 Guid dc = (Guid)this.receipt["DiscountCard"];
                 this.cbxDiscountCards.SelectedValue = dc;
             }
-            if (!System.Convert.IsDBNull(this.receipt["Payed"])){
-                DateTime dtm = (DateTime)this.receipt["Payed"];
+            if (!System.Convert.IsDBNull(this.receipt["Paid"])){
+                DateTime dtm = (DateTime)this.receipt["Paid"];
                 this.dtpPeceiptDate.Value = dtm;
             }
             if (!System.Convert.IsDBNull(this.receipt["Vendor"])){
-                int vndr = (int)this.receipt["Vendor"];
+                Guid vndr = (Guid)this.receipt["Vendor"];
                 this.cbxVendors.SelectedValue = vndr;
             }
             if (!System.Convert.IsDBNull(this.receipt["Number"])){
@@ -238,7 +238,7 @@ namespace vBudgetForm
                 this.receipt["Vendor"] = this.cbxVendors.SelectedValue;
                 this.receipt["VendorName"] = this.cbxVendors.Text;
 
-                this.receipt["Payed"] = dtpPeceiptDate.Value;
+                this.receipt["Paid"] = dtpPeceiptDate.Value;
                 this.receipt["Price"] = this.total_price;
                 this.receipt["Discount"] = this.total_discount;
                 if ( ( this.cbxDiscountCards.SelectedValue == null ) ||
@@ -292,7 +292,7 @@ namespace vBudgetForm
             int y = (this.scContent.Height / 2) - this.btnAddProduct.Size.Height / 2;
             this.btnAddProduct.Location = new Point(this.lbxProducts.Size.Width + 2, y);
             this.lblPositions.Location = new Point(this.lblPositions.Location.X, this.Height - 74);
-            this.lblReceiptSum.Location = new Point(this.lblReceiptSum.Location.X, this.Height - 60);
+            this.llblReceiptSum.Location = new Point(this.llblReceiptSum.Location.X, this.Height - 60);
 
             this.btnNewCategory.Location = new Point( this.lbxProducts.Size.Width - this.btnNewCategory.Size.Width,
                                                       this.btnNewCategory.Location.Y);
@@ -335,9 +335,9 @@ namespace vBudgetForm
             if (!this.block){
                 System.Data.SqlClient.SqlCommand cmd = null;
                 if (this.cbxCategory.SelectedIndex >= 0){
-                    cmd = Producer.Commands.Products((int)this.cbxCategory.SelectedValue, System.Guid.Empty);
+                    cmd = Producer.Commands.Products((Guid)this.cbxCategory.SelectedValue, System.Guid.Empty);
                 }else{
-                    cmd = Producer.Commands.Products(-1, System.Guid.Empty);
+                    cmd = Producer.Commands.Products(Guid.Empty, System.Guid.Empty);
                 }
                 cmd.Connection = this.cConnection;
                 System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
@@ -378,7 +378,7 @@ namespace vBudgetForm
             dgvr.Cells[stn].Value = this.total_price;
 
             this.lblPositions.Text = string.Format(this.manager.GetString("Receipt.Positions"), i);
-            this.lblReceiptSum.Text = string.Format(this.manager.GetString("Receipt.SubtotalPrice"), this.total_price);
+            this.llblReceiptSum.Text = string.Format(this.manager.GetString("Receipt.SubtotalPrice"), this.total_price);
             return;
         }
 
@@ -677,7 +677,7 @@ namespace vBudgetForm
             {
                 List<Producer.Product.OrderColumn> cols = new List<Producer.Product.OrderColumn>();
                 cols.Add(Producer.Product.OrderColumn.ProductName);
-                System.Data.SqlClient.SqlCommand command = Producer.Product.Select(-1, null, positions.ToArray(), cols);
+                System.Data.SqlClient.SqlCommand command = Producer.Product.Select(Guid.Empty, null, positions.ToArray(), cols);
                 command.Connection = this.cConnection;
                 System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
                 this.products = new DataTable("Products");
@@ -772,12 +772,12 @@ namespace vBudgetForm
             {
                 DateTime dt = this.dtpPeceiptDate.Value;
                 string num = this.tbxReceiptNumber.Text;
-                int ven_id = -1;
+                Guid ven_id = Guid.Empty;
                 if ((this.cbxVendors.SelectedIndex >= 0) &&
                      !System.Convert.IsDBNull(this.cbxVendors.SelectedValue))
                 {
 
-                    ven_id = (int)this.cbxVendors.SelectedValue;
+                    ven_id = (Guid)this.cbxVendors.SelectedValue;
                 }
                 bool ok = false;
                 string error = "";
@@ -802,7 +802,7 @@ namespace vBudgetForm
                                                 "{1}\nСумма: {2}, оплачен {3}.\nПозиций: {4} ",
                                                 receipts.Rows[0]["ReceiptID"], vnd,
                                                 receipts.Rows[0]["Price"],
-                                                receipts.Rows[0]["Payed"], receipts.Rows[0]["Amount"]);
+                                                receipts.Rows[0]["Paid"], receipts.Rows[0]["Amount"]);
                             MessageBox.Show(msg);
                         }
                         else if (receipts.Rows.Count > 1)

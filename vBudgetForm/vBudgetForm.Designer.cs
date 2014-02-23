@@ -88,6 +88,7 @@ namespace vBudgetForm
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCategories = new System.Windows.Forms.ToolStripMenuItem();
             this.msMainMenu.SuspendLayout();
             this.ssMainStatus.SuspendLayout();
             this.cmsReceiptsMenu.SuspendLayout();
@@ -313,6 +314,7 @@ namespace vBudgetForm
             resources.ApplyResources(this.tsmiDigests, "tsmiDigests");
             this.tsmiDigests.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiMakers,
+            this.tsmiCategories,
             this.tsmiProducts,
             this.tsmiVendors,
             this.tsmiDiscountCards});
@@ -454,6 +456,12 @@ namespace vBudgetForm
             this.tsmiImport.Name = "tsmiImport";
             this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
             // 
+            // tsmiCategories
+            // 
+            resources.ApplyResources(this.tsmiCategories, "tsmiCategories");
+            this.tsmiCategories.Name = "tsmiCategories";
+            this.tsmiCategories.Click += new System.EventHandler(this.tsmiCategories_Click);
+            // 
             // vBudgetForm
             // 
             resources.ApplyResources(this, "$this");
@@ -530,5 +538,6 @@ namespace vBudgetForm
         private System.Windows.Forms.ToolStripMenuItem tsmiByCreationDate;
         private System.Windows.Forms.ToolStripMenuItem tsmiByDays;
         private System.Windows.Forms.ToolStripSeparator tsmiFileI;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCategories;
     }
 }

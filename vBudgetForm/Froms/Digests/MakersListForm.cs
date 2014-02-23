@@ -10,7 +10,8 @@ namespace vBudgetForm
 {
     public partial class MakersListForm : Form
     {
-        public MakersListForm( System.Data.SqlClient.SqlConnection inConnection ){
+        public MakersListForm(System.Data.SqlClient.SqlConnection inConnection)
+        {
             this.InitializeComponent();
             this.cConnection = inConnection;
         }
@@ -24,7 +25,7 @@ namespace vBudgetForm
             this.lvMakers.Columns.Add("Продавец", 50);
             //this.lvMakers.Columns.Add("Создан", 50);
 
-            System.Data.SqlClient.SqlCommand cmd = Producer.Maker.Select(-1);
+            System.Data.SqlClient.SqlCommand cmd = Producer.Maker.Select(Guid.Empty);
             cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
             this.makers = new System.Data.DataTable("Makers");

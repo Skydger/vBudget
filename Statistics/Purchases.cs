@@ -37,7 +37,7 @@ namespace Statistics
             cmd.CommandText = query;
             return cmd;
         }
-        public static System.Data.SqlClient.SqlCommand ByVendorsPerMonth( List<int> vendors_ids )
+        public static System.Data.SqlClient.SqlCommand ByVendorsPerMonth( List<Guid> vendors_ids )
         {
             string where = "";
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
@@ -74,6 +74,34 @@ namespace Statistics
             {
                 where = " WHERE p.ProductName like @ProductName\n";
                 cmd.Parameters.AddWithValue("@ProductName", "%" + name + "%");
+            }
+            string query = "SELECT DISTINCT rc.ContentID, rc.ReceiptID, rc.ProductID, rc.Amount, rc.Price,\n" +
+                           "       rc.Price * (1.0 - rc.Discount) AS Sold, rc.Units,\n" +
+                           "       rc.Buyer, rc.Receiver, rc.Discount,\n" +
+                           "       p.ProductName, p.Category, p.[Type], p.Maker, p.Barcode,\n" +
+                           "       p.Comment, p.Created, p.Updated, p.Deleted,\n" +
+                           "       r.Created AS ReceiptCreated\n" +
+                           "  FROM Purchases.ReceiptContents AS rc\n" +
+                           "  JOIN Producer.Products AS p\n" +
+                           "    ON p.ProductID = rc.ProductID\n" +
+                           " RIGHT JOIN Purchases.Receipts AS r\n" +
+                           "    ON rc.ReceiptID = r.ReceiptID\n" +
+                           where +
+                           " ORDER BY r.Created";
+            cmd.CommandTimeout = 0;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = query;
+            return cmd;
+        }
+
+        public static System.Data.SqlClient.SqlCommand ByIdentifier(Guid product_id)
+        {
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            string where = "";
+            if (product_id != Guid.Empty)
+            {
+                where = " WHERE p.ProductID = @ProductID\n";
+                cmd.Parameters.AddWithValue("@ProductID", product_id);
             }
             string query = "SELECT DISTINCT rc.ContentID, rc.ReceiptID, rc.ProductID, rc.Amount, rc.Price,\n" +
                            "       rc.Price * (1.0 - rc.Discount) AS Sold, rc.Units,\n" +

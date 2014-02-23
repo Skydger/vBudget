@@ -76,7 +76,7 @@ namespace vBudgetForm
                         int rec_id = (int)row["ReceiptID"];
                         if (rec_id != cur_rec)
                         {
-                            DateTime dt = (DateTime)row["Payed"];
+                            DateTime dt = (DateTime)row["Paid"];
                             DateTime dtc = (DateTime)row["Created"];
                             string rn_text = string.Format("[{0}] Оплачено: {1} {2} {3} {4} Создан {5} {6}",
                                                            rec_id, dt.ToShortDateString(), dt.ToShortTimeString(),
@@ -87,7 +87,6 @@ namespace vBudgetForm
                         }
                         string rcn_text = string.Format("{0} {1}", prod_id, prod_name );
                         r.Nodes.Add(rcn_text);
-                        //Created Updated Deleted rowguid ContentID	ReceiptID	ProductID	Amount	Price	Units	Buyer	Receiver	Discount	rowguid	ReceiptID	Payed	Price	Discount	DiscountCard	Comment	Vendor	Deleted	Number	Created	Updated	rowguid
                     }
                 }
             }else{
@@ -174,11 +173,11 @@ namespace vBudgetForm
                 System.Data.SqlClient.SqlCommand cmd = null;
                 if (this.cbxCategory.SelectedIndex >= 0)
                 {
-                    cmd = Producer.Product.Select((int)this.cbxCategory.SelectedValue, null, null, cols);
+                    cmd = Producer.Product.Select((Guid)this.cbxCategory.SelectedValue, null, null, cols);
                 }
                 else
                 {
-                    cmd = Producer.Product.Select(-1, null, null, cols);
+                    cmd = Producer.Product.Select(Guid.Empty, null, null, cols);
                 }
                 cmd.Connection = this.connection;
                 System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
