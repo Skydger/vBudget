@@ -134,7 +134,7 @@ namespace Producer
             command.Parameters.Add("@ProductName", System.Data.SqlDbType.NVarChar, 0, "ProductName");
             command.Parameters.Add("@Category", System.Data.SqlDbType.Int, 0, "Category");
             command.Parameters.Add("@Type", System.Data.SqlDbType.Int, 0, "Type");
-            command.Parameters.Add("@Maker", System.Data.SqlDbType.Int, 0, "Maker");
+            command.Parameters.Add("@Maker", System.Data.SqlDbType.UniqueIdentifier, 0, "Maker");
             command.Parameters.Add("@Barcode", System.Data.SqlDbType.NVarChar, 0, "Barcode");
             command.Parameters.Add("@Comment", System.Data.SqlDbType.NVarChar, 0, "Comment");
             command.Parameters.Add("@Updated", System.Data.SqlDbType.DateTime, 0, "Updated");
@@ -249,10 +249,8 @@ namespace Producer
                 //if (category_id > 0){
                     connection.Open();
                     string sQuery = "SELECT NEWID() AS New_Id\n" +
-                                    "  FROM " + sTable + "\n" +
-                                    "WHERE Category = @Category";
+                                    "  FROM " + sTable;
                     System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sQuery);
-                    cmd.Parameters.AddWithValue("@Category", category_id);
                     cmd.Connection = connection;
                     object res = cmd.ExecuteScalar();
                     if (System.Convert.IsDBNull(res)) last_id = Guid.Empty;

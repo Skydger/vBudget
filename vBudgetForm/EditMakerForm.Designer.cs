@@ -44,23 +44,27 @@ namespace vBudgetForm
             this.button1 = new System.Windows.Forms.Button();
             this.cbxVendors = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tbxAddress = new System.Windows.Forms.TextBox();
+            this.lblAddress = new System.Windows.Forms.Label();
+            this.tbxWebSite = new System.Windows.Forms.TextBox();
+            this.lblWebPage = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblMakerName
             // 
             this.lblMakerName.AutoSize = true;
-            this.lblMakerName.Location = new System.Drawing.Point(18, 13);
+            this.lblMakerName.Location = new System.Drawing.Point(12, 15);
             this.lblMakerName.Name = "lblMakerName";
-            this.lblMakerName.Size = new System.Drawing.Size(92, 13);
+            this.lblMakerName.Size = new System.Drawing.Size(89, 13);
             this.lblMakerName.TabIndex = 0;
-            this.lblMakerName.Text = "Производитель: ";
+            this.lblMakerName.Text = "Наименование: ";
             // 
             // lblError
             // 
             this.lblError.AutoSize = true;
             this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblError.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblError.Location = new System.Drawing.Point(12, 81);
+            this.lblError.Location = new System.Drawing.Point(12, 144);
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(299, 15);
             this.lblError.TabIndex = 8;
@@ -68,7 +72,7 @@ namespace vBudgetForm
             // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(321, 99);
+            this.btnAccept.Location = new System.Drawing.Point(321, 141);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(75, 23);
             this.btnAccept.TabIndex = 7;
@@ -79,7 +83,7 @@ namespace vBudgetForm
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(441, 99);
+            this.btnCancel.Location = new System.Drawing.Point(441, 141);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 6;
@@ -96,7 +100,7 @@ namespace vBudgetForm
             // lblMakerCategory
             // 
             this.lblMakerCategory.AutoSize = true;
-            this.lblMakerCategory.Location = new System.Drawing.Point(18, 48);
+            this.lblMakerCategory.Location = new System.Drawing.Point(12, 92);
             this.lblMakerCategory.Name = "lblMakerCategory";
             this.lblMakerCategory.Size = new System.Drawing.Size(126, 13);
             this.lblMakerCategory.TabIndex = 9;
@@ -105,14 +109,14 @@ namespace vBudgetForm
             // cbxCategories
             // 
             this.cbxCategories.FormattingEnabled = true;
-            this.cbxCategories.Location = new System.Drawing.Point(150, 44);
+            this.cbxCategories.Location = new System.Drawing.Point(150, 86);
             this.cbxCategories.Name = "cbxCategories";
             this.cbxCategories.Size = new System.Drawing.Size(336, 21);
             this.cbxCategories.TabIndex = 10;
             // 
             // btnAddCategory
             // 
-            this.btnAddCategory.Location = new System.Drawing.Point(492, 43);
+            this.btnAddCategory.Location = new System.Drawing.Point(492, 86);
             this.btnAddCategory.Name = "btnAddCategory";
             this.btnAddCategory.Size = new System.Drawing.Size(24, 24);
             this.btnAddCategory.TabIndex = 11;
@@ -121,7 +125,7 @@ namespace vBudgetForm
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(492, 71);
+            this.button1.Location = new System.Drawing.Point(492, 114);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(24, 24);
             this.button1.TabIndex = 14;
@@ -131,7 +135,7 @@ namespace vBudgetForm
             // cbxVendors
             // 
             this.cbxVendors.FormattingEnabled = true;
-            this.cbxVendors.Location = new System.Drawing.Point(150, 72);
+            this.cbxVendors.Location = new System.Drawing.Point(150, 114);
             this.cbxVendors.Name = "cbxVendors";
             this.cbxVendors.Size = new System.Drawing.Size(336, 21);
             this.cbxVendors.TabIndex = 13;
@@ -139,17 +143,53 @@ namespace vBudgetForm
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 76);
+            this.label1.Location = new System.Drawing.Point(12, 120);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 13);
             this.label1.TabIndex = 12;
             this.label1.Text = "Продавец:";
             // 
+            // tbxAddress
+            // 
+            this.tbxAddress.Location = new System.Drawing.Point(116, 36);
+            this.tbxAddress.Name = "tbxAddress";
+            this.tbxAddress.Size = new System.Drawing.Size(400, 20);
+            this.tbxAddress.TabIndex = 16;
+            // 
+            // lblAddress
+            // 
+            this.lblAddress.AutoSize = true;
+            this.lblAddress.Location = new System.Drawing.Point(12, 39);
+            this.lblAddress.Name = "lblAddress";
+            this.lblAddress.Size = new System.Drawing.Size(41, 13);
+            this.lblAddress.TabIndex = 15;
+            this.lblAddress.Text = "Адрес:";
+            // 
+            // tbxWebSite
+            // 
+            this.tbxWebSite.Location = new System.Drawing.Point(116, 60);
+            this.tbxWebSite.Name = "tbxWebSite";
+            this.tbxWebSite.Size = new System.Drawing.Size(400, 20);
+            this.tbxWebSite.TabIndex = 18;
+            // 
+            // lblWebPage
+            // 
+            this.lblWebPage.AutoSize = true;
+            this.lblWebPage.Location = new System.Drawing.Point(12, 65);
+            this.lblWebPage.Name = "lblWebPage";
+            this.lblWebPage.Size = new System.Drawing.Size(33, 13);
+            this.lblWebPage.TabIndex = 17;
+            this.lblWebPage.Text = "Web:";
+            // 
             // EditMakerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(528, 134);
+            this.ClientSize = new System.Drawing.Size(528, 176);
+            this.Controls.Add(this.tbxWebSite);
+            this.Controls.Add(this.lblWebPage);
+            this.Controls.Add(this.tbxAddress);
+            this.Controls.Add(this.lblAddress);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.cbxVendors);
             this.Controls.Add(this.label1);
@@ -184,5 +224,9 @@ namespace vBudgetForm
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox cbxVendors;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbxAddress;
+        private System.Windows.Forms.Label lblAddress;
+        private System.Windows.Forms.TextBox tbxWebSite;
+        private System.Windows.Forms.Label lblWebPage;
     }
 }

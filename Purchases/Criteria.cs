@@ -12,8 +12,8 @@ namespace Purchases{
     /// Критерии поиска среди чеков
     /// </summary>
     public class Criteria{
-        private int [] categories;
-        private int [] vendors;
+        private List<Guid> categories;
+        private List<Guid> vendors;
         private DateTime[] dates;
         private DateFilterType date_filter;
         private int top;
@@ -21,21 +21,21 @@ namespace Purchases{
         /// <summary>
         /// Категории товаров
         /// </summary>
-        public int [] Categories{
+        public List<Guid> Categories
+        {
             get { return this.categories; }
             set{
-                System.Array.Resize(ref this.categories, value.Length);
-                System.Array.Copy(value, this.categories, value.Length);
+                this.categories = value;
             }
         }
         /// <summary>
         /// Продавцы
         /// </summary>
-        public int [] Vendors{
+        public List<Guid> Vendors
+        {
             get { return this.vendors; }
             set{
-                System.Array.Resize(ref this.vendors, value.Length);
-                System.Array.Copy(value, this.vendors, value.Length);
+                this.vendors = value;
             }
         }
         /// <summary>

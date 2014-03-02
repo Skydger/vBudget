@@ -554,9 +554,9 @@ namespace vBudgetForm
             if (elist.ShowDialog() == DialogResult.OK){
                 int i = 0;
                 Purchases.Criteria crt = new Purchases.Criteria();
-                crt.Vendors = new int[elist.Selected.Length];
-                foreach (int vendor in elist.Selected){
-                    crt.Vendors[i++] = vendor;
+                crt.Vendors = new List<Guid>(elist.Selected.Length);
+                foreach (Guid vendor in elist.Selected){
+                    crt.Vendors.Add(vendor);
                 }
                 this.LoadReceipts(crt);
             }
@@ -565,7 +565,24 @@ namespace vBudgetForm
 
         private void tsmiByCategoryFilter_Click(object sender, EventArgs e)
         {
-
+            System.Data.SqlClient.SqlCommand command = Producer.Categories.Select(Guid.Empty);
+            command.Connection = this.cConnection;
+            System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
+            System.Data.DataTable tbl = new System.Data.DataTable("Categories");
+            sda.Fill(tbl);
+            VisualControls.ElementsList elist = new VisualControls.ElementsList(new VisualControls.ListOptions(), "Категории", "CategoryName", "CategoryID", tbl);
+            if (elist.ShowDialog() == DialogResult.OK)
+            {
+                //int i = 0;
+                Purchases.Criteria crt = new Purchases.Criteria();
+                crt.Categories = new List<Guid>(elist.Selected.Length);
+                foreach (Guid category in elist.Selected)
+                {
+                    crt.Categories.Add(category);
+                }
+                this.LoadReceipts(crt);
+            }
+            return;
         }
 
         private void tsmiClearFilter_Click(object sender, EventArgs e){

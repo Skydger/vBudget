@@ -31,16 +31,54 @@ namespace vBudgetForm
         private void InitializeComponent()
         {
             this.msMenu = new System.Windows.Forms.MenuStrip();
+            this.tsmiActions = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCreate = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.lvMakers = new System.Windows.Forms.ListView();
+            this.msMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // msMenu
             // 
+            this.msMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiActions});
             this.msMenu.Location = new System.Drawing.Point(0, 0);
             this.msMenu.Name = "msMenu";
             this.msMenu.Size = new System.Drawing.Size(736, 24);
             this.msMenu.TabIndex = 0;
             this.msMenu.Text = "Главное меню";
+            // 
+            // tsmiActions
+            // 
+            this.tsmiActions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiCreate,
+            this.tsmiEdit,
+            this.tsmiDelete});
+            this.tsmiActions.Name = "tsmiActions";
+            this.tsmiActions.Size = new System.Drawing.Size(70, 20);
+            this.tsmiActions.Text = "Действия";
+            // 
+            // tsmiCreate
+            // 
+            this.tsmiCreate.Name = "tsmiCreate";
+            this.tsmiCreate.Size = new System.Drawing.Size(154, 22);
+            this.tsmiCreate.Text = "Создать";
+            this.tsmiCreate.Click += new System.EventHandler(this.tsmiCreate_Click);
+            // 
+            // tsmiEdit
+            // 
+            this.tsmiEdit.Name = "tsmiEdit";
+            this.tsmiEdit.Size = new System.Drawing.Size(154, 22);
+            this.tsmiEdit.Text = "Редактировать";
+            this.tsmiEdit.Click += new System.EventHandler(this.tsmiEdit_Click);
+            // 
+            // tsmiDelete
+            // 
+            this.tsmiDelete.Name = "tsmiDelete";
+            this.tsmiDelete.Size = new System.Drawing.Size(154, 22);
+            this.tsmiDelete.Text = "Удалить";
+            this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
             // lvMakers
             // 
@@ -63,6 +101,8 @@ namespace vBudgetForm
             this.Name = "MakersListForm";
             this.Text = "Список изготовителей";
             this.Load += new System.EventHandler(this.MakersListForm_Load);
+            this.msMenu.ResumeLayout(false);
+            this.msMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -72,5 +112,9 @@ namespace vBudgetForm
 
         private System.Windows.Forms.MenuStrip msMenu;
         private System.Windows.Forms.ListView lvMakers;
+        private System.Windows.Forms.ToolStripMenuItem tsmiActions;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCreate;
+        private System.Windows.Forms.ToolStripMenuItem tsmiEdit;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDelete;
     }
 }

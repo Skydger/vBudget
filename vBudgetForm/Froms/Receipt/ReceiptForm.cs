@@ -462,6 +462,10 @@ namespace vBudgetForm
         private void tsmiAddProduct_Click(object sender, EventArgs e){
             System.Data.DataRow new_product = this.products.NewRow();
             new_product["ProductID"] = Guid.Empty;
+            if (this.tbxSearchProduct.Text.Length == 13)
+                new_product["Barcode"] = this.tbxSearchProduct.Text;
+            else if (this.tbxSearchProduct.Text.Length > 0)
+                new_product["ProductName"] = this.tbxSearchProduct.Text;
             if (!System.Convert.IsDBNull(this.cbxCategory.SelectedValue)) new_product["Category"] = this.cbxCategory.SelectedValue;
             AddProductForm apf = new AddProductForm(this.cConnection, ref new_product);
             if (apf.ShowDialog() == DialogResult.OK){
@@ -575,6 +579,11 @@ namespace vBudgetForm
         private void cbxVendors_KeyUp(object sender, KeyEventArgs e){
             string vendor_name = this.cbxVendors.Text;
             try{
+                //if (e.KeyCode == Keys.Home && e.Control && e.Shift)
+                //{
+                //    e.Handled = false;
+                //    return;
+                //}
                 if ((e.KeyCode != Keys.Up) && (e.KeyCode != Keys.Down) && //!e.Shift && !e.Alt && !e.Control &&
                     (e.KeyCode != Keys.Home) && (e.KeyCode != Keys.End) && (e.KeyCode != Keys.ShiftKey) &&
                     (e.KeyCode != Keys.Left) && (e.KeyCode != Keys.Right)

@@ -36,22 +36,27 @@ namespace Purchases
                     tp = "TOP " + criteria.Top.ToString();
                     orders = "ORDER BY r.Price DESC";
                 }
-                if ((criteria.Categories != null) && (criteria.Categories.Length > 0)){
-/*
-                    conditions.Length == 0 ? conditions += "WHERE " : conditions += "\nAND ";
-                    string[] parameters = new string[criteria.Categories.Length];
-                    for (int i = 0; i < criteria.Categories.Length; i++){
-                        parameters[i] = string.Format("@Category{0}", criteria.Categories[i]);
-                        this.cCommand.Parameters.AddWithValue(parameters[i], criteria.Categories[i]);
-                    }
-                    conditions += string.Format("r.Vendor IN( {0} )", string.Join(", ", parameters));
- */ 
-                }
-                if ((criteria.Vendors != null) && (criteria.Vendors.Length > 0)){
+                if ((criteria.Categories != null) && (criteria.Categories.Count > 0)){
+                    joins += "LEFT JOIN (SELECT DISTINCT rc.ReceiptID, p.Category\n" +
+                             "             FROM Purchases.ReceiptContents AS rc\n" +
+                             "             JOIN Producer.Products AS p\n" +
+                             "               ON p.ProductID = rc.ProductID) AS rcc\n" +
+                             "  ON rcc.ReceiptID = r.ReceiptID\n";
                     conditions += (conditions.Length == 0 ? "WHERE " : "\nAND ");
-                    string[] parameters = new string[criteria.Vendors.Length];
-                    for (int i = 0; i < criteria.Vendors.Length; i++){
-                        parameters[i] = string.Format("@Vendor{0}", criteria.Vendors[i]);
+                    string[] parameters = new string[criteria.Categories.Count];
+                    for (int i = 0; i < criteria.Categories.Count; i++){
+                        parameters[i] = string.Format("@Category{0}", i);
+                        cmd.Parameters.AddWithValue(parameters[i], criteria.Categories[i]);
+                    }
+                    conditions += string.Format("rcc.Category IN( {0} )", string.Join(", ", parameters));
+                }
+                if ((criteria.Vendors != null) && (criteria.Vendors.Count > 0))
+                {
+                    conditions += (conditions.Length == 0 ? "WHERE " : "\nAND ");
+                    string[] parameters = new string[criteria.Vendors.Count];
+                    for (int i = 0; i < criteria.Vendors.Count; i++)
+                    {
+                        parameters[i] = string.Format("@Vendor{0}", i);
                         cmd.Parameters.AddWithValue(parameters[i], criteria.Vendors[i]);
                     }
                     conditions += string.Format("r.Vendor IN( {0} )", string.Join(", ", parameters));
@@ -103,6 +108,7 @@ namespace Purchases
                             "FROM Purchases.Receipts AS r\n" +
                             "LEFT JOIN Purchases.Vendors AS v\n" +
                             "       ON v.VendorID = r.Vendor\n" +
+                            joins +
                             conditions + "\n" +
                             orders;
             cmd.CommandTimeout = 0;

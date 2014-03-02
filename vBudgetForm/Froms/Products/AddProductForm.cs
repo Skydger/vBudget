@@ -36,6 +36,8 @@ namespace vBudgetForm
             if (this.isNew)
             {
                 this.product["ProductID"] = Producer.Product.NewID(this.cConnection, (Guid)this.product["Category"], out error);
+                if( System.Convert.IsDBNull(this.product["ProductID"]) )
+                    MessageBox.Show("Ошибка получения нового идентификатора!\n" + error, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error );
                 title = string.Format(this.manager.GetString("Form.TitleNew"), (Guid)this.product["ProductID"]);
             }
 
@@ -82,7 +84,7 @@ namespace vBudgetForm
             System.Data.SqlClient.SqlDataAdapter mkda = new System.Data.SqlClient.SqlDataAdapter(mk_cmd);
             this.makers = new System.Data.DataTable("Makers");
             mkda.Fill(this.makers);
-            this.makers.Rows.Add(new object[] { -1, this.manager.GetString("Form.NoMaker") });
+            this.makers.Rows.Add(new object[] { Guid.Empty, this.manager.GetString("Form.NoMaker") });
             this.cbxMakers.DataSource = this.makers;
             this.cbxMakers.DisplayMember = "Name";
             this.cbxMakers.ValueMember = "MakerId";

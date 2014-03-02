@@ -25,8 +25,9 @@ namespace vBudgetForm
             cat_cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter catda = new System.Data.SqlClient.SqlDataAdapter(cat_cmd);
             this.categories = new System.Data.DataTable("Categories");
-            catda.Fill(this.categories);
+            this.categories.Columns.AddRange(new DataColumn[] { new DataColumn("CategoryID"), new DataColumn("CategoryName") });
             this.categories.Rows.Add(new object[] { Guid.Empty, "<Без категории>" });
+            catda.Fill(this.categories);
             this.cbxCategories.DataSource = this.categories;
             this.cbxCategories.DisplayMember = "CategoryName";
             this.cbxCategories.ValueMember = "CategoryID";
@@ -37,17 +38,52 @@ namespace vBudgetForm
             cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter vda = new System.Data.SqlClient.SqlDataAdapter(cmd);
             this.vendors = new System.Data.DataTable("Vendors");
-            vda.Fill(this.vendors);
+            this.vendors.Columns.AddRange(new DataColumn[] { new DataColumn("VendorID"), new DataColumn("VendorName") });
             this.vendors.Rows.Add(new object[] { Guid.Empty, "<Неизвестен>" });
+            vda.Fill(this.vendors);
             this.cbxVendors.DataSource = this.vendors;
             this.cbxVendors.DisplayMember = "VendorName";
             this.cbxVendors.ValueMember = "VendorID";
-            //this.cbxCategories.SelectedValue = this.current_category;
-            if ( (this.maker != null) && !System.Convert.IsDBNull( this.maker["Name"] ) )
+
+            string info = "Редактирование производителя";
+            if (this.maker != null)
             {
-                this.tbxMakerName.Text = (string)this.maker["Name"];
-                this.is_new = ( (int)this.maker["MakerId"] < 0 );
+                string column = "Name";
+                string maker_name = "";
+                if (!System.Convert.IsDBNull(this.maker[column]))
+                    maker_name = (string)this.maker[column];
+                this.tbxMakerName.Text = maker_name;
+
+                column = "Address";
+                string maker_addr = "";
+                if (!System.Convert.IsDBNull(this.maker[column]))
+                    maker_addr = (string)this.maker[column];
+                this.tbxAddress.Text = maker_addr;
+
+                column = "WebSite";
+                string maker_web = "";
+                if (!System.Convert.IsDBNull(this.maker[column]))
+                    maker_web = (string)this.maker[column];
+                this.tbxWebSite.Text = maker_web;
+
+                column = "MakerID";
+                this.is_new = System.Convert.IsDBNull(this.maker[column]) || ((Guid)this.maker[column] == Guid.Empty);
             }
+            else
+            {
+                is_new = true;
+            }
+            if (this.is_new)
+            {
+                string column = "MakerID";
+                string error = "";
+                this.maker[column] = Producer.Maker.NewId(this.cConnection, out error);
+                if ((Guid)this.maker[column] == Guid.Empty)
+                    MessageBox.Show(error);
+                info = "Новый производитель";
+            }
+
+            this.Text = string.Format("{0}: #{1}", info, this.maker["MakerID"]);
 
         }
 
@@ -57,8 +93,10 @@ namespace vBudgetForm
             string error = "";
             this.maker["Name"] = this.tbxMakerName.Text;
             this.maker["MakerCategory"] = this.cbxCategories.SelectedValue;
-            if( !System.Convert.IsDBNull( this.cbxVendors.SelectedValue ) )
-                this.maker["Vendor"] = this.cbxVendors.SelectedValue;
+            //if( !System.Convert.IsDBNull( this.cbxVendors.SelectedValue ) )
+            this.maker["Vendor"] = this.cbxVendors.SelectedValue;
+            this.maker["Address"] = this.tbxAddress.Text;
+            this.maker["WebSite"] = this.tbxWebSite.Text;
             if (this.is_new){
                 noerrors = Producer.Maker.Insert(this.cConnection, this.maker, out error);
             }else
@@ -66,11 +104,7 @@ namespace vBudgetForm
             if (!noerrors){
                 MessageBox.Show(error);
             }else{
-                if (this.is_new) this.maker["MakerId"] = Producer.Maker.LastId(this.cConnection, out error);
-                if (error.Length > 0)
-                    MessageBox.Show(error);
-                else
-                    this.DialogResult = DialogResult.OK;
+                this.DialogResult = DialogResult.OK;
             }
 
 

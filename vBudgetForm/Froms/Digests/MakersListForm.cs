@@ -21,6 +21,7 @@ namespace vBudgetForm
             this.lvMakers.Columns.Add("№", 30);
             this.lvMakers.Columns.Add("Идентификатор", 30);
             this.lvMakers.Columns.Add("Наименование организации", 190);
+            this.lvMakers.Columns.Add("Web-страница", 120);
             this.lvMakers.Columns.Add("Тип", 50);
             this.lvMakers.Columns.Add("Продавец", 50);
             //this.lvMakers.Columns.Add("Создан", 50);
@@ -38,14 +39,22 @@ namespace vBudgetForm
             ListViewItem lvi = new ListViewItem();
             lvi.Name = (position).ToString();
             lvi.Text = (position).ToString();
-            int mid = 0;
-            if (!System.Convert.IsDBNull(row["MakerId"])) mid = (int)row["MakerId"];
+            lvi.Tag = row;
+            Guid mid = Guid.Empty;
+            string column = "MakerID";
+            if (!System.Convert.IsDBNull(row[column])) mid = (Guid)row[column];
             string maker = "";
-            if (!System.Convert.IsDBNull(row["Name"])) maker = (string)row["Name"];
+            column = "Name";
+            if (!System.Convert.IsDBNull(row[column])) maker = (string)row[column];
+            column = "WebSite";
+            string web_addr = "";
+            if (!System.Convert.IsDBNull(row[column])) web_addr = (string)row[column];
             string mtype = "";
-            if (!System.Convert.IsDBNull(row["CategoryName"])) mtype = ((string)row["CategoryName"]);
+            column = "CategoryName";
+            if (!System.Convert.IsDBNull(row[column])) mtype = ((string)row[column]);
             string vendor = "";
-            if (!System.Convert.IsDBNull(row["Vendor"])) vendor = ((int)row["Vendor"]).ToString();
+            column = "Vendor";
+            if (!System.Convert.IsDBNull(row[column])) vendor = ((Guid)row[column]).ToString();
 
 //            byte[] logo = null;
 //            if (!System.Convert.IsDBNull(row["Logo"])) logo = (byte[])row["Logo"];
@@ -53,6 +62,7 @@ namespace vBudgetForm
             //if (!System.Convert.IsDBNull(row["Created"])) cr_dtm = ((DateTime)row["Created"]);
             lvi.SubItems.Add(mid.ToString());
             lvi.SubItems.Add(maker);
+            lvi.SubItems.Add(web_addr);
             lvi.SubItems.Add(mtype);
 //            lvi.SubItems.Add(logo);
             lvi.SubItems.Add(vendor);
@@ -71,15 +81,63 @@ namespace vBudgetForm
             return;
         }
 
-        private void lvMakers_ItemActivate(object sender, EventArgs e)
+        private void EditMaker()
         {
-            if (this.lvMakers.SelectedItems.Count > 0){
+            if (this.lvMakers.SelectedItems.Count > 0)
+            {
                 int idx = this.lvMakers.SelectedItems[0].Index;
-                System.Data.DataRow drw = this.makers.Rows[idx];
-                EditMakerForm ef = new EditMakerForm(this.cConnection, null, ref drw);
+                //System.Data.DataRow drw = this.makers.Rows[idx];
+                System.Data.DataRow drw = (System.Data.DataRow)this.lvMakers.SelectedItems[0].Tag;
+                EditMakerForm ef = new EditMakerForm(this.cConnection, this.makers.Rows[idx]["MakerCategory"], ref drw);
                 if (ef.ShowDialog() == DialogResult.OK)
                 {
 
+                }
+            }
+            return;
+        }
+
+        private void lvMakers_ItemActivate(object sender, EventArgs e)
+        {
+            this.EditMaker();
+            return;
+        }
+
+        private void tsmiCreate_Click(object sender, EventArgs e)
+        {
+            DataRow new_maker = this.makers.NewRow();
+            EditMakerForm emf = new EditMakerForm(this.cConnection, null, ref new_maker);
+            if (emf.ShowDialog() == DialogResult.OK)
+            {
+                this.makers.Rows.Add(new_maker);
+                this.AddNewRow(this.lvMakers.Items.Count, new_maker);
+            }
+            return;
+        }
+
+        private void tsmiEdit_Click(object sender, EventArgs e)
+        {
+            this.EditMaker();
+            return;
+        }
+
+        private void tsmiDelete_Click(object sender, EventArgs e)
+        {
+            if (this.lvMakers.SelectedItems.Count > 0)
+            {
+                int idx = this.lvMakers.SelectedItems[0].Index;
+                System.Data.DataRow drw = (System.Data.DataRow)this.lvMakers.SelectedItems[0].Tag;
+                if (MessageBox.Show("Действительно удалить поизводителя?", "Внимание", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    string error = "";
+                    if (!Producer.Maker.Delete(this.cConnection, null, drw, out error))
+                    {
+                        MessageBox.Show("Ошибка при удалении производителя!\n" + error, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        this.lvMakers.Items.RemoveAt(idx);
+                    }
                 }
             }
             return;

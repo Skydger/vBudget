@@ -51,7 +51,7 @@ namespace Purchases
                                           "   FROM (SELECT CardID, ISNULL(OverallBalance, 0.0) AS OverallBalance,\n" +
                                           "               ISNULL(DiscountBalance, 0.0) AS DiscountBalance,\n" +
                                           "               ISNULL(Points, 0) AS Points\n" +
-                                          "          FROM [BudgetNew].[Purchases].[CardBalance]\n" +
+                                          "          FROM Purchases.CardBalance\n" +
                                           "         {0}) AS base\n" +
                                           "UNPIVOT ( CardData FOR Names IN\n" +
                                           "        ([OverallBalance], [DiscountBalance], [Points])) AS upvt", where);
