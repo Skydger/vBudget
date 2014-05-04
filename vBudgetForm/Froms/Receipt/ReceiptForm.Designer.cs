@@ -450,6 +450,7 @@ namespace vBudgetForm
             this.llblReceiptSum.TabIndex = 20;
             this.llblReceiptSum.TabStop = true;
             this.llblReceiptSum.Text = "На сумму:";
+            this.llblReceiptSum.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llblReceiptSum_LinkClicked);
             // 
             // ReceiptForm
             // 

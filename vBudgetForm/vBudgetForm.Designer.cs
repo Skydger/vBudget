@@ -68,6 +68,7 @@ namespace vBudgetForm
             this.tsmiDataExchange = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDigests = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMakers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCategories = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProducts = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiVendors = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDiscountCards = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,7 +89,6 @@ namespace vBudgetForm
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiCategories = new System.Windows.Forms.ToolStripMenuItem();
             this.msMainMenu.SuspendLayout();
             this.ssMainStatus.SuspendLayout();
             this.cmsReceiptsMenu.SuspendLayout();
@@ -326,6 +326,12 @@ namespace vBudgetForm
             this.tsmiMakers.Name = "tsmiMakers";
             this.tsmiMakers.Click += new System.EventHandler(this.tsmiMakers_Click);
             // 
+            // tsmiCategories
+            // 
+            resources.ApplyResources(this.tsmiCategories, "tsmiCategories");
+            this.tsmiCategories.Name = "tsmiCategories";
+            this.tsmiCategories.Click += new System.EventHandler(this.tsmiCategories_Click);
+            // 
             // tsmiProducts
             // 
             resources.ApplyResources(this.tsmiProducts, "tsmiProducts");
@@ -455,12 +461,6 @@ namespace vBudgetForm
             resources.ApplyResources(this.tsmiImport, "tsmiImport");
             this.tsmiImport.Name = "tsmiImport";
             this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
-            // 
-            // tsmiCategories
-            // 
-            resources.ApplyResources(this.tsmiCategories, "tsmiCategories");
-            this.tsmiCategories.Name = "tsmiCategories";
-            this.tsmiCategories.Click += new System.EventHandler(this.tsmiCategories_Click);
             // 
             // vBudgetForm
             // 

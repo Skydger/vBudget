@@ -953,6 +953,12 @@ namespace vBudgetForm
             }
         }
 
+        private void llblReceiptSum_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            StatisticsInfoForm sif = new StatisticsInfoForm(this.cConnection, (Guid)this.receipt["ReceiptID"]);
+            sif.Show();
+        }
+
 
     }
 }

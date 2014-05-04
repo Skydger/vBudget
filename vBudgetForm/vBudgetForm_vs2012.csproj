@@ -181,6 +181,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ReceiptFormResource.ru.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="StatisticsInfoForm.resx">
+      <DependentUpon>StatisticsInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="vBudgetForm.en-US.resx">
       <SubType>Designer</SubType>
       <DependentUpon>vBudgetForm.cs</DependentUpon>
@@ -299,6 +302,12 @@
     </Compile>
     <Compile Include="StatisticsForm.Designer.cs">
       <DependentUpon>StatisticsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticsInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StatisticsInfoForm.Designer.cs">
+      <DependentUpon>StatisticsInfoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="vBudgetForm.cs">
       <SubType>Form</SubType>
