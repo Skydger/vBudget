@@ -35,6 +35,7 @@ namespace vBudgetForm
         {
             this.Text = this.manager.GetString("Form.Title");
             this.lblVendorType.Text = this.manager.GetString("Vendor.Type");
+            this.lblCompany.Text = this.manager.GetString("Company.Label");
             this.lblVendor.Text = this.manager.GetString("Vendor.Label");
             this.lblComment.Text = this.manager.GetString("Receipt.Comment");
             this.lblReceiptDate.Text = this.manager.GetString("Receipt.Date");
@@ -53,10 +54,25 @@ namespace vBudgetForm
             this.block = true;
             this.LoadFromResources();
 
-            System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(-1);
+            System.Data.SqlClient.SqlCommand cmd = Brands.Companies.Select(Guid.Empty);
             cmd.Connection = this.cConnection;
 
             System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
+            this.companies = new System.Data.DataTable("Companies");
+            sda.Fill(this.companies);
+            DataRow dr = this.companies.NewRow();
+            dr["CompanyName"] = "Компания не выбрана";
+            dr["CompanyID"] = Guid.Empty;
+            this.companies.Rows.InsertAt(dr, 0);
+
+            this.cbxCompanies.DataSource = this.companies;
+            this.cbxCompanies.DisplayMember = "CompanyName";
+            this.cbxCompanies.ValueMember = "CompanyID";
+
+            cmd = Purchases.Vendor.Select(-1, Guid.Empty);
+            cmd.Connection = this.cConnection;
+
+            sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
             this.vendors = new System.Data.DataTable("Vendors");
             sda.Fill(this.vendors);
 
@@ -273,6 +289,9 @@ namespace vBudgetForm
                     sda.UpdateCommand = Purchases.ReceiptContent.UpdateCommand();
                     sda.UpdateCommand.Connection = this.cConnection;
                     sda.UpdateCommand.Transaction = tran;
+                    sda.DeleteCommand = Purchases.ReceiptContent.DeleteCommand();
+                    sda.DeleteCommand.Connection = this.cConnection;
+                    sda.DeleteCommand.Transaction = tran;
                     sda.Update(this.contents);
                     //TODO Update discount card balance
                     tran.Commit();
@@ -536,7 +555,13 @@ namespace vBudgetForm
         private void cbxVendorTypes_SelectedIndexChanged(object sender, EventArgs e){
             if ( this.cbxVendorTypes.SelectedItem != null && 
                 !System.Convert.IsDBNull(this.cbxVendorTypes.SelectedValue)){
-                    System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select((int)this.cbxVendorTypes.SelectedValue);
+                int v_type = -1;
+                Guid cmp_id = Guid.Empty;
+                if (!System.Convert.IsDBNull(this.cbxVendorTypes.SelectedValue))
+                    v_type = (int)this.cbxVendorTypes.SelectedValue;
+                if (!System.Convert.IsDBNull(this.cbxCompanies.SelectedValue))
+                    cmp_id = (Guid)this.cbxCompanies.SelectedValue;
+                System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(v_type, cmp_id);
                 cmd.Connection = this.cConnection;
 
                 System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
@@ -586,13 +611,17 @@ namespace vBudgetForm
                 //}
                 if ((e.KeyCode != Keys.Up) && (e.KeyCode != Keys.Down) && //!e.Shift && !e.Alt && !e.Control &&
                     (e.KeyCode != Keys.Home) && (e.KeyCode != Keys.End) && (e.KeyCode != Keys.ShiftKey) &&
-                    (e.KeyCode != Keys.Left) && (e.KeyCode != Keys.Right)
+                    (e.KeyCode != Keys.Left) && (e.KeyCode != Keys.Right) && (e.KeyCode != Keys.Escape) &&
+                    (e.KeyCode != Keys.Delete)
                     )
                 {
                     if (!this.block && !this.cbxVendors.Items.Contains(vendor_name))
                     {
                         this.cbxVendors.SuspendLayout();
-                        System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(vendor_name);
+                        Guid cmp_id = Guid.Empty;
+                        if( !System.Convert.IsDBNull(this.cbxCompanies.SelectedValue) )
+                            cmp_id = (Guid)this.cbxCompanies.SelectedValue;
+                        System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(vendor_name, cmp_id);
                         cmd.Connection = this.cConnection;
 
                         System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
@@ -616,7 +645,7 @@ namespace vBudgetForm
                 //}else if( e.Shift ){ //&& !e.Alt && !e.Control
                     e.Handled = true;
                 }else{
-                    e.Handled = true;
+                    e.Handled = false;
                 }
             }catch (System.Exception ex){
                 MessageBox.Show(ex.Message);
@@ -667,7 +696,7 @@ namespace vBudgetForm
         private void SearchPositions(bool all)
         {
             List<Guid> positions = new List<Guid>();
-            if (all && this.dgvReceiptContent.SelectedRows.Count == 1)
+            if (!all && this.dgvReceiptContent.SelectedRows.Count == 1)
             {
                 System.Data.DataRow position = ((DataRowView)this.dgvReceiptContent.SelectedRows[0].DataBoundItem).Row;
                 if ((position != null) && !System.Convert.IsDBNull(position["ProductID"]))
@@ -853,7 +882,8 @@ namespace vBudgetForm
             this.last_position = 1;
             foreach (System.Data.DataRow row in this.contents.Rows)
             {
-                row["Position"] = this.last_position++;
+                if( row.RowState != DataRowState.Deleted )
+                    row["Position"] = this.last_position++;
             }
         }
 
@@ -957,6 +987,38 @@ namespace vBudgetForm
         {
             StatisticsInfoForm sif = new StatisticsInfoForm(this.cConnection, (Guid)this.receipt["ReceiptID"]);
             sif.Show();
+        }
+
+        private void cbxCompanies_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!this.block)
+            {
+                this.cbxVendors.SuspendLayout();
+                Guid cmp_id = Guid.Empty;
+                if (!System.Convert.IsDBNull(this.cbxCompanies.SelectedValue))
+                    cmp_id = (Guid)this.cbxCompanies.SelectedValue;
+                System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(-1, cmp_id);
+                cmd.Connection = this.cConnection;
+
+                System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
+                this.vendors = new System.Data.DataTable("Vendors");
+                sda.Fill(this.vendors);
+
+                this.cbxVendors.DataSource = this.vendors;
+                this.cbxVendors.DisplayMember = "VendorName";
+                //this.cbxVendors.DisplayMember = "VendorNameAddress";
+                this.cbxVendors.ValueMember = "VendorID";
+
+                this.block = true;
+                this.cbxVendors.SelectedIndex = -1;
+                this.cbxVendors.Text = "";
+                //this.cbxVendors.Select(this.cbxVendors.Text.Length, 0);
+                this.block = false;
+
+                this.cbxVendors.DroppedDown = true;
+                this.cbxVendors.ResumeLayout(false);
+            }
+
         }
 
 

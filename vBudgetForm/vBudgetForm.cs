@@ -215,6 +215,9 @@ namespace vBudgetForm
             this.tsmiProducts.Text = this.manager.GetString("Menu.D.Products");
             this.tsmiCategories.Text = this.manager.GetString("Menu.D.Categories");
             this.tsmiVendors.Text = this.manager.GetString("Menu.D.Vendors");
+            this.tsmiBrands.Text = this.manager.GetString("Menu.D.Brands");
+            this.tsmiAffilates.Text = this.manager.GetString("Menu.D.Affilates");
+
             this.tsmiDiscountCards.Text = this.manager.GetString("Menu.D.DiscountCards");
 
             // 'Statistics' submenu
@@ -545,7 +548,7 @@ namespace vBudgetForm
 
         private void tsmiByVendorFilter_Click(object sender, EventArgs e){
 
-            System.Data.SqlClient.SqlCommand command = Purchases.Vendor.Select(-1);
+            System.Data.SqlClient.SqlCommand command = Purchases.Vendor.Select(-1, Guid.Empty);
             command.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(command);
             System.Data.DataTable tbl = new System.Data.DataTable("Vendors");
@@ -1119,6 +1122,24 @@ namespace vBudgetForm
         private void tsmiAddClonedReceiptToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.CreateClonedReceipt();
+        }
+
+        private void tsmiBrands_Click(object sender, EventArgs e)
+        {
+            Froms.Digests.CompaniesListForm clf = new Froms.Digests.CompaniesListForm(this.cConnection);
+            if( clf.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+        }
+
+        private void tsmiAffilates_Click(object sender, EventArgs e)
+        {
+            VendorsListForm vlf = new VendorsListForm(this.cConnection);
+            if (vlf.ShowDialog() == DialogResult.OK)
+            {
+
+            }
         }
 
 

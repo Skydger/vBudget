@@ -11,6 +11,7 @@ namespace vBudgetForm
         private System.Data.DataTable categories = null;
         private System.Data.DataTable products = null;
         private System.Data.DataTable contents = null;
+        private System.Data.DataTable companies = null;
         private System.Data.DataTable vendors = null;
         private System.Data.DataTable cards = null;
         private int last_position;
@@ -77,6 +78,9 @@ namespace vBudgetForm
             this.lblPositions = new System.Windows.Forms.Label();
             this.btnAddDiscountCard = new System.Windows.Forms.Button();
             this.llblReceiptSum = new System.Windows.Forms.LinkLabel();
+            this.btnNewCompany = new System.Windows.Forms.Button();
+            this.lblCompany = new System.Windows.Forms.Label();
+            this.cbxCompanies = new System.Windows.Forms.ComboBox();
             this.scContent.Panel1.SuspendLayout();
             this.scContent.Panel2.SuspendLayout();
             this.scContent.SuspendLayout();
@@ -106,7 +110,7 @@ namespace vBudgetForm
             // lblVendor
             // 
             this.lblVendor.AutoSize = true;
-            this.lblVendor.Location = new System.Drawing.Point(338, 9);
+            this.lblVendor.Location = new System.Drawing.Point(339, 36);
             this.lblVendor.Name = "lblVendor";
             this.lblVendor.Size = new System.Drawing.Size(60, 13);
             this.lblVendor.TabIndex = 3;
@@ -115,7 +119,7 @@ namespace vBudgetForm
             // cbxVendors
             // 
             this.cbxVendors.FormattingEnabled = true;
-            this.cbxVendors.Location = new System.Drawing.Point(417, 6);
+            this.cbxVendors.Location = new System.Drawing.Point(418, 33);
             this.cbxVendors.Name = "cbxVendors";
             this.cbxVendors.Size = new System.Drawing.Size(360, 21);
             this.cbxVendors.TabIndex = 16;
@@ -125,7 +129,7 @@ namespace vBudgetForm
             // 
             // btnNewVendor
             // 
-            this.btnNewVendor.Location = new System.Drawing.Point(783, 5);
+            this.btnNewVendor.Location = new System.Drawing.Point(784, 32);
             this.btnNewVendor.Name = "btnNewVendor";
             this.btnNewVendor.Size = new System.Drawing.Size(29, 23);
             this.btnNewVendor.TabIndex = 4;
@@ -379,7 +383,7 @@ namespace vBudgetForm
             // lblComment
             // 
             this.lblComment.AutoSize = true;
-            this.lblComment.Location = new System.Drawing.Point(338, 39);
+            this.lblComment.Location = new System.Drawing.Point(338, 63);
             this.lblComment.Name = "lblComment";
             this.lblComment.Size = new System.Drawing.Size(73, 13);
             this.lblComment.TabIndex = 12;
@@ -387,11 +391,11 @@ namespace vBudgetForm
             // 
             // tbxComment
             // 
-            this.tbxComment.Location = new System.Drawing.Point(417, 38);
+            this.tbxComment.Location = new System.Drawing.Point(418, 60);
             this.tbxComment.MaxLength = 128;
             this.tbxComment.Multiline = true;
             this.tbxComment.Name = "tbxComment";
-            this.tbxComment.Size = new System.Drawing.Size(395, 60);
+            this.tbxComment.Size = new System.Drawing.Size(395, 45);
             this.tbxComment.TabIndex = 13;
             // 
             // lblReceiptNumber
@@ -452,6 +456,33 @@ namespace vBudgetForm
             this.llblReceiptSum.Text = "На сумму:";
             this.llblReceiptSum.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llblReceiptSum_LinkClicked);
             // 
+            // btnNewCompany
+            // 
+            this.btnNewCompany.Location = new System.Drawing.Point(783, 5);
+            this.btnNewCompany.Name = "btnNewCompany";
+            this.btnNewCompany.Size = new System.Drawing.Size(29, 23);
+            this.btnNewCompany.TabIndex = 22;
+            this.btnNewCompany.Text = "...";
+            this.btnNewCompany.UseVisualStyleBackColor = true;
+            // 
+            // lblCompany
+            // 
+            this.lblCompany.AutoSize = true;
+            this.lblCompany.Location = new System.Drawing.Point(338, 9);
+            this.lblCompany.Name = "lblCompany";
+            this.lblCompany.Size = new System.Drawing.Size(61, 13);
+            this.lblCompany.TabIndex = 21;
+            this.lblCompany.Text = "Компания:";
+            // 
+            // cbxCompanies
+            // 
+            this.cbxCompanies.FormattingEnabled = true;
+            this.cbxCompanies.Location = new System.Drawing.Point(417, 6);
+            this.cbxCompanies.Name = "cbxCompanies";
+            this.cbxCompanies.Size = new System.Drawing.Size(360, 21);
+            this.cbxCompanies.TabIndex = 23;
+            this.cbxCompanies.SelectedIndexChanged += new System.EventHandler(this.cbxCompanies_SelectedIndexChanged);
+            // 
             // ReceiptForm
             // 
             this.AcceptButton = this.btnOk;
@@ -459,6 +490,9 @@ namespace vBudgetForm
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(816, 438);
+            this.Controls.Add(this.btnNewCompany);
+            this.Controls.Add(this.lblCompany);
+            this.Controls.Add(this.cbxCompanies);
             this.Controls.Add(this.llblReceiptSum);
             this.Controls.Add(this.btnAddDiscountCard);
             this.Controls.Add(this.lblPositions);
@@ -535,5 +569,8 @@ namespace vBudgetForm
         private System.Windows.Forms.ToolStripSeparator tsmiSeparatorI;
         private System.Windows.Forms.ToolStripMenuItem tsmiSearchAllPositions;
         private System.Windows.Forms.LinkLabel llblReceiptSum;
+        private System.Windows.Forms.Button btnNewCompany;
+        private System.Windows.Forms.Label lblCompany;
+        private System.Windows.Forms.ComboBox cbxCompanies;
     }
 }

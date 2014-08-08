@@ -56,7 +56,7 @@ namespace Purchases
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
-            cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.Int, 0, "ContentID");
+            //cmd.Parameters.Add("@ContentId", System.Data.SqlDbType.UniqueIdentifier, 0, "ContentID");
             cmd = ReceiptContent.AddParameters(cmd);
             return cmd;
         }

@@ -34,7 +34,7 @@ namespace vBudgetForm
             if( this.current_category != null )
                 this.cbxCategories.SelectedValue = this.current_category;
 
-            System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(-1);
+            System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(-1, Guid.Empty);
             cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter vda = new System.Data.SqlClient.SqlDataAdapter(cmd);
             this.vendors = new System.Data.DataTable("Vendors");

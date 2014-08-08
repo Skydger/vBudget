@@ -62,7 +62,7 @@ namespace vBudgetForm
             this.cbxCategories.DataSource = this.categories;
             this.cbxCategories.DisplayMember = "CategoryName";
             this.cbxCategories.ValueMember = "CategoryID";
-
+            // TODO to find a bug with this.cbxCategories.SelectedValue == null !!!
             if (!System.Convert.IsDBNull(this.product["Category"])){
                 this.cbxCategories.SelectedValue = this.product["Category"];
 

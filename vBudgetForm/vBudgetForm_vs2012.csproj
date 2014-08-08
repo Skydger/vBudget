@@ -56,9 +56,8 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="ZedGraph, Version=5.1.5.28844, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\lib\zedgraph\zedgraph_dll_v5.1.5\ZedGraph.dll</HintPath>
+    <Reference Include="ZedGraph">
+      <HintPath>..\..\..\..\lib\zedgraph_dll_v5.1.5\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +76,18 @@
     </Compile>
     <Compile Include="Froms\Digests\CategoriesListForm.Designer.cs">
       <DependentUpon>CategoriesListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\Digests\CompaniesListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\Digests\CompaniesListForm.Designer.cs">
+      <DependentUpon>CompaniesListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\Digests\EditCompanyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\Digests\EditCompanyForm.Designer.cs">
+      <DependentUpon>EditCompanyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Froms\Products\AddProductForm.cs">
       <SubType>Form</SubType>
@@ -162,6 +173,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Froms\Digests\CategoriesListForm.resx">
       <DependentUpon>CategoriesListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\Digests\CompaniesListForm.resx">
+      <DependentUpon>CompaniesListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\Digests\EditCompanyForm.resx">
+      <DependentUpon>EditCompanyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Froms\Products\AddProductForm.resx">
       <SubType>Designer</SubType>
@@ -339,6 +356,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Brands\Brands.csproj">
+      <Project>{a7a28e21-9f69-436e-af61-478f5f35334a}</Project>
+      <Name>Brands</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Effects\Effects.csproj">
       <Project>{393FA83C-343D-487E-90B2-5CA86A9F9BF3}</Project>
       <Name>Effects</Name>

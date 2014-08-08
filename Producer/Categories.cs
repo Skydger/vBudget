@@ -166,7 +166,7 @@ namespace Producer{
             bool ret = false;
             exists = false;
             message = "";
-            int cat_id = -1;
+            Guid cat_id = Guid.Empty;
             try
             {
                 connection.Open();
@@ -177,9 +177,9 @@ namespace Producer{
                 cmd.Parameters.AddWithValue("@Category", category_name );
                 cmd.Connection = connection;
                 object res = cmd.ExecuteScalar();
-                if (!System.Convert.IsDBNull(res)) cat_id = (int)res;
+                if (res != null && !System.Convert.IsDBNull(res)) cat_id = (Guid)res;
                 connection.Close();
-                exists = (cat_id != -1);
+                exists = (cat_id != Guid.Empty);
                 ret = true;
             }
             catch (System.Exception ex)

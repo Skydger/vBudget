@@ -17,6 +17,21 @@ namespace vBudgetForm
         }
 
         private void VendorForm_Load(object sender, EventArgs e){
+
+            System.Data.SqlClient.SqlCommand cmd = Brands.Companies.Select(Guid.Empty);
+            cmd.Connection = this.cConnection;
+            System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
+            this.companies = new System.Data.DataTable("Companies");
+            sda.Fill(this.companies);
+            DataRow dr = this.companies.NewRow();
+            dr["CompanyName"] = "Компания не выбрана";
+            dr["CompanyID"] = Guid.Empty;
+            this.companies.Rows.InsertAt(dr, 0);
+
+            this.cbxCompanies.DataSource = this.companies;
+            this.cbxCompanies.DisplayMember = "CompanyName";
+            this.cbxCompanies.ValueMember = "CompanyID";
+
             if (System.Convert.IsDBNull(this.vendor["VendorID"]) || (((Guid)this.vendor["VendorID"]) == Guid.Empty)){
                 this.Text = "Добавление нового продавца";
 
@@ -28,6 +43,9 @@ namespace vBudgetForm
             }else{
                 this.Text = "Редактирование продавца #" + this.vendor["VendorID"].ToString();
                 this.tbxName.Text = (string)this.vendor["VendorName"];
+                Guid cid = Guid.Empty;
+                if (!System.Convert.IsDBNull(this.vendor["ParentCompany"])) cid = (Guid)this.vendor["ParentCompany"];
+                this.cbxCompanies.SelectedValue = cid;
 
                 if( !System.Convert.IsDBNull(this.vendor["Address"]) ) this.tbxAddress.Text = (string)this.vendor["Address"];
                 if (!System.Convert.IsDBNull(this.vendor["Phones"])) this.tbxPhones.Text = (string)this.vendor["Phones"];
@@ -84,6 +102,17 @@ namespace vBudgetForm
         }
 
         private void btnAccept_Click(object sender, EventArgs e){
+            Guid cid = Guid.Empty;
+            if (System.Convert.IsDBNull(this.cbxCompanies.SelectedValue))
+            {
+                this.vendor["ParentCompany"] = DBNull.Value;
+                this.vendor["CompanyName"] = "";
+            }
+            else
+            {
+                this.vendor["ParentCompany"] = this.cbxCompanies.SelectedValue;
+                this.vendor["CompanyName"] = this.cbxCompanies.Text;
+            }
             this.vendor["VendorName"] = this.tbxName.Text;
             this.vendor["Address"] = this.tbxAddress.Text;
             this.vendor["Phones"] = this.tbxPhones.Text;

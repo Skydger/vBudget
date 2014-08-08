@@ -71,6 +71,8 @@ namespace vBudgetForm
             this.tsmiCategories = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProducts = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiVendors = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiBrands = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAffilates = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDiscountCards = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiStatistics = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiOftenlyBought = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,6 +91,7 @@ namespace vBudgetForm
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiByCreationDatesSection = new System.Windows.Forms.ToolStripMenuItem();
             this.msMainMenu.SuspendLayout();
             this.ssMainStatus.SuspendLayout();
             this.cmsReceiptsMenu.SuspendLayout();
@@ -145,6 +148,7 @@ namespace vBudgetForm
             resources.ApplyResources(this.tsmiFilters, "tsmiFilters");
             this.tsmiFilters.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiByDatesSection,
+            this.tsmiByCreationDatesSection,
             this.tsmiByCategoryFilter,
             this.tsmiByVendorFilter,
             this.tsmiTopPurchases,
@@ -341,8 +345,23 @@ namespace vBudgetForm
             // tsmiVendors
             // 
             resources.ApplyResources(this.tsmiVendors, "tsmiVendors");
+            this.tsmiVendors.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiBrands,
+            this.tsmiAffilates});
             this.tsmiVendors.Name = "tsmiVendors";
             this.tsmiVendors.Click += new System.EventHandler(this.tsmiVendors_Click);
+            // 
+            // tsmiBrands
+            // 
+            resources.ApplyResources(this.tsmiBrands, "tsmiBrands");
+            this.tsmiBrands.Name = "tsmiBrands";
+            this.tsmiBrands.Click += new System.EventHandler(this.tsmiBrands_Click);
+            // 
+            // tsmiAffilates
+            // 
+            resources.ApplyResources(this.tsmiAffilates, "tsmiAffilates");
+            this.tsmiAffilates.Name = "tsmiAffilates";
+            this.tsmiAffilates.Click += new System.EventHandler(this.tsmiAffilates_Click);
             // 
             // tsmiDiscountCards
             // 
@@ -462,6 +481,11 @@ namespace vBudgetForm
             this.tsmiImport.Name = "tsmiImport";
             this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
             // 
+            // tsmiByCreationDatesSection
+            // 
+            resources.ApplyResources(this.tsmiByCreationDatesSection, "tsmiByCreationDatesSection");
+            this.tsmiByCreationDatesSection.Name = "tsmiByCreationDatesSection";
+            // 
             // vBudgetForm
             // 
             resources.ApplyResources(this, "$this");
@@ -539,5 +563,8 @@ namespace vBudgetForm
         private System.Windows.Forms.ToolStripMenuItem tsmiByDays;
         private System.Windows.Forms.ToolStripSeparator tsmiFileI;
         private System.Windows.Forms.ToolStripMenuItem tsmiCategories;
+        private System.Windows.Forms.ToolStripMenuItem tsmiBrands;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAffilates;
+        private System.Windows.Forms.ToolStripMenuItem tsmiByCreationDatesSection;
     }
 }

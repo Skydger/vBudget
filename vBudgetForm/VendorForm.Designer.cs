@@ -7,6 +7,7 @@ namespace vBudgetForm
         /// </summary>
         private System.ComponentModel.IContainer components = null;
         private System.Data.SqlClient.SqlConnection cConnection = null;
+        private System.Data.DataTable companies = null;
         private System.Data.DataRow vendor = null;
         private bool isNewVendor = false;
         private byte[] image = null;
@@ -56,6 +57,9 @@ namespace vBudgetForm
             this.lblWeb = new System.Windows.Forms.Label();
             this.cbDeleted = new System.Windows.Forms.CheckBox();
             this.ofdLodaPictureDialog = new System.Windows.Forms.OpenFileDialog();
+            this.btnAddCompany = new System.Windows.Forms.Button();
+            this.cbxCompanies = new System.Windows.Forms.ComboBox();
+            this.lblCompany = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbxLogo)).BeginInit();
             this.cmsPictureMenu.SuspendLayout();
             this.SuspendLayout();
@@ -77,12 +81,12 @@ namespace vBudgetForm
             this.tsmiEditPicture,
             this.tsmiDeletePicture});
             this.cmsPictureMenu.Name = "cmsPictureMenu";
-            this.cmsPictureMenu.Size = new System.Drawing.Size(177, 70);
+            this.cmsPictureMenu.Size = new System.Drawing.Size(164, 70);
             // 
             // tsmiLoadPicture
             // 
             this.tsmiLoadPicture.Name = "tsmiLoadPicture";
-            this.tsmiLoadPicture.Size = new System.Drawing.Size(176, 22);
+            this.tsmiLoadPicture.Size = new System.Drawing.Size(163, 22);
             this.tsmiLoadPicture.Text = "Загрузить...";
             this.tsmiLoadPicture.Click += new System.EventHandler(this.tsmiLoadPicture_Click);
             // 
@@ -90,19 +94,19 @@ namespace vBudgetForm
             // 
             this.tsmiEditPicture.Enabled = false;
             this.tsmiEditPicture.Name = "tsmiEditPicture";
-            this.tsmiEditPicture.Size = new System.Drawing.Size(176, 22);
+            this.tsmiEditPicture.Size = new System.Drawing.Size(163, 22);
             this.tsmiEditPicture.Text = "Редактировать...";
             // 
             // tsmiDeletePicture
             // 
             this.tsmiDeletePicture.Name = "tsmiDeletePicture";
-            this.tsmiDeletePicture.Size = new System.Drawing.Size(176, 22);
+            this.tsmiDeletePicture.Size = new System.Drawing.Size(163, 22);
             this.tsmiDeletePicture.Text = "Удалить";
             // 
             // lblName
             // 
             this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point(146, 40);
+            this.lblName.Location = new System.Drawing.Point(146, 61);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(63, 13);
             this.lblName.TabIndex = 3;
@@ -110,15 +114,15 @@ namespace vBudgetForm
             // 
             // tbxName
             // 
-            this.tbxName.Location = new System.Drawing.Point(218, 37);
+            this.tbxName.Location = new System.Drawing.Point(218, 58);
             this.tbxName.Name = "tbxName";
-            this.tbxName.Size = new System.Drawing.Size(262, 20);
+            this.tbxName.Size = new System.Drawing.Size(350, 20);
             this.tbxName.TabIndex = 4;
             // 
             // lblType
             // 
             this.lblType.AutoSize = true;
-            this.lblType.Location = new System.Drawing.Point(146, 13);
+            this.lblType.Location = new System.Drawing.Point(146, 34);
             this.lblType.Name = "lblType";
             this.lblType.Size = new System.Drawing.Size(35, 13);
             this.lblType.TabIndex = 1;
@@ -127,14 +131,14 @@ namespace vBudgetForm
             // cbxTypes
             // 
             this.cbxTypes.FormattingEnabled = true;
-            this.cbxTypes.Location = new System.Drawing.Point(218, 10);
+            this.cbxTypes.Location = new System.Drawing.Point(218, 31);
             this.cbxTypes.Name = "cbxTypes";
-            this.cbxTypes.Size = new System.Drawing.Size(231, 21);
+            this.cbxTypes.Size = new System.Drawing.Size(319, 21);
             this.cbxTypes.TabIndex = 2;
             // 
             // btnAddType
             // 
-            this.btnAddType.Location = new System.Drawing.Point(455, 8);
+            this.btnAddType.Location = new System.Drawing.Point(543, 30);
             this.btnAddType.Name = "btnAddType";
             this.btnAddType.Size = new System.Drawing.Size(25, 23);
             this.btnAddType.TabIndex = 15;
@@ -143,15 +147,15 @@ namespace vBudgetForm
             // 
             // tbxAddress
             // 
-            this.tbxAddress.Location = new System.Drawing.Point(218, 63);
+            this.tbxAddress.Location = new System.Drawing.Point(218, 84);
             this.tbxAddress.Name = "tbxAddress";
-            this.tbxAddress.Size = new System.Drawing.Size(262, 20);
+            this.tbxAddress.Size = new System.Drawing.Size(350, 20);
             this.tbxAddress.TabIndex = 6;
             // 
             // lblAddress
             // 
             this.lblAddress.AutoSize = true;
-            this.lblAddress.Location = new System.Drawing.Point(146, 66);
+            this.lblAddress.Location = new System.Drawing.Point(146, 87);
             this.lblAddress.Name = "lblAddress";
             this.lblAddress.Size = new System.Drawing.Size(47, 13);
             this.lblAddress.TabIndex = 5;
@@ -159,15 +163,15 @@ namespace vBudgetForm
             // 
             // tbxPhones
             // 
-            this.tbxPhones.Location = new System.Drawing.Point(218, 89);
+            this.tbxPhones.Location = new System.Drawing.Point(218, 110);
             this.tbxPhones.Name = "tbxPhones";
-            this.tbxPhones.Size = new System.Drawing.Size(262, 20);
+            this.tbxPhones.Size = new System.Drawing.Size(350, 20);
             this.tbxPhones.TabIndex = 8;
             // 
             // lblPhones
             // 
             this.lblPhones.AutoSize = true;
-            this.lblPhones.Location = new System.Drawing.Point(146, 92);
+            this.lblPhones.Location = new System.Drawing.Point(146, 113);
             this.lblPhones.Name = "lblPhones";
             this.lblPhones.Size = new System.Drawing.Size(72, 13);
             this.lblPhones.TabIndex = 7;
@@ -175,15 +179,15 @@ namespace vBudgetForm
             // 
             // tbxPTI
             // 
-            this.tbxPTI.Location = new System.Drawing.Point(218, 115);
+            this.tbxPTI.Location = new System.Drawing.Point(218, 136);
             this.tbxPTI.Name = "tbxPTI";
-            this.tbxPTI.Size = new System.Drawing.Size(262, 20);
+            this.tbxPTI.Size = new System.Drawing.Size(350, 20);
             this.tbxPTI.TabIndex = 10;
             // 
             // lblPTI
             // 
             this.lblPTI.AutoSize = true;
-            this.lblPTI.Location = new System.Drawing.Point(146, 118);
+            this.lblPTI.Location = new System.Drawing.Point(146, 139);
             this.lblPTI.Name = "lblPTI";
             this.lblPTI.Size = new System.Drawing.Size(40, 13);
             this.lblPTI.TabIndex = 9;
@@ -191,7 +195,7 @@ namespace vBudgetForm
             // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(218, 175);
+            this.btnAccept.Location = new System.Drawing.Point(218, 187);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(75, 23);
             this.btnAccept.TabIndex = 13;
@@ -202,7 +206,7 @@ namespace vBudgetForm
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(405, 175);
+            this.btnCancel.Location = new System.Drawing.Point(493, 187);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 14;
@@ -211,15 +215,15 @@ namespace vBudgetForm
             // 
             // tbxWeb
             // 
-            this.tbxWeb.Location = new System.Drawing.Point(218, 141);
+            this.tbxWeb.Location = new System.Drawing.Point(218, 162);
             this.tbxWeb.Name = "tbxWeb";
-            this.tbxWeb.Size = new System.Drawing.Size(262, 20);
+            this.tbxWeb.Size = new System.Drawing.Size(350, 20);
             this.tbxWeb.TabIndex = 12;
             // 
             // lblWeb
             // 
             this.lblWeb.AutoSize = true;
-            this.lblWeb.Location = new System.Drawing.Point(146, 144);
+            this.lblWeb.Location = new System.Drawing.Point(146, 165);
             this.lblWeb.Name = "lblWeb";
             this.lblWeb.Size = new System.Drawing.Size(40, 13);
             this.lblWeb.TabIndex = 11;
@@ -229,12 +233,38 @@ namespace vBudgetForm
             // 
             this.cbDeleted.AutoSize = true;
             this.cbDeleted.Enabled = false;
-            this.cbDeleted.Location = new System.Drawing.Point(12, 179);
+            this.cbDeleted.Location = new System.Drawing.Point(12, 191);
             this.cbDeleted.Name = "cbDeleted";
             this.cbDeleted.Size = new System.Drawing.Size(64, 17);
             this.cbDeleted.TabIndex = 16;
             this.cbDeleted.Text = "Удалён";
             this.cbDeleted.UseVisualStyleBackColor = true;
+            // 
+            // btnAddCompany
+            // 
+            this.btnAddCompany.Location = new System.Drawing.Point(543, 3);
+            this.btnAddCompany.Name = "btnAddCompany";
+            this.btnAddCompany.Size = new System.Drawing.Size(25, 23);
+            this.btnAddCompany.TabIndex = 19;
+            this.btnAddCompany.Text = "...";
+            this.btnAddCompany.UseVisualStyleBackColor = true;
+            // 
+            // cbxCompanies
+            // 
+            this.cbxCompanies.FormattingEnabled = true;
+            this.cbxCompanies.Location = new System.Drawing.Point(284, 4);
+            this.cbxCompanies.Name = "cbxCompanies";
+            this.cbxCompanies.Size = new System.Drawing.Size(253, 21);
+            this.cbxCompanies.TabIndex = 18;
+            // 
+            // lblCompany
+            // 
+            this.lblCompany.AutoSize = true;
+            this.lblCompany.Location = new System.Drawing.Point(146, 7);
+            this.lblCompany.Name = "lblCompany";
+            this.lblCompany.Size = new System.Drawing.Size(132, 13);
+            this.lblCompany.TabIndex = 17;
+            this.lblCompany.Text = "Родительская компания";
             // 
             // VendorForm
             // 
@@ -242,7 +272,10 @@ namespace vBudgetForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(492, 206);
+            this.ClientSize = new System.Drawing.Size(580, 222);
+            this.Controls.Add(this.btnAddCompany);
+            this.Controls.Add(this.cbxCompanies);
+            this.Controls.Add(this.lblCompany);
             this.Controls.Add(this.cbDeleted);
             this.Controls.Add(this.tbxWeb);
             this.Controls.Add(this.btnCancel);
@@ -296,5 +329,8 @@ namespace vBudgetForm
         private System.Windows.Forms.ToolStripMenuItem tsmiEditPicture;
         private System.Windows.Forms.ToolStripMenuItem tsmiDeletePicture;
         private System.Windows.Forms.OpenFileDialog ofdLodaPictureDialog;
+        private System.Windows.Forms.Button btnAddCompany;
+        private System.Windows.Forms.ComboBox cbxCompanies;
+        private System.Windows.Forms.Label lblCompany;
     }
 }

@@ -121,19 +121,19 @@
   <data name="btnDown.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAADNSURBVDhPY6AKKCiv+S8oo4KCDa0c/0OlGRYsWY5XnuH8pcsYCkAYKs2QkJGLITdh6kyEASAQ
-        EBmHUxG6OAiDNSEDbM509Az4DzIEXRzkZag2VKCobYyhGGQIutiBQ0exG4DNNnQMMhCqHBPcf/gIqyZk
-        DPIqVDl2gC0wYRjkRagy3GDD5m1YNYMwzsBDB6BEgs0AUHqBKsEPsAUmyGtQaeIAugEEAw8dIOcPogIP
-        HYASC8wAjHRPLIAFJih9QIVIAyCbQTkRyqUFYGAAAFrpztMazojjAAAAAElFTkSuQmCC
+        YQUAAADOSURBVDhPY2CgBigor/kvKKOCgg2tHP/DzF6wZDleeYbzly5jKAAZCDMgISMXQ37C1JlwebC6
+        gMg4nIrQXYdsODwEsDnT0TPgP8gmdANAXsYadIraxhiKQYagG3Dg0FHsBmCzDV0zyECcEXf/4SOsgYls
+        CMireGMeW2DCDAB5kWCy2bB5G05X4Aw8dFNBiQhb1IHSC0EXgBRgC0yQ14jSDFOE7gKCgYduOnL+ICrw
+        0A0AJRaYKzDSPbF+gQUmKH0QqwdFHchmUE4kSzOxmgBa6c7TOJ8IyQAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="btnUp.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAADHSURBVDhPY6ApSMjI/T9h6sz/UC5p4P7DR/8FZVT+G1o5kmcAyGaQASB84NBR0g1R1DaGG1BQ
-        XkOaAQuWLIdrhmGoFHEgIDIOwwCiA/P8pcsYmkGY6MAE+RebASC8YfM2woYgBx46BnkNqgw7wBZ46BiU
-        PqDKMYGjZwBWTcgYZ2CCEgu6YmwGgrwI1YIKsAUeyDZshoC8CtWGAOiKQBgkjpykYRgjMLEpAuVEqDRW
-        w0HpBSrNwABKJOgKkJ2JTZ7k/IEdMDAAAO3WztMqeesfAAAAAElFTkSuQmCC
+        YQUAAADASURBVDhPY2CgJUjIyP0/YerM/2TZcf/ho/+CMir/Da0cyTMAZDPIABA+cOgo6YYoahvDDSgo
+        ryHNgAVLlsM1w1xBUjgERMZhGEB0YJ6/dBlDM0mBCfIvzNno9IbN2wiHBXLgoRsA8hresMAWeOiGgNIH
+        TkMcPQNwOh9mEM7ABCUWdNuwGQjyIlYXYAs8kG3YDAF5FcMQbCEPUoScpGFqMAITmyJQToTZgs1wUHqB
+        uwKU49AVITsTmzzJ+QNX1AEA7dbO07Qi1UUAAAAASUVORK5CYII=
 </value>
   </data>
   <metadata name="cmsProductsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

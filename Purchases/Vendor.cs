@@ -7,19 +7,33 @@ namespace Purchases
     public class Vendor{
         private static string Table = "Purchases.Vendors";
 
-        public static System.Data.SqlClient.SqlCommand Select(int type_id){
+        public static System.Data.SqlClient.SqlCommand Select(int type_id, Guid company_id){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sWhere = "";
             if (type_id >= 0){
                 sWhere = "WHERE v.VendorType = @VendorType\n";
                 cmd.Parameters.AddWithValue("@VendorType", type_id);
             }
-            string sQuery = "SELECT v.VendorID, v.VendorName, v.VendorType, v.Phones, v.Address,\n" +
-                            "       v.Logo, v.INoTP, v.Web, v.Created, v.Updated, v.Deleted,\n" +
-                            "       vp.TypeName, v.VendorName + ' ' + v.Address AS VendorNameAddress\n" +
-                            "FROM " + Vendor.Table + " AS v\n" +
-                            "LEFT JOIN Purchases.VendorTypes AS vp\n" +
+            if (company_id != null && company_id != Guid.Empty)
+            {
+                sWhere += (sWhere.Length > 0 ? " AND" : "WHERE");
+                sWhere += " cm.CompanyID = @CompanyID\n";
+                cmd.Parameters.AddWithValue("@CompanyID", company_id);
+            }
+            string sQuery = "SELECT v.VendorID, v.ParentCompany, v.VendorName, v.VendorType, v.Phones, v.Address,\n" +
+                            "       v.Logo, v.INoTP, v.Web, v.Created, v.Updated, v.Deleted, vp.TypeName,\n" +
+                            "       CASE WHEN cm.CompanyName IS NULL THEN '' ELSE cm.CompanyName + ', ' END +\n" +
+                            "       v.VendorName + ' ' + v.Address AS VendorNameAddress, cm.CompanyName,\n" +
+                            "       ISNULL(rp.ReceiptsCount, 0) AS ReceiptsCount\n" +
+                            "  FROM " + Vendor.Table + " AS v\n" +
+                            "  LEFT JOIN Purchases.VendorTypes AS vp\n" +
                             "       ON vp.TypeID = v.VendorType\n" +
+                            "  LEFT JOIN Brands.Companies AS cm\n" +
+                            "       ON cm.CompanyID = v.ParentCompany\n" +
+                            "  LEFT JOIN (SELECT Vendor, COUNT(ReceiptID) AS ReceiptsCount\n" +
+                            "               FROM Purchases.Receipts AS r\n" +
+                            "              GROUP BY Vendor) AS rp\n" +
+                            "    ON rp.Vendor = v.VendorID\n" +
                             sWhere +
                             "ORDER BY v.VendorName";
             cmd.CommandTimeout = 0;
@@ -27,8 +41,14 @@ namespace Purchases
             cmd.CommandText = sQuery;
             return cmd;
         }
-        // Поиск продавца по наименованию
-        public static System.Data.SqlClient.SqlCommand Select( string name ){
+        /// <summary>
+        /// Selects all Vendors by name and company guid
+        /// </summary>
+        /// <param name="name">Vendor name likeness</param>
+        /// <param name="company_id">Company id if present</param>
+        /// <returns></returns>
+        public static System.Data.SqlClient.SqlCommand Select(string name, Guid company_id)
+        {
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sWhere = "";
             if (name.Length > 0){
@@ -36,12 +56,21 @@ namespace Purchases
                 sWhere = "WHERE v.VendorName like @VendorName\n";
                 cmd.Parameters.AddWithValue("@VendorName", name);
             }
-            string sQuery = "SELECT v.VendorID, v.VendorName, v.VendorType, v.Phones, v.Address,\n" +
-                            "       v.Logo, v.INoTP, v.Web, v.Created, v.Updated, v.Deleted,\n" +
-                            "       vp.TypeName, v.VendorName + ' ' + v.Address AS VendorNameAddress\n" +
-                            "FROM " + Vendor.Table + " AS v\n" +
-                            "LEFT JOIN Purchases.VendorTypes AS vp\n" +
+            if (company_id != null && company_id != Guid.Empty)
+            {
+                sWhere += (sWhere.Length > 0 ? " AND" : "WHERE");
+                sWhere += " cm.CompanyID = @CompanyID\n";
+                cmd.Parameters.AddWithValue("@CompanyID", company_id);
+            }
+            string sQuery = "SELECT v.VendorID, v.ParentCompany, v.VendorName, v.VendorType, v.Phones, v.Address,\n" +
+                            "       v.Logo, v.INoTP, v.Web, v.Created, v.Updated, v.Deleted, vp.TypeName,\n" +
+                            "       CASE WHEN cm.CompanyName IS NULL THEN '' ELSE cm.CompanyName + ', ' END +\n" +
+                            "       v.VendorName + ' ' + v.Address AS VendorNameAddress, cm.CompanyName\n" +
+                            "  FROM " + Vendor.Table + " AS v\n" +
+                            "  LEFT JOIN Purchases.VendorTypes AS vp\n" +
                             "       ON vp.TypeID = v.VendorType\n" +
+                            "  LEFT JOIN Brands.Companies AS cm\n" +
+                            "       ON cm.CompanyID = v.ParentCompany\n" +
                             sWhere +
                             "ORDER BY v.VendorName";
             cmd.CommandTimeout = 0;
@@ -54,6 +83,7 @@ namespace Purchases
         static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command)
         {
             command.Parameters.Add("@VendorID", System.Data.SqlDbType.UniqueIdentifier, 0, "VendorID");
+            command.Parameters.Add("@CompanyID", System.Data.SqlDbType.UniqueIdentifier, 0, "ParentCompany");
             command.Parameters.Add("@VendorName", System.Data.SqlDbType.NVarChar, 0, "VendorName");
             command.Parameters.Add("@VendorType", System.Data.SqlDbType.Int, 0, "VendorType");
             command.Parameters.Add("@Phones", System.Data.SqlDbType.NVarChar, 0, "Phones");
@@ -70,9 +100,9 @@ namespace Purchases
         {
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "INSERT INTO " + Vendor.Table + "\n" +
-                            "            (VendorID, VendorName, VendorType, Phones, Address, Logo,\n" +
+                            "            (VendorID, ParentCompany, VendorName, VendorType, Phones, Address, Logo,\n" +
                             "             INoTP, Web, Created, Updated, Deleted)\n" +
-                            "     VALUES (@VendorID, @VendorName, @VendorType, @Phones, @Address, @Logo,\n" +
+                            "     VALUES (@VendorID, @CompanyID, @VendorName, @VendorType, @Phones, @Address, @Logo,\n" +
                             "             @INoTP, @Web, @Created, @Updated, @Deleted)";
             cmd = Vendor.AddParameters(cmd);
             cmd.Parameters.Add("@Created", System.Data.SqlDbType.DateTime, 0, "Created");
@@ -90,11 +120,12 @@ namespace Purchases
                 connection.Open();
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 string sQuery = "INSERT INTO " + Vendor.Table + "\n" +
-                                "            (VendorID, VendorName, VendorType, Phones, Address, Logo,\n" +
+                                "            (VendorID, ParentCompany, VendorName, VendorType, Phones, Address, Logo,\n" +
                                 "             INoTP, Web, Created, Updated, Deleted)\n" +
-                                "     VALUES (@VendorID, @VendorName, @VendorType, @Phones, @Address, @Logo,\n" +
+                                "     VALUES (@VendorID, @CompanyID, @VendorName, @VendorType, @Phones, @Address, @Logo,\n" +
                                 "             @INoTP, @Web, @Created, @Updated, @Deleted)";
                 cmd.Parameters.AddWithValue("@VendorID", row["VendorID"]);
+                cmd.Parameters.AddWithValue("@CompanyID", row["ParentCompany"]);
                 cmd.Parameters.AddWithValue("@VendorName", row["VendorName"]);
                 cmd.Parameters.AddWithValue("@VendorType", row["VendorType"]);
                 cmd.Parameters.AddWithValue("@Phones", row["Phones"]);
@@ -125,6 +156,7 @@ namespace Purchases
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "UPDATE " + Vendor.Table + "\n" +
                             "   SET VendorName = @VendorName, VendorType = @VendorType, Phones = @Phones,\n" +
+                            "       ParentCompany = @CompanyID,\n" +
                             "       Address = @Address, Logo = @Logo, INoTP = @INoTP, Web = @Web,\n" +
                             "       Updated = @Updated, Deleted = @Deleted\n" +
                             " WHERE VendorID = @VendorID";
@@ -145,11 +177,13 @@ namespace Purchases
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 string sQuery = "UPDATE " + Vendor.Table + "\n" +
                                 "   SET VendorName = @VendorName, VendorType = @VendorType, Phones = @Phones,\n" +
+                                "       ParentCompany = @CompanyID,\n" +
                                 "       Address = @Address, Logo = @Logo, INoTP = @INoTP, Web = @Web,\n" +
                                 "       Updated = @Updated, Deleted = @Deleted\n" +
                                 " WHERE VendorID = @VendorID";
 
                 cmd.Parameters.AddWithValue("@VendorID", row["VendorID"]);
+                cmd.Parameters.AddWithValue("@CompanyID", row["ParentCompany"]);
                 cmd.Parameters.AddWithValue("@VendorName", row["VendorName"]);
                 cmd.Parameters.AddWithValue("@VendorType", row["VendorType"]);
                 cmd.Parameters.AddWithValue("@Phones", row["Phones"]);

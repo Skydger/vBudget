@@ -171,6 +171,12 @@
   <data name="Menu.D" xml:space="preserve">
     <value>Digests</value>
   </data>
+  <data name="Menu.D.Affilates" xml:space="preserve">
+    <value>Affilates, etc.</value>
+  </data>
+  <data name="Menu.D.Brands" xml:space="preserve">
+    <value>Brands</value>
+  </data>
   <data name="Menu.D.Categories" xml:space="preserve">
     <value>Products' categories</value>
   </data>

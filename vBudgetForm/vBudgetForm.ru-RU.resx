@@ -118,11 +118,29 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tsmiSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+  <data name="tsmiFileI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 6</value>
   </data>
-  <data name="tsmiExit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+  <data name="tsmiByDatesSection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 22</value>
+  </data>
+  <data name="tsmiByCreationDatesSection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 22</value>
+  </data>
+  <data name="tsmiByCreationDatesSection.Text" xml:space="preserve">
+    <value>По дате создания</value>
+  </data>
+  <data name="tsmiByCategoryFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 22</value>
+  </data>
+  <data name="tsmiByVendorFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 22</value>
+  </data>
+  <data name="tsmiTopPurchases.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 22</value>
+  </data>
+  <data name="tsmiClearFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 22</value>
   </data>
   <data name="tsmiFilters.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 22</value>
@@ -165,6 +183,12 @@
   </data>
   <data name="tsmiProducts.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 22</value>
+  </data>
+  <data name="tsmiBrands.Text" xml:space="preserve">
+    <value>Brands</value>
+  </data>
+  <data name="tsmiAffilates.Text" xml:space="preserve">
+    <value>Affilates</value>
   </data>
   <data name="tsmiVendors.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 22</value>

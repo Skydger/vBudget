@@ -17,7 +17,7 @@ namespace vBudgetForm
         }
 
         private void EditDiscountCardForm_Load(object sender, EventArgs e){
-            System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(-1);
+            System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(-1, Guid.Empty);
             cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
             this.vendors = new System.Data.DataTable("Vendors");
