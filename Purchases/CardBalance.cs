@@ -31,7 +31,7 @@ namespace Purchases
             }
             else
             {
-                sQuery += " WHERE cb.CardID = IS NULL";
+                sQuery += " WHERE cb.CardID IS NULL";
             }
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
@@ -166,7 +166,7 @@ namespace Purchases
                 cmd.Parameters.AddWithValue("@Card", row["CardID"]);
                 cmd.Parameters.AddWithValue("@OverallBalance", row["OverallBalance"]);
                 cmd.Parameters.AddWithValue("@DiscountBalance", row["DiscountBalance"]);
-                cmd.Parameters.AddWithValue("@LastReceiptID", row["LastReceipt"]);
+                cmd.Parameters.AddWithValue("@LastReceiptID", row["LastReceiptID"]);
                 cmd.Parameters.AddWithValue("@Points", row["Points"]);
                 cmd.Connection = connection;
                 cmd.CommandTimeout = 0;

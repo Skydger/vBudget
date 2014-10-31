@@ -42,7 +42,7 @@ namespace vBudgetForm
             this.lblReceiptNumber.Text = this.manager.GetString("Receipt.Number");
             this.lblDiscountCard.Text = this.manager.GetString("Receipt.DiscountCard");
             this.lblSearch.Text = this.manager.GetString("Form.SearchLabel");
-            this.lblPositions.Text = string.Format(this.manager.GetString("Receipt.Positions"), 0);
+            this.lblPositions.Text = string.Format(this.manager.GetString("Receipt.Positions"), 0, 0);
             this.llblReceiptSum.Text = string.Format(this.manager.GetString("Receipt.SubtotalPrice"), 0.0);
             this.btnOk.Text = this.manager.GetString("Form.Accept");
             this.btnCancel.Text = this.manager.GetString("Form.Cancel");
@@ -254,7 +254,7 @@ namespace vBudgetForm
                 this.receipt["Vendor"] = this.cbxVendors.SelectedValue;
                 this.receipt["VendorName"] = this.cbxVendors.Text;
 
-                this.receipt["Paid"] = dtpPeceiptDate.Value;
+                this.receipt["Paid"] = this.dtpPeceiptDate.Value;
                 this.receipt["Price"] = this.total_price;
                 this.receipt["Discount"] = this.total_discount;
                 if ( ( this.cbxDiscountCards.SelectedValue == null ) ||
@@ -373,7 +373,7 @@ namespace vBudgetForm
             this.last_position = 1;
             this.total_price = 0;
             this.total_discount = 0;
-            int i = 0;
+            int i = 0, j = 0;
             decimal discount_cash = 0;
             string stn = this.manager.GetString("Form.Subtotal");
 
@@ -381,6 +381,13 @@ namespace vBudgetForm
                 decimal total = (decimal)this.dgvReceiptContent.Rows[i].Cells[stn].Value;
                 decimal summ = (decimal)this.dgvReceiptContent.Rows[i].Cells["Price"].Value;
                 summ = summ * (decimal)this.dgvReceiptContent.Rows[i].Cells["Amount"].Value;
+
+                decimal d = (decimal)this.dgvReceiptContent.Rows[i].Cells["Amount"].Value;
+                if( (d - Math.Floor(d) == 0) &&
+                    (d - Math.Ceiling(d) == 0 ) )
+                    j += (int)d;
+                else
+                    j++;
                 discount_cash += total - summ;
 
                 total_price += total;
@@ -396,7 +403,7 @@ namespace vBudgetForm
             dgvr.Cells["Price"].Value = discount_cash;
             dgvr.Cells[stn].Value = this.total_price;
 
-            this.lblPositions.Text = string.Format(this.manager.GetString("Receipt.Positions"), i);
+            this.lblPositions.Text = string.Format(this.manager.GetString("Receipt.Positions"), i, j);
             this.llblReceiptSum.Text = string.Format(this.manager.GetString("Receipt.SubtotalPrice"), this.total_price);
             return;
         }
@@ -543,7 +550,7 @@ namespace vBudgetForm
 
         private void btnAddDiscountCard_Click(object sender, EventArgs e){
             System.Data.DataRow new_crd = this.cards.NewRow();
-            EditDiscountCardForm edcf = new EditDiscountCardForm(this.cConnection, ref new_crd);
+            Froms.Digests.EditDiscountCardForm edcf = new Froms.Digests.EditDiscountCardForm(this.cConnection, ref new_crd);
             if (edcf.ShowDialog() == DialogResult.OK){
                 this.cards.Rows.Add(new_crd);
 //                this.

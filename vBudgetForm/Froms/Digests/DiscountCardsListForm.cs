@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace vBudgetForm
+namespace vBudgetForm.Froms.Digests
 {
     public partial class DiscountCardsListForm : Form
     {

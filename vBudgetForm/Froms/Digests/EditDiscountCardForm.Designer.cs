@@ -1,4 +1,4 @@
-namespace vBudgetForm
+namespace vBudgetForm.Froms.Digests
 {
     partial class EditDiscountCardForm
     {
@@ -8,6 +8,7 @@ namespace vBudgetForm
         private System.ComponentModel.IContainer components = null;
         private System.Data.SqlClient.SqlConnection cConnection;
         private System.Data.DataTable vendors = null;
+        private System.Data.DataTable companies = null;
         private System.Data.DataTable users = null;
         private System.Data.DataRow card;
         private System.Data.DataTable card_balance;
@@ -56,6 +57,9 @@ namespace vBudgetForm
             this.btnNewVendor = new System.Windows.Forms.Button();
             this.btnNewUser = new System.Windows.Forms.Button();
             this.dgvBalanceInfo = new System.Windows.Forms.DataGridView();
+            this.btnNewCompany = new System.Windows.Forms.Button();
+            this.cbxCompanies = new System.Windows.Forms.ComboBox();
+            this.lblCompany = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudPercents)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBalanceInfo)).BeginInit();
             this.SuspendLayout();
@@ -63,7 +67,7 @@ namespace vBudgetForm
             // lblVendor
             // 
             this.lblVendor.AutoSize = true;
-            this.lblVendor.Location = new System.Drawing.Point(12, 9);
+            this.lblVendor.Location = new System.Drawing.Point(6, 39);
             this.lblVendor.Name = "lblVendor";
             this.lblVendor.Size = new System.Drawing.Size(63, 13);
             this.lblVendor.TabIndex = 0;
@@ -72,7 +76,7 @@ namespace vBudgetForm
             // cbxVendors
             // 
             this.cbxVendors.FormattingEnabled = true;
-            this.cbxVendors.Location = new System.Drawing.Point(91, 6);
+            this.cbxVendors.Location = new System.Drawing.Point(85, 36);
             this.cbxVendors.Name = "cbxVendors";
             this.cbxVendors.Size = new System.Drawing.Size(284, 21);
             this.cbxVendors.TabIndex = 1;
@@ -80,7 +84,7 @@ namespace vBudgetForm
             // cbxUsers
             // 
             this.cbxUsers.FormattingEnabled = true;
-            this.cbxUsers.Location = new System.Drawing.Point(91, 33);
+            this.cbxUsers.Location = new System.Drawing.Point(85, 63);
             this.cbxUsers.Name = "cbxUsers";
             this.cbxUsers.Size = new System.Drawing.Size(284, 21);
             this.cbxUsers.TabIndex = 3;
@@ -88,7 +92,7 @@ namespace vBudgetForm
             // lblUser
             // 
             this.lblUser.AutoSize = true;
-            this.lblUser.Location = new System.Drawing.Point(12, 36);
+            this.lblUser.Location = new System.Drawing.Point(6, 66);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(62, 13);
             this.lblUser.TabIndex = 2;
@@ -97,7 +101,7 @@ namespace vBudgetForm
             // lblDiscountCardName
             // 
             this.lblDiscountCardName.AutoSize = true;
-            this.lblDiscountCardName.Location = new System.Drawing.Point(13, 65);
+            this.lblDiscountCardName.Location = new System.Drawing.Point(7, 95);
             this.lblDiscountCardName.Name = "lblDiscountCardName";
             this.lblDiscountCardName.Size = new System.Drawing.Size(63, 13);
             this.lblDiscountCardName.TabIndex = 4;
@@ -105,14 +109,14 @@ namespace vBudgetForm
             // 
             // tbxName
             // 
-            this.tbxName.Location = new System.Drawing.Point(91, 62);
+            this.tbxName.Location = new System.Drawing.Point(85, 92);
             this.tbxName.Name = "tbxName";
             this.tbxName.Size = new System.Drawing.Size(310, 20);
             this.tbxName.TabIndex = 5;
             // 
             // tbxNumber
             // 
-            this.tbxNumber.Location = new System.Drawing.Point(91, 88);
+            this.tbxNumber.Location = new System.Drawing.Point(85, 118);
             this.tbxNumber.Name = "tbxNumber";
             this.tbxNumber.Size = new System.Drawing.Size(310, 20);
             this.tbxNumber.TabIndex = 7;
@@ -120,7 +124,7 @@ namespace vBudgetForm
             // lblDiscountCardNumber
             // 
             this.lblDiscountCardNumber.AutoSize = true;
-            this.lblDiscountCardNumber.Location = new System.Drawing.Point(13, 91);
+            this.lblDiscountCardNumber.Location = new System.Drawing.Point(7, 121);
             this.lblDiscountCardNumber.Name = "lblDiscountCardNumber";
             this.lblDiscountCardNumber.Size = new System.Drawing.Size(81, 13);
             this.lblDiscountCardNumber.TabIndex = 6;
@@ -128,7 +132,7 @@ namespace vBudgetForm
             // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(245, 171);
+            this.btnAccept.Location = new System.Drawing.Point(239, 201);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(75, 23);
             this.btnAccept.TabIndex = 8;
@@ -139,7 +143,7 @@ namespace vBudgetForm
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(326, 171);
+            this.btnCancel.Location = new System.Drawing.Point(320, 201);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 9;
@@ -149,7 +153,7 @@ namespace vBudgetForm
             // lblPercent
             // 
             this.lblPercent.AutoSize = true;
-            this.lblPercent.Location = new System.Drawing.Point(13, 120);
+            this.lblPercent.Location = new System.Drawing.Point(7, 150);
             this.lblPercent.Name = "lblPercent";
             this.lblPercent.Size = new System.Drawing.Size(56, 13);
             this.lblPercent.TabIndex = 10;
@@ -158,7 +162,7 @@ namespace vBudgetForm
             // nudPercents
             // 
             this.nudPercents.DecimalPlaces = 2;
-            this.nudPercents.Location = new System.Drawing.Point(91, 116);
+            this.nudPercents.Location = new System.Drawing.Point(85, 146);
             this.nudPercents.Name = "nudPercents";
             this.nudPercents.Size = new System.Drawing.Size(54, 20);
             this.nudPercents.TabIndex = 11;
@@ -166,7 +170,7 @@ namespace vBudgetForm
             // lblDiscountType
             // 
             this.lblDiscountType.AutoSize = true;
-            this.lblDiscountType.Location = new System.Drawing.Point(183, 120);
+            this.lblDiscountType.Location = new System.Drawing.Point(177, 150);
             this.lblDiscountType.Name = "lblDiscountType";
             this.lblDiscountType.Size = new System.Drawing.Size(66, 13);
             this.lblDiscountType.TabIndex = 12;
@@ -179,7 +183,7 @@ namespace vBudgetForm
             "Дисконтная",
             "Накопительная",
             "Дисконтная и накопительная"});
-            this.cbxDiscountType.Location = new System.Drawing.Point(255, 116);
+            this.cbxDiscountType.Location = new System.Drawing.Point(249, 146);
             this.cbxDiscountType.Name = "cbxDiscountType";
             this.cbxDiscountType.Size = new System.Drawing.Size(146, 21);
             this.cbxDiscountType.TabIndex = 13;
@@ -188,7 +192,7 @@ namespace vBudgetForm
             // lblSince
             // 
             this.lblSince.AutoSize = true;
-            this.lblSince.Location = new System.Drawing.Point(13, 150);
+            this.lblSince.Location = new System.Drawing.Point(7, 180);
             this.lblSince.Name = "lblSince";
             this.lblSince.Size = new System.Drawing.Size(52, 13);
             this.lblSince.TabIndex = 14;
@@ -198,7 +202,7 @@ namespace vBudgetForm
             // 
             this.dtpSince.CustomFormat = "dd.MM.yyyy HH:mm:ss";
             this.dtpSince.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpSince.Location = new System.Drawing.Point(91, 146);
+            this.dtpSince.Location = new System.Drawing.Point(85, 176);
             this.dtpSince.Name = "dtpSince";
             this.dtpSince.Size = new System.Drawing.Size(130, 20);
             this.dtpSince.TabIndex = 15;
@@ -206,7 +210,7 @@ namespace vBudgetForm
             // cbxExpired
             // 
             this.cbxExpired.AutoSize = true;
-            this.cbxExpired.Location = new System.Drawing.Point(16, 175);
+            this.cbxExpired.Location = new System.Drawing.Point(10, 205);
             this.cbxExpired.Name = "cbxExpired";
             this.cbxExpired.Size = new System.Drawing.Size(167, 17);
             this.cbxExpired.TabIndex = 16;
@@ -215,7 +219,7 @@ namespace vBudgetForm
             // 
             // btnNewVendor
             // 
-            this.btnNewVendor.Location = new System.Drawing.Point(381, 4);
+            this.btnNewVendor.Location = new System.Drawing.Point(375, 34);
             this.btnNewVendor.Name = "btnNewVendor";
             this.btnNewVendor.Size = new System.Drawing.Size(24, 24);
             this.btnNewVendor.TabIndex = 17;
@@ -224,7 +228,7 @@ namespace vBudgetForm
             // 
             // btnNewUser
             // 
-            this.btnNewUser.Location = new System.Drawing.Point(381, 32);
+            this.btnNewUser.Location = new System.Drawing.Point(375, 62);
             this.btnNewUser.Name = "btnNewUser";
             this.btnNewUser.Size = new System.Drawing.Size(24, 24);
             this.btnNewUser.TabIndex = 18;
@@ -236,8 +240,34 @@ namespace vBudgetForm
             this.dgvBalanceInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBalanceInfo.Location = new System.Drawing.Point(411, 4);
             this.dgvBalanceInfo.Name = "dgvBalanceInfo";
-            this.dgvBalanceInfo.Size = new System.Drawing.Size(244, 190);
+            this.dgvBalanceInfo.Size = new System.Drawing.Size(244, 220);
             this.dgvBalanceInfo.TabIndex = 19;
+            // 
+            // btnNewCompany
+            // 
+            this.btnNewCompany.Location = new System.Drawing.Point(376, 4);
+            this.btnNewCompany.Name = "btnNewCompany";
+            this.btnNewCompany.Size = new System.Drawing.Size(24, 24);
+            this.btnNewCompany.TabIndex = 22;
+            this.btnNewCompany.Text = "...";
+            this.btnNewCompany.UseVisualStyleBackColor = true;
+            // 
+            // cbxCompanies
+            // 
+            this.cbxCompanies.FormattingEnabled = true;
+            this.cbxCompanies.Location = new System.Drawing.Point(86, 6);
+            this.cbxCompanies.Name = "cbxCompanies";
+            this.cbxCompanies.Size = new System.Drawing.Size(284, 21);
+            this.cbxCompanies.TabIndex = 21;
+            // 
+            // lblCompany
+            // 
+            this.lblCompany.AutoSize = true;
+            this.lblCompany.Location = new System.Drawing.Point(7, 9);
+            this.lblCompany.Name = "lblCompany";
+            this.lblCompany.Size = new System.Drawing.Size(64, 13);
+            this.lblCompany.TabIndex = 20;
+            this.lblCompany.Text = "Компания: ";
             // 
             // EditDiscountCardForm
             // 
@@ -245,7 +275,10 @@ namespace vBudgetForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(661, 202);
+            this.ClientSize = new System.Drawing.Size(661, 230);
+            this.Controls.Add(this.btnNewCompany);
+            this.Controls.Add(this.cbxCompanies);
+            this.Controls.Add(this.lblCompany);
             this.Controls.Add(this.dgvBalanceInfo);
             this.Controls.Add(this.btnNewUser);
             this.Controls.Add(this.btnNewVendor);
@@ -268,7 +301,7 @@ namespace vBudgetForm
             this.Controls.Add(this.lblVendor);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "EditDiscountCardForm";
-            this.Text = "EditDiscountCardForm";
+            this.Text = "Информация о карте";
             this.Load += new System.EventHandler(this.EditDiscountCardForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudPercents)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBalanceInfo)).EndInit();
@@ -299,5 +332,8 @@ namespace vBudgetForm
         private System.Windows.Forms.Button btnNewVendor;
         private System.Windows.Forms.Button btnNewUser;
         private System.Windows.Forms.DataGridView dgvBalanceInfo;
+        private System.Windows.Forms.Button btnNewCompany;
+        private System.Windows.Forms.ComboBox cbxCompanies;
+        private System.Windows.Forms.Label lblCompany;
     }
 }

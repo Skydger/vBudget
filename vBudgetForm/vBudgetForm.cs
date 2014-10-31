@@ -352,7 +352,7 @@ namespace vBudgetForm
         }
 
         private void tsmiDiscountCards_Click(object sender, EventArgs e){
-            DiscountCardsListForm dclf = new DiscountCardsListForm(this.cConnection);
+            Froms.Digests.DiscountCardsListForm dclf = new Froms.Digests.DiscountCardsListForm(this.cConnection);
             if (dclf.ShowDialog() == DialogResult.OK){
 
             }

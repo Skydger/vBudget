@@ -166,7 +166,7 @@
     <value>Receipt number</value>
   </data>
   <data name="Receipt.Positions" xml:space="preserve">
-    <value>Positions count: {0}</value>
+    <value>Positions count: {0} ({1})</value>
   </data>
   <data name="Receipt.SubtotalPrice" xml:space="preserve">
     <value>Subtotal price: {0:N2}</value>

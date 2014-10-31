@@ -166,7 +166,7 @@
     <value>Номер чека</value>
   </data>
   <data name="Receipt.Positions" xml:space="preserve">
-    <value>Всего позиций: {0}</value>
+    <value>Всего позиций: {0} ({1})</value>
   </data>
   <data name="Receipt.SubtotalPrice" xml:space="preserve">
     <value>На сумму: {0:C2}</value>

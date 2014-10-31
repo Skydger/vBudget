@@ -119,10 +119,10 @@
     <Compile Include="EditCategoryForm.Designer.cs">
       <DependentUpon>EditCategoryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditDiscountCardForm.cs">
+    <Compile Include="Froms\Digests\EditDiscountCardForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditDiscountCardForm.Designer.cs">
+    <Compile Include="Froms\Digests\EditDiscountCardForm.Designer.cs">
       <DependentUpon>EditDiscountCardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="EditMakerForm.cs">
@@ -225,7 +225,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>EditCategoryForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditDiscountCardForm.resx">
+    <EmbeddedResource Include="Froms\Digests\EditDiscountCardForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>EditDiscountCardForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,4 +1,4 @@
-namespace vBudgetForm
+namespace vBudgetForm.Froms.Digests
 {
     partial class DiscountCardsListForm
     {

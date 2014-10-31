@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace vBudgetForm
+namespace vBudgetForm.Froms.Digests
 {
     public partial class EditDiscountCardForm : Form
     {
@@ -17,11 +17,32 @@ namespace vBudgetForm
         }
 
         private void EditDiscountCardForm_Load(object sender, EventArgs e){
-            System.Data.SqlClient.SqlCommand cmd = Purchases.Vendor.Select(-1, Guid.Empty);
+            System.Data.SqlClient.SqlCommand cmd = Brands.Companies.Select(Guid.Empty);
             cmd.Connection = this.cConnection;
             System.Data.SqlClient.SqlDataAdapter sda = new System.Data.SqlClient.SqlDataAdapter(cmd);
+
+            this.companies = new System.Data.DataTable("Companies");
+            sda.Fill(this.companies);
+            DataRow dr = this.companies.NewRow();
+            dr["CompanyName"] = "Компания не выбрана";
+            dr["CompanyID"] = Guid.Empty;
+            this.companies.Rows.InsertAt(dr, 0);
+
+            this.cbxCompanies.DataSource = this.companies;
+            this.cbxCompanies.DisplayMember = "CompanyName";
+            this.cbxCompanies.ValueMember = "CompanyID";
+
+            cmd = Purchases.Vendor.Select(-1, Guid.Empty);
+            cmd.Connection = this.cConnection;
+            System.Data.SqlClient.SqlDataAdapter vda = new System.Data.SqlClient.SqlDataAdapter(cmd);
+
             this.vendors = new System.Data.DataTable("Vendors");
-            sda.Fill(this.vendors);
+            vda.Fill(this.vendors);
+            dr = this.vendors.NewRow();
+            dr["VendorName"] = "Продавец не выбран";
+            dr["VendorID"] = Guid.Empty;
+            this.vendors.Rows.InsertAt(dr, 0);
+
             this.cbxVendors.DataSource = this.vendors;
             this.cbxVendors.DisplayMember = "VendorName";
             this.cbxVendors.ValueMember = "VendorID";
@@ -68,8 +89,16 @@ namespace vBudgetForm
 
             this.card_balance = new DataTable("CardBalance");
             column = "HasBalance";
-            this.is_new_balance = ((int)this.card[column] == 0);
-            this.has_balance = ((int)this.card[column] == 1);
+            if (!System.Convert.IsDBNull(this.card[column]))
+            {
+                this.is_new_balance = ((int)this.card[column] == 0);
+                this.has_balance = ((int)this.card[column] == 1);
+            }
+            else
+            {
+                this.is_new_balance = true;
+                this.has_balance = false;
+            }
             return;
         }
 
@@ -81,6 +110,8 @@ namespace vBudgetForm
             try
             {
                 this.card["CardOwner"] = this.cbxUsers.SelectedValue;
+                if (!System.Convert.IsDBNull(this.cbxCompanies.SelectedValue))
+                    this.card["CompanyID"] = this.cbxCompanies.SelectedValue;
                 if (!System.Convert.IsDBNull(this.cbxVendors.SelectedValue))
                     this.card["VendorID"] = this.cbxVendors.SelectedValue;
                 this.card["CardName"] = this.tbxName.Text;
@@ -115,7 +146,7 @@ namespace vBudgetForm
                         MessageBox.Show(error);
                     else
                     {
-                        if ((int)this.card["DiscountType"] > 0)
+                        if( !System.Convert.IsDBNull(this.card["DiscountType"]) && (short)this.card["DiscountType"] > 0)
                         {
                             System.Data.DataRow brow = this.ConvertBalance(this.card["CardID"]);
                             if (this.is_new_balance)

@@ -15,9 +15,9 @@ namespace Purchases
         /// </summary>
         public static System.Data.SqlClient.SqlCommand Select(){
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-            string sQuery = "SELECT dc.CardID, dc.CardOwner, dc.VendorID, dc.CardName,\n" +
-                            "       dc.CardNumber, dc.DiscountPercent, dc.DiscountType,\n" +
-                            "       dc.Since, dc.Added, dc.Expired,\n" +
+            string sQuery = "SELECT dc.CardID, dc.CardOwner, dc.CompanyID, dc.VendorID,\n" +
+                            "       dc.CardName, dc.CardNumber, dc.DiscountPercent,\n" +
+                            "       dc.DiscountType, dc.Since, dc.Added, dc.Expired,\n" +
                             "       cb.OverallBalance, cb.DiscountBalance,\n" +
                             "       cb.LastReceiptID, cb.Points,\n" +
                             "       pu.Surname, pu.Name, pu.SecondName,\n" +
@@ -29,8 +29,10 @@ namespace Purchases
                             "    ON cb.CardID = dc.CardID\n" +
                             " INNER JOIN Persons.Users AS pu\n" +
                             "         ON pu.UserID = dc.CardOwner\n" +
-                            " INNER JOIN Purchases.Vendors AS pv\n" +
-                            "         ON pv.VendorID = dc.VendorID\n";
+                            "  LEFT JOIN Purchases.Vendors AS pv\n" +
+                            "         ON pv.VendorID = dc.VendorID\n" +
+                            "  LEFT JOIN Brands.Companies AS cm\n" +
+                            "    ON cm.CompanyID = dc.CompanyID";
             cmd.CommandTimeout = 0;
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.CommandText = sQuery;
@@ -40,9 +42,10 @@ namespace Purchases
         static protected System.Data.SqlClient.SqlCommand AddParameters(System.Data.SqlClient.SqlCommand command)
         {
             command.Parameters.Add("@CardOwner", System.Data.SqlDbType.Int, 0, "CardOwner");
+            command.Parameters.Add("@CompanyID", System.Data.SqlDbType.UniqueIdentifier, 0, "CompanyID");
             command.Parameters.Add("@VendorID", System.Data.SqlDbType.UniqueIdentifier, 0, "VendorID");
             command.Parameters.Add("@CardName", System.Data.SqlDbType.NVarChar, 0, "CardName");
-            command.Parameters.Add("@CardNumber", System.Data.SqlDbType.NVarChar, 0, "CardNumber");
+            command.Parameters.Add("@CardNumber", System.Data.SqlDbType.NVarChar, 64, "CardNumber");
             command.Parameters.Add("@DiscountPercent", System.Data.SqlDbType.Decimal, 0, "DiscountPercent");
             command.Parameters.Add("@DiscountType", System.Data.SqlDbType.SmallInt, 0, "DiscountType");
             command.Parameters.Add("@Since", System.Data.SqlDbType.DateTime, 0, "Since");
@@ -54,10 +57,10 @@ namespace Purchases
         {
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "INSERT INTO " + DiscountCard.Table + "\n" +
-                            "            (CardOwner, VendorID, CardName,\n" +
+                            "            (CardOwner, CompanyID, VendorID, CardName,\n" +
                             "             CardNumber, DiscountPercent, DiscountType,\n" +
                             "             Since, Added, Expired)\n" +
-                            "     VALUES (@CardOwner, @VendorID, @CardName,\n" +
+                            "     VALUES (@CardOwner, @CompanyID, @VendorID, @CardName,\n" +
                             "             @CardNumber, @DiscountPercent, @DiscountType,\n" +
                             "             @Since, @Added, @Expired)";
             cmd = DiscountCard.AddParameters(cmd);
@@ -82,13 +85,14 @@ namespace Purchases
                 connection.Open();
                 System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
                 string sQuery = "INSERT INTO " + DiscountCard.Table + "\n" +
-                                "            (CardOwner, VendorID, CardName,\n" +
+                                "            (CardOwner, CompanyID, VendorID, CardName,\n" +
                                 "             CardNumber, DiscountPercent, DiscountType,\n" +
                                 "             Since, Added, Expired)\n" +
-                                "     VALUES (@CardOwner, @VendorID, @CardName,\n" +
+                                "     VALUES (@CardOwner, @CompanyID, @VendorID, @CardName,\n" +
                                 "             @CardNumber, @DiscountPercent, @DiscountType,\n" +
                                 "             @Since, @Added, @Expired)";
                 cmd.Parameters.AddWithValue("@CardOwner", row["CardOwner"]);
+                cmd.Parameters.AddWithValue("@CompanyID", row["CompanyID"]);
                 cmd.Parameters.AddWithValue("@VendorID", row["VendorID"]);
                 cmd.Parameters.AddWithValue("@CardName", row["CardName"]);
                 cmd.Parameters.AddWithValue("@CardNumber", row["CardNumber"]);
@@ -116,7 +120,7 @@ namespace Purchases
         {
             System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
             string sQuery = "UPDATE " + DiscountCard.Table + "\n" +
-                            "   SET CardOwner = @CardOwner, VendorID = @VendorID, CardName = @CardName,\n" +
+                            "   SET CardOwner = @CardOwner, CompanyID = @CompanyID, VendorID = @VendorID, CardName = @CardName,\n" +
                             "       CardNumber = @CardNumber, DiscountPercent = @DiscountPercent, DiscountType = @DiscountType,\n" +
                             "       Since = @Since, Added = @Added, Expired = @Expired\n" +
                             " WHERE CardID = @CardID";
